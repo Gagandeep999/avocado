@@ -1,0 +1,62 @@
+//what about negative integers
+//only period allowed as fraction separator; maybe comma
+//negative numbers and subtraction sign
+
+TODO
+-matbeId : read next char in order to check
+
+identifier ::= ([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|_)*
+integer ::= [-]?[1-9]+[0-9]*|0
+fraction ::= [-]?[.][0-9]*[1-9]|.0
+flot ::= [-]?[0-9]+[.]?[0-9]*([e|E][+|-][1-9]+[0-9]*)*
+
+plus ::= \b+\b
+minus ::= \b-\b
+multiply ::= \b*\b
+divide = ::= \b/\b
+equal ::= \b=\b
+openround ::= \b(\b
+closeround ::= \b)\b
+opencurly ::= \b{\b
+closecurly ::= \b}\b
+opensquare ::= \b[\b
+closesquare ::= \b]\b
+semicolon ::= \b;\b
+comma ::= \b,\b
+period ::= \b.\b
+colon ::= \b:\b
+doublecolon ::= \b::\b
+equalequal ::= \b==\b
+notequal ::= \b<>\b
+lessthan ::= \b<\b
+greaterthan ::= \b>\b
+lessthanequal ::= \b<=\b
+greaterthanequal ::= \b>=\b
+
+if ::= \bif\b
+then ::= \bthen\b
+else ::= \belse\b
+while ::= \bwhile\b
+class ::= \bclass\b
+do ::= \bdo\b
+end ::= \bend\b
+public ::= \bpublic\b
+private ::= \bprivate\b
+or ::= \bor\b
+and ::= \band\b
+not ::= \bnot\b
+read ::= \bread\b
+write ::= \bwrite\b
+return ::= \breturn\b
+main ::= \bmain\b
+inherits ::= \binherits\b
+local ::= \blocal\b
+blockcmnt ::= \b/*\b
+inlinecmnt ::= \b//\b
+ ::= \b\b
+ ::= \b\b
+ ::= \b\b
+ ::= \b\b
+ ::= \b\b
+ ::= \b\b
+ ::= \b\b
