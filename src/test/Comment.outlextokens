@@ -1,0 +1,7 @@
+[inlinecmnt, // this is inline comment , 1] 
+
+[inlinecmnt, // this is inline comment that includes token keywords such as: integer, float, public, 3] 
+
+[blockcmnt, /* this multiline comments\nwhich includes tabs     and spaces\nas well as return characters\n*/, 5] 
+
+[blockcmnt, /* block \n comment \n new line */, 7] 

@@ -7,37 +7,43 @@ public class lexer {
     private int lineNum;
     private int currentIntChar;
     private StringBuilder lexeme;
-    private PrintWriter pw;
+    private PrintWriter pwTokens;
+    private PrintWriter pwErrors;
     private boolean isNum;
+    private boolean isFloat;
 
 
-    /**
-     * constructor for lexer class, initializes buffered reader
-     */
-    public lexer() {
-        this.lineNum = 1;
-        this.currentIntChar = 0;
-        this.lexeme = new StringBuilder(50);
-        this.isNum = false;
-        try {
-            this.pw = new PrintWriter("src/test/outlexors", "UTF-8");
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-
-    }
+//    /**
+//     * constructor for lexer class, initializes buffered reader
+//     */
+//    public lexer() {
+//        this.lineNum = 1;
+//        this.currentIntChar = 0;
+//        this.lexeme = new StringBuilder(50);
+//        this.isNum = false;
+//        try {
+//            this.pwTokens = new PrintWriter("src/test/outlextokens", "UTF-8");
+//            this.pwErrors = new PrintWriter("src/test/outlexerrors", "UTF-8");
+//        }catch (IOException e){
+//            System.out.println(e.getMessage());
+//        }
+//
+//    }
 
     /**
      * constructor for initializing the printwriter for a specific file
-     * @param testOutputLocation: filepath of the file where the outlexors will be printed.
+     * @param outputLocation: filepath of the file where the outlexors will be printed.
      */
-    public lexer(String testOutputLocation){
+    public lexer(String outputLocation){
         this.lineNum = 1;
         this.currentIntChar = 0;
         this.lexeme = new StringBuilder(50);
         this.isNum = false;
+        String outlextokens = outputLocation.replace(".src", ".outlextokens");
+        String outlexerrors = outputLocation.replace(".src", ".outlexerrors");
         try {
-            this.pw = new PrintWriter(testOutputLocation, "UTF-8");
+            this.pwTokens = new PrintWriter(outlextokens, "UTF-8");
+            this.pwErrors = new PrintWriter(outlexerrors, "UTF-8");
         }catch (IOException e){
             System.out.println(e.getMessage());
         }
@@ -82,16 +88,20 @@ public class lexer {
             isNum = true;
         }
 
+        if ((Pattern.matches("[+|-]", currentStringChar)) && Pattern.matches("-?[0-9]*[.][0-9]*[e]", lexeme))
+            lexeme.append(currentStringChar);
+        else if ((currentStringChar.equals("e")) && (Pattern.matches("-?[0-9]*[.][0-9]*", lexeme)))
+            lexeme.append(currentStringChar);
         //regEx to match an identifier;; keywords are detected later
-        if(Pattern.matches("\\b([a-zA-Z][0-9a-zA-Z_]{0,31})\\b", currentStringChar) && !isNum){
+        else if(Pattern.matches("\\b([a-zA-Z][0-9a-zA-Z_]{0,31})\\b", currentStringChar) && !isNum){
             lexeme.append(currentStringChar);
         }
         //regEx to match numbers; float and integer are classified later
-        else if (Pattern.matches("-?[0-9]*[.]?[0-9]*[e]?[+|-]?[0-9]*", currentStringChar) && isNum){
+        else if (Pattern.matches("-?[0-9]*[.]?[0-9]*", currentStringChar) && isNum){ //[e]?[+|-]?[0-9]*
                 lexeme.append(currentStringChar);
         }
         //this checks for any character that are not in the language
-        else if (!(Pattern.matches("==|<>|<|>|<=|>=|\\+|-|\\*|/|=|\\(|\\)|\\{|\\}|\\[|\\]|;|,|\\.|:|::|\\n|\\r|\\t|\\s" , currentStringChar))){ //first symbol is not part of the language symbols
+        else if (!(Pattern.matches("==|<>|<|>|<=|>=|\\+|-|\\*|/|=|\\(|\\)|\\{|\\}|\\[|\\]|;|,|\\.|:|::|\\n|\\r|\\t|\\s|" , currentStringChar))){ //first symbol is not part of the language symbols
             lexeme.append(currentStringChar);
         }
         //all the other special characters of the language
@@ -109,7 +119,8 @@ public class lexer {
      */
     private void checkTokenSpecialChar(String currentStringChar, BufferedReader br) {
 
-        if (currentIntChar == 47) {
+        if (currentIntChar == 47) { //divide symbol
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
                 currentIntChar = br.read();
@@ -124,12 +135,16 @@ public class lexer {
                 lexeme.append(Character.toString((char) currentIntChar));
                 blockCmntToken(br);
             } else {
+//                backtrack(br, currentIntChar);
 //                token t = new token("divide", lexeme, lineNum);
+
                 createToken("divide", lexeme, lineNum);
+                lexeme.append(Character.toString((char) currentIntChar));
 //                lexeme = null;
             }
 //            createToken(lexeme);
-        } else if (currentIntChar == 61) {
+        } else if (currentIntChar == 61) { //equal than symbol
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
                 currentIntChar = br.read();
@@ -142,11 +157,15 @@ public class lexer {
                 createToken("equalequal", lexeme, lineNum);
 //                lexeme = null;
             } else {
-//                token t = new token("equal", lexeme, lineNum);
                 createToken("equal", lexeme, lineNum);
+                if (currentIntChar!=32)
+                    lexeme.append(Character.toString((char) currentIntChar));
+//                token t = new token("equal", lexeme, lineNum);
+//
 //                lexeme = null;
             }
-        } else if (currentIntChar == 60) {
+        } else if (currentIntChar == 60) { //less than symbol
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
                 currentIntChar = br.read();
@@ -166,9 +185,11 @@ public class lexer {
             } else {
 //                token t = new token("lessthan", lexeme, lineNum);
                 createToken("lessthan", lexeme, lineNum);
+                lexeme.append(Character.toString((char) currentIntChar));
 //                lexeme = null;
             }
-        } else if (currentIntChar == 62) {
+        } else if (currentIntChar == 62) { // greater than symbol
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
                 currentIntChar = br.read();
@@ -177,15 +198,13 @@ public class lexer {
             }
             if (currentIntChar == 61) {
                 lexeme.append(Character.toString((char) currentIntChar));
-//                token t = new token("greaterthanequal", lexeme, lineNum);
                 createToken("greaterthanequal", lexeme, lineNum);
-//                lexeme = null;
             } else {
-//                token t = new token("greaterthan", lexeme, lineNum);
                 createToken("greaterthan", lexeme, lineNum);
-//                lexeme = null;
+                lexeme.append(Character.toString((char) currentIntChar));
             }
-        } else if (currentIntChar == 58) {
+        } else if (currentIntChar == 58) { // colon symbol
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
                 currentIntChar = br.read();
@@ -200,9 +219,10 @@ public class lexer {
             } else {
 //                token t = new token("colon", lexeme, lineNum);
                 createToken("colon", lexeme, lineNum);
+                lexeme.append(Character.toString((char) currentIntChar));
 //                lexeme = null;
             }
-        } else if (currentIntChar == 46){
+        } else if (currentIntChar == 46){ // period symbol
             lexeme.append(currentStringChar);
             try {
                 currentIntChar = br.read();
@@ -217,51 +237,62 @@ public class lexer {
             }
         }
         else if (currentIntChar == 43) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("plus", lexeme, lineNum);
         } else if (currentIntChar == 45) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("minus", lexeme, lineNum);
         } else if (currentIntChar == 42) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("multiply", lexeme, lineNum);
         } else if (currentIntChar == 40) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("openround", lexeme, lineNum);
         } else if (currentIntChar == 41) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("closeround", lexeme, lineNum);
         } else if (currentIntChar == 123) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("opencurly", lexeme, lineNum);
         } else if (currentIntChar == 125) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("closecurly", lexeme, lineNum);
         } else if (currentIntChar == 91) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("opensquare", lexeme, lineNum);
         } else if (currentIntChar == 93) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("closesquare", lexeme, lineNum);
         } else if (currentIntChar == 59) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("semicolon", lexeme, lineNum);
         } else if (currentIntChar == 44) {
+            checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("comma", lexeme, lineNum);
         } else if (currentIntChar == 32) {
             checkTokenKeywords();
-        } else if (currentIntChar == 9) {
+        } else if (currentIntChar == 9) { //horizontal tab character
             checkTokenKeywords();
         }
-        else if (currentIntChar == 13){
+        else if (currentIntChar == 13){ //carriage return
             checkTokenKeywords();
         }
-        else if (currentIntChar == 10){
+        else if (currentIntChar == 10){ //new line character
             checkTokenKeywords();
-            lineNum++;
+//            lineNum++;
         }
-        else if (currentIntChar==(-1)){
+        else if (currentIntChar==(-1)){ //end of file character
             checkTokenKeywords();
         }
         else {
@@ -278,8 +309,8 @@ public class lexer {
      *MAYBE retuen token object
      */
     private void checkTokenKeywords(){
-        if (lexeme.toString().equals("")){
-            createToken("space/tab", lexeme, lineNum);
+        if (lexeme.toString().equals("") || lexeme.toString().equals(" ")){
+            createToken("space/tab/newline", lexeme, lineNum);
         }
         else if (Pattern.matches("\\bif\\b", lexeme)){
             createToken("if", lexeme, lineNum);
@@ -442,19 +473,38 @@ public class lexer {
      */
     private void createToken(String token, StringBuilder lexeme, int lineNum){
         token t = new token(token, lexeme, lineNum);
-        if (!token.equals("space/tab")){
+        if (!token.contains("space/tab/newline")){
 //            System.out.println(t);
-            pw.print(t);
-            pw.flush();
+            if(token.contains("invalid")){
+                pwErrors.print(t+" ");
+                pwErrors.flush();
+            }
+            else{
+                pwTokens.print(t+" ");
+                pwTokens.flush();
+            }
+        }
+        if(currentIntChar==10){
+            this.lineNum++;
+            if(token.contains("invalid")){
+                pwErrors.print("\n");
+                pwErrors.flush();
+            }
+            else{
+                pwTokens.print("\n");
+                pwTokens.flush();
+            }
         }
         lexeme.replace(0, lexeme.length(), "");
     }
 
-    public void backtrack(BufferedReader br){
+    public void backtrack(BufferedReader br, int size) {
+        String sz = String.valueOf((char)size);
+        long amount = (long)sz.getBytes().length;
         try {
-            br.skip(2*(-1));
-        }catch (IOException e){
-            System.out.println(e.getMessage());
+            br.skip(amount*(-1));
+        } catch (IOException e) {
+            System.out.println("tried to go back too far "+sz.getBytes().length);
         }
     }
 }

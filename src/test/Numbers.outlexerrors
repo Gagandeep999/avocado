@@ -1,0 +1,4 @@
+[invalidinteger, 0123, 5] 
+[invalidfloat, .10, 9] [invalidfloat, .1e-10, 9] 
+[invalidfloat, 01.123, 10] [invalidfloat, 01.123e450, 10] 
+[invalidfloat, 120.340e10, 11] [invalidfloat, 1., 14] [invalidfloat, 1.e, 14] 

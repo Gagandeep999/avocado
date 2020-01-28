@@ -2,9 +2,6 @@
 //only period allowed as fraction separator; maybe comma
 //negative numbers and subtraction sign
 
-TODO
--matbeId : read next char in order to check
-
 identifier ::= ([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|_)*
 integer ::= [-]?[1-9]+[0-9]*|0
 fraction ::= [-]?[.][0-9]*[1-9]|.0
@@ -53,10 +50,50 @@ inherits ::= \binherits\b
 local ::= \blocal\b
 blockcmnt ::= \b/*\b
 inlinecmnt ::= \b//\b
- ::= \b\b
- ::= \b\b
- ::= \b\b
- ::= \b\b
- ::= \b\b
- ::= \b\b
- ::= \b\b
+
+public enum tokenType{
+Identifier,
+Integer,
+Fraction,
+Flot,
+Plus,
+Minus,
+Multiply,
+Divide,
+Equal,
+Openround,
+Closeround,
+Opencurly,
+Closecurly,
+Opensquare,
+Closesquare,
+Semicolon,
+Comma,
+Period,
+Colon,
+Doublecolon,
+Equalequal,
+Notequal,
+Lessthan,
+Greaterthan,
+Lessthanequal,
+Greaterthanequal,
+If,
+Then,
+Else,
+While,
+Class,
+Do,
+End,
+Public,
+Private,
+Or,
+And,
+Read,
+Write,
+Return,
+Main,
+Inherit,
+Local,
+Blockcmnt,
+Inlinecmnt;
