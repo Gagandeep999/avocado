@@ -83,13 +83,9 @@ public class lexicalAnalyzerTest {
         //The case below gives an error; need to fix.
 //        tester("a=++5", "[id, a, 1] [equal, =,1] [plus, +, 1] [plus, +, 1] [intnum, 5, 1] ");
 
-
-
         deleteFile();
 
     }
-
-
 
     @Test
     public static void tester(String actual, String output) {

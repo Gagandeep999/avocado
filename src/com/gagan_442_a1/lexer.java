@@ -55,7 +55,6 @@ public class lexer {
      * which takes the integer values of that character. It checks if the character against
      * regular expressions to categorize it into one of the bags: identifier, number, specialChar, other.
      * Once the character is identified it calls corresponding methods.
-     * MIGHT return toekn objects
      * @param br: this is the buffered reader object passed to the method to return tokens/write to buffer writer
      */
     public void nextToken(BufferedReader br){
@@ -73,7 +72,6 @@ public class lexer {
     /**
      * Converts the integer value of the currentChar to String and uses Pattern class to match it
      * against the regular expressions.
-     * MIGHT return the token object
      * @param br: buffered reader object containing the source code
      * @param currentIntChar: integer value of the character read.
      */
@@ -113,7 +111,6 @@ public class lexer {
     /**
      * This method checks for all the special characters of the language and creates token based
      * the lexical specifications of the language
-     * MAYBE return object
      * @param  br buffered reader object containing the source code
      * @param currentStringChar value of current character as a String object
      */
@@ -306,7 +303,6 @@ public class lexer {
      * This is for matching all the identifiers, keywords, integers and floats.
      * Positive and negative integer are supported. Any number starting with 0 is either
      * invalid integer or invalid float.
-     *MAYBE retuen token object
      */
     private void checkTokenKeywords(){
         if (lexeme.toString().equals("") || lexeme.toString().equals(" ")){

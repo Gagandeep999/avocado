@@ -9,8 +9,6 @@ class lexdriver {
     /**
      * Starting point of the lexical analyzer. Creates a lexer object that calls nextToken()
      * method.
-     * MAYBE in this method i can define a bufferewriter that will store the returned tokens
-     * and once all the token are returned write them to file.
      * @param args filename for the analyzer
      */
     public static void main(String args[]){
