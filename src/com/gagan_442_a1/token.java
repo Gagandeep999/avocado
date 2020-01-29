@@ -5,12 +5,21 @@ class token {
     private StringBuilder lexeme;
     private int linenum;
 
+    /**
+     * constructor for token class to initialize a null token
+     */
     public token(){
         this.token = "";
         this.lexeme = null;
         this.linenum = -1;
     }
 
+    /**
+     * constructor for token class with parameter
+     * @param token name of the token
+     * @param lexeme lexeme from the source code
+     * @param linenum linenum from the source code
+     */
     public token(String token, StringBuilder lexeme, int linenum){
         this.token = token;
         this.lexeme = lexeme;
@@ -21,6 +30,7 @@ class token {
     public String toString() {
         return "[" + token + ", " + lexeme + ", " + linenum + "]";
     }
+
 
     public void setToken(String token) {
         this.token = token;

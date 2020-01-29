@@ -14,8 +14,6 @@ class lexdriver {
     public static void main(String args[]){
         try{
             String filename = args[0];
-//            BufferedReader br = new BufferedReader(new FileReader("src/com/gagan_442_a1/lexpositivegrading_1.src"));
-//            BufferedReader br = new BufferedReader(new FileReader("src/com/gagan_442_a1/lexnegativegrading.src"));
             BufferedReader br = new BufferedReader(new FileReader(filename));
             lexer lex = new lexer(filename);
             lex.nextToken(br);

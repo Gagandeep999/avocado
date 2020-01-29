@@ -10,25 +10,6 @@ public class lexer {
     private PrintWriter pwTokens;
     private PrintWriter pwErrors;
     private boolean isNum;
-    private boolean isFloat;
-
-
-//    /**
-//     * constructor for lexer class, initializes buffered reader
-//     */
-//    public lexer() {
-//        this.lineNum = 1;
-//        this.currentIntChar = 0;
-//        this.lexeme = new StringBuilder(50);
-//        this.isNum = false;
-//        try {
-//            this.pwTokens = new PrintWriter("src/test/outlextokens", "UTF-8");
-//            this.pwErrors = new PrintWriter("src/test/outlexerrors", "UTF-8");
-//        }catch (IOException e){
-//            System.out.println(e.getMessage());
-//        }
-//
-//    }
 
     /**
      * constructor for initializing the printwriter for a specific file
@@ -61,7 +42,6 @@ public class lexer {
         try{
             while(currentIntChar!=(-1)) {
                 currentIntChar = br.read();
-//                System.out.println(currentIntChar);
                 identifyToken(currentIntChar, br);
             }
         }catch (IOException e){
@@ -99,7 +79,7 @@ public class lexer {
                 lexeme.append(currentStringChar);
         }
         //this checks for any character that are not in the language
-        else if (!(Pattern.matches("==|<>|<|>|<=|>=|\\+|-|\\*|/|=|\\(|\\)|\\{|\\}|\\[|\\]|;|,|\\.|:|::|\\n|\\r|\\t|\\s|" , currentStringChar))){ //first symbol is not part of the language symbols
+        else if (!(Pattern.matches("==|<>|<|>|<=|>=|\\+|-|\\*|/|=|\\(|\\)|\\{|\\}|\\[|\\]|;|,|\\.|:|::|\\n|\\r|\\t|\\s|" , currentStringChar))){
             lexeme.append(currentStringChar);
         }
         //all the other special characters of the language
@@ -116,7 +96,7 @@ public class lexer {
      */
     private void checkTokenSpecialChar(String currentStringChar, BufferedReader br) {
 
-        if (currentIntChar == 47) { //divide symbol
+        if (currentStringChar.equals("/")) { //divide symbol
             checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
@@ -124,23 +104,25 @@ public class lexer {
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
+            String newStringChar = Character.toString((char)currentIntChar);
 
-            if (currentIntChar == 47) {
+            if (newStringChar.equals("/")) { //divide symbol
                 lexeme.append(Character.toString((char) currentIntChar));
                 inLineComntToken(br);
-            } else if (currentIntChar == 42) {
+            } else if (newStringChar.equals("*")) {
                 lexeme.append(Character.toString((char) currentIntChar));
                 blockCmntToken(br);
             } else {
-//                backtrack(br, currentIntChar);
-//                token t = new token("divide", lexeme, lineNum);
-
                 createToken("divide", lexeme, lineNum);
-                lexeme.append(Character.toString((char) currentIntChar));
-//                lexeme = null;
+
+                if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
+                    lexeme.append(newStringChar);
+                }
+                else{
+                    checkTokenSpecialChar(newStringChar, br);
+                }
             }
-//            createToken(lexeme);
-        } else if (currentIntChar == 61) { //equal than symbol
+        } else if (currentStringChar.equals("=")) { //equal than symbol
             checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
@@ -148,20 +130,22 @@ public class lexer {
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            if (currentIntChar == 61) {
+            String newStringChar = Character.toString((char)currentIntChar);
+
+            if (newStringChar.equals("=")) {
                 lexeme.append(Character.toString((char) currentIntChar));
-//                token t = new token("equalequal", lexeme, lineNum);
                 createToken("equalequal", lexeme, lineNum);
-//                lexeme = null;
             } else {
                 createToken("equal", lexeme, lineNum);
-                if (currentIntChar!=32)
-                    lexeme.append(Character.toString((char) currentIntChar));
-//                token t = new token("equal", lexeme, lineNum);
-//
-//                lexeme = null;
+
+                if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
+                    lexeme.append(newStringChar);
+                }
+                else{
+                    checkTokenSpecialChar(newStringChar, br);
+                }
             }
-        } else if (currentIntChar == 60) { //less than symbol
+        } else if (currentStringChar.equals("<")) { //less than symbol
             checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
@@ -169,23 +153,25 @@ public class lexer {
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            if (currentIntChar == 61) {
+            String newStringChar = Character.toString((char)currentIntChar);
+
+            if (newStringChar.equals("=")) {
                 lexeme.append(Character.toString((char) currentIntChar));
-//                token t = new token("lessthanequal", lexeme, lineNum);
                 createToken("lessthanequal", lexeme, lineNum);
-//                lexeme = null;
-            } else if (currentIntChar == 62) {
+            } else if (newStringChar.equals(">")) {
                 lexeme.append(Character.toString((char) currentIntChar));
-//                token t = new token("notequal", lexeme, lineNum);
                 createToken("notequal", lexeme, lineNum);
-//                lexeme = null;
             } else {
-//                token t = new token("lessthan", lexeme, lineNum);
                 createToken("lessthan", lexeme, lineNum);
-                lexeme.append(Character.toString((char) currentIntChar));
-//                lexeme = null;
+
+                if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
+                    lexeme.append(newStringChar);
+                }
+                else{
+                    checkTokenSpecialChar(newStringChar, br);
+                }
             }
-        } else if (currentIntChar == 62) { // greater than symbol
+        } else if (currentStringChar.equals(">")) { // greater than symbol
             checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
@@ -193,14 +179,22 @@ public class lexer {
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            if (currentIntChar == 61) {
+            String newStringChar = Character.toString((char)currentIntChar);
+
+            if (newStringChar.equals("=")) {
                 lexeme.append(Character.toString((char) currentIntChar));
                 createToken("greaterthanequal", lexeme, lineNum);
             } else {
                 createToken("greaterthan", lexeme, lineNum);
-                lexeme.append(Character.toString((char) currentIntChar));
+
+                if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
+                    lexeme.append(newStringChar);
+                }
+                else{
+                    checkTokenSpecialChar(newStringChar, br);
+                }
             }
-        } else if (currentIntChar == 58) { // colon symbol
+        } else if (currentStringChar.equals(":")) { // colon symbol
             checkTokenKeywords();
             lexeme.append(currentStringChar);
             try {
@@ -208,16 +202,20 @@ public class lexer {
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            if (currentIntChar == 58) {
+            String newStringChar = Character.toString((char)currentIntChar);
+
+            if (newStringChar.equals(":")) {
                 lexeme.append(Character.toString((char) currentIntChar));
-//                token t = new token("coloncolon", lexeme, lineNum);
                 createToken("coloncolon", lexeme, lineNum);
-//                lexeme = null;
             } else {
-//                token t = new token("colon", lexeme, lineNum);
                 createToken("colon", lexeme, lineNum);
-                lexeme.append(Character.toString((char) currentIntChar));
-//                lexeme = null;
+
+                if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
+                    lexeme.append(newStringChar);
+                }
+                else{
+                    checkTokenSpecialChar(newStringChar, br);
+                }
             }
         } else if (currentIntChar == 46){ // period symbol
             lexeme.append(currentStringChar);
@@ -226,14 +224,14 @@ public class lexer {
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            if (currentIntChar == 48) {
+            if (currentIntChar == 48) { //special case of ".0 which is allowed in the language
                 lexeme.append(Character.toString((char) currentIntChar));
                 createToken("float", lexeme, lineNum);
             }else {
                 createToken("period", lexeme, lineNum);
             }
         }
-        else if (currentIntChar == 43) {
+        else if (currentStringChar.equals("+")) {
             checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("plus", lexeme, lineNum);
@@ -281,20 +279,15 @@ public class lexer {
             checkTokenKeywords();
         } else if (currentIntChar == 9) { //horizontal tab character
             checkTokenKeywords();
-        }
-        else if (currentIntChar == 13){ //carriage return
+        }else if (currentIntChar == 13){ //carriage return
             checkTokenKeywords();
-        }
-        else if (currentIntChar == 10){ //new line character
+        }else if (currentIntChar == 10){ //new line character
             checkTokenKeywords();
-//            lineNum++;
-        }
-        else if (currentIntChar==(-1)){ //end of file character
+        }else if (currentIntChar==(-1)){ //end of file character
             checkTokenKeywords();
-        }
-        else {
+        }else {
             lexeme.append(currentStringChar);
-            createToken("invalidchar", lexeme, lineNum);
+            createToken("invalidid", lexeme, lineNum);
         }
     }
 
@@ -387,7 +380,6 @@ public class lexer {
             createToken("id", lexeme, lineNum);
         }
         else {
-            //invalid token
             createToken("invalidid", lexeme, lineNum);
         }
     }
@@ -410,7 +402,6 @@ public class lexer {
 
         }while( (currentIntChar!=10));
         createToken("inlinecmnt", lexeme, lineNum);
-//        lexeme = null;
     }
 
     /**
@@ -470,7 +461,6 @@ public class lexer {
     private void createToken(String token, StringBuilder lexeme, int lineNum){
         token t = new token(token, lexeme, lineNum);
         if (!token.contains("space/tab/newline")){
-//            System.out.println(t);
             if(token.contains("invalid")){
                 pwErrors.print(t+" ");
                 pwErrors.flush();
@@ -492,15 +482,5 @@ public class lexer {
             }
         }
         lexeme.replace(0, lexeme.length(), "");
-    }
-
-    public void backtrack(BufferedReader br, int size) {
-        String sz = String.valueOf((char)size);
-        long amount = (long)sz.getBytes().length;
-        try {
-            br.skip(amount*(-1));
-        } catch (IOException e) {
-            System.out.println("tried to go back too far "+sz.getBytes().length);
-        }
     }
 }
