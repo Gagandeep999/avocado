@@ -1,0 +1,10 @@
+[inlinecmnt, // Integers, 1] 
+[intnum, 0, 2] [intnum, 123, 2] [intnum, 1230, 2] 
+
+[inlinecmnt, // Invalid Integers, 4] 
+
+[inlinecmnt, // Floats, 7] 
+[float, 1.23, 8] [float, 12.34, 8] 
+[float, 12345.6789e-123, 11] 
+
+[inlinecmnt, // Invalid Floats, 13] 

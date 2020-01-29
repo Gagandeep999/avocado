@@ -1,0 +1,6 @@
+[equalequal, ==, 1] 
+[greaterthanequal, >=, 2] 
+[lessthanequal, <=, 3] 
+[notequal, <>, 4] 
+[coloncolon, ::, 5] 
+

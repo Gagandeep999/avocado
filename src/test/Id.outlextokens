@@ -1,0 +1,5 @@
+[inlinecmnt, // Valid Ids, 1] 
+[id, abc, 2] [id, a_bc, 2] [id, abc_, 2] [id, a1bc, 2] 
+
+[inlinecmnt, // Invalid Ids, 4] 
+[multiply, *, 5] [id, abc, 5] 
