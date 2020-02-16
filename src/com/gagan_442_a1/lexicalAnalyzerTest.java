@@ -17,10 +17,10 @@ public class lexicalAnalyzerTest {
         tester("0", "[intnum, 0, 1] ", "");
         tester("123", "[intnum, 123, 1] ", "");
         tester("00", "", "[invalidinteger, 00, 1] ");
-        tester("1.23", "[float, 1.23, 1] ", "");
+        tester("1.23", "[floatnum, 1.23, 1] ", "");
         tester("0.0", "", "[invalidfloat, 0.0, 1] ");
-        tester("1.1e+1", "[float, 1.1e+1, 1] ", "");
-        tester("1.0", "", "[invalidfloat, 1.0, 1] ");
+        tester("1.1e+1", "[floatnum, 1.1e+1, 1] ", "");
+        tester("1.0", "[floatnum, 1.0, 1] ", "");
         tester("120.340e10", "", "[invalidfloat, 120.340e10, 1] ");
         tester("if", "[if, if, 1] ", "");
         tester("do", "[do, do, 1] ", "");
@@ -45,51 +45,56 @@ public class lexicalAnalyzerTest {
         tester("a\na", "[id, a, 1] \n[id, a, 2] ", "");
         tester("+", "[plus, +, 1] ", "");
         tester("-", "[minus, -, 1] ", "");
-        tester("/", "[divide, /, 1] ", "");
-        tester("*", "[multiply, *, 1] ", "");
-        tester("(", "[openround, (, 1] ", "");
-        tester(")", "[closeround, ), 1] ", "");
-        tester("[", "[opensquare, [, 1] ", "");
-        tester("]", "[closesquare, ], 1] ", "");
-        tester("{", "[opencurly, {, 1] ", "");
-        tester("}", "[closecurly, }, 1] ", "");
-        tester("<", "[lessthan, <, 1] ", "");
-        tester(">", "[greaterthan, >, 1] ", "");
-        tester("<=", "[lessthanequal, <=, 1] ", "");
-        tester(">=", "[greaterthanequal, >=, 1] ", "");
-        tester("<>", "[notequal, <>, 1] ", "");
+        tester("/", "[div, /, 1] ", "");
+        tester("*", "[mult, *, 1] ", "");
+        tester("(", "[lpar, (, 1] ", "");
+        tester(")", "[rpar, ), 1] ", "");
+        tester("[", "[lsqbr, [, 1] ", "");
+        tester("]", "[rsqbr, ], 1] ", "");
+        tester("{", "[lcurbr, {, 1] ", "");
+        tester("}", "[rcurbr, }, 1] ", "");
+        tester("<", "[lt, <, 1] ", "");
+        tester(">", "[gt, >, 1] ", "");
+        tester("<=", "[leq, <=, 1] ", "");
+        tester(">=", "[geq, >=, 1] ", "");
+        tester("<>", "[neq, <>, 1] ", "");
         tester("=", "[equal, =, 1] ", "");
-        tester(";", "[semicolon, ;, 1] ", "");
+        tester(";", "[semi, ;, 1] ", "");
         tester(",", "[comma, ,, 1] ", "");
         tester(".", "[period, ., 1] ", "");
         tester(":", "[colon, :, 1] ", "");
-        tester("::", "[coloncolon, ::, 1] ", "");
+        tester("::", "[sr, ::, 1] ", "");
         tester("// inline", "[inlinecmnt, // inline, 1] ", "");
         tester("/* block comment one line */", "[blockcmnt, /* block comment one line */, 1] ", "");
         tester("// comment /* inside */ comment", "[inlinecmnt, // comment /* inside */ comment, 1] ", "");
-        tester("int *a=5", "[id, int, 1] [multiply, *, 1] [id, a, 1] [equal, =, 1] [intnum, 5, 1] ", "");
+        tester("int *a=5", "[id, int, 1] [mult, *, 1] [id, a, 1] [equal, =, 1] [intnum, 5, 1] ", "");
         tester("!abc", "", "[invalidid, !abc, 1] ");
         tester("+abc", "[plus, +, 1] [id, abc, 1] ", "");
-        tester("/abc", "[divide, /, 1] [id, abc, 1] ", "");
-        tester(";5", "[semicolon, ;, 1] [intnum, 5, 1] ", "");
+        tester("/abc", "[div, /, 1] [id, abc, 1] ", "");
+        tester(";5", "[semi, ;, 1] [intnum, 5, 1] ", "");
         tester("=5", "[equal, =, 1] [intnum, 5, 1] ", "");
         tester("+ 5", "[plus, +, 1] [intnum, 5, 1] ", "");
-        tester("int a=5;", "[id, int, 1] [id, a, 1] [equal, =, 1] [intnum, 5, 1] [semicolon, ;, 1] ", "");
-        tester("int a = 5 ;", "[id, int, 1] [id, a, 1] [equal, =, 1] [intnum, 5, 1] [semicolon, ;, 1] ", "");
-        tester("+ - / * ", "[plus, +, 1] [minus, -, 1] [divide, /, 1] [multiply, *, 1] ", "");
-        tester("class gagan {}", "[class, class, 1] [id, gagan, 1] [opencurly, {, 1] [closecurly, }, 1] ", "");
+        tester("int a=5;", "[id, int, 1] [id, a, 1] [equal, =, 1] [intnum, 5, 1] [semi, ;, 1] ", "");
+        tester("int a = 5 ;", "[id, int, 1] [id, a, 1] [equal, =, 1] [intnum, 5, 1] [semi, ;, 1] ", "");
+        tester("+ - / * ", "[plus, +, 1] [minus, -, 1] [div, /, 1] [mult, *, 1] ", "");
+        tester("class gagan {}", "[class, class, 1] [id, gagan, 1] [lcurbr, {, 1] [rcurbr, }, 1] ", "");
         tester("5+5", "[intnum, 5, 1] [plus, +, 1] [intnum, 5, 1] ", "");
         tester("++", "[plus, +, 1] [plus, +, 1] ", "");
         tester("=++", "[equal, =, 1] [plus, +, 1] [plus, +, 1] ", "");
         tester("= ++", "[equal, =, 1] [plus, +, 1] [plus, +, 1] ", "");
         tester("!++", "[plus, +, 1] [plus, +, 1] ", "[invalidid, !, 1] ");
-        tester("a/++5", "[id, a, 1] [divide, /, 1] [plus, +, 1] [plus, +, 1] [intnum, 5, 1] ", "");
-        tester("/++", "[divide, /, 1] [plus, +, 1] [plus, +, 1] ", "");
-        tester(" / + + ", "[divide, /, 1] [plus, +, 1] [plus, +, 1] ", "");
-        tester("+/+", "[plus, +, 1] [divide, /, 1] [plus, +, 1] ", "");
-        tester("++/", "[plus, +, 1] [plus, +, 1] [divide, /, 1] ", "");
+        tester("a/++5", "[id, a, 1] [div, /, 1] [plus, +, 1] [plus, +, 1] [intnum, 5, 1] ", "");
+        tester("/++", "[div, /, 1] [plus, +, 1] [plus, +, 1] ", "");
+        tester(" / + + ", "[div, /, 1] [plus, +, 1] [plus, +, 1] ", "");
+        tester("+/+", "[plus, +, 1] [div, /, 1] [plus, +, 1] ", "");
+        tester("++/", "[plus, +, 1] [plus, +, 1] [div, /, 1] ", "");
         tester("a=++5", "[id, a, 1] [equal, =, 1] [plus, +, 1] [plus, +, 1] [intnum, 5, 1] ", "");
-        tester("+/!*-", "[plus, +, 1] [divide, /, 1] [multiply, *, 1] [minus, -, 1] ", "[invalidid, !, 1] ");
+        tester("+/!*-", "[plus, +, 1] [div, /, 1] [mult, *, 1] [minus, -, 1] ", "[invalidid, !, 1] ");
+        tester("while (i < n-1)", "[while, while, 1] [lpar, (, 1] [id, i, 1] [lt, <, 1] [id, n, 1] [minus, -, 1] [intnum, 1, 1] [rpar, ), 1] ",
+                "");
+        tester("new_function.a = A;", "[id, new_function, 1] [period, ., 1] [id, a, 1] [equal, =, 1]" +
+                " [id, A, 1] [semi, ;, 1] ", "");
+        tester("0.0", "", "[invalidfloat, 0.0, 1] ");
         //The case below gives an error; need to fix.
 
         deleteFile();
@@ -112,7 +117,7 @@ public class lexicalAnalyzerTest {
             System.out.println(e.getMessage());
         } catch (AssertionError a) {
             System.out.println("input --> "+input+"\ninput token-->"+token+"\nexpected token -->"+expectedToken
-                                +"\ninput error"+error+"\nexpected error"+expectedError);
+                    +"\ninput error"+error+"\nexpected error"+expectedError);
         }
     }
 
