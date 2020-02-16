@@ -1,6 +1,7 @@
 package com.gagan_442_a1;
 
 import java.io.*;
+import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 public class lexer {
@@ -10,6 +11,7 @@ public class lexer {
     private PrintWriter pwTokens;
     private PrintWriter pwErrors;
     private boolean isNum;
+    private LinkedList<token> tokenList;
 
     /**
      * constructor for initializing the printwriter for a specific file
@@ -20,6 +22,7 @@ public class lexer {
         this.currentIntChar = 0;
         this.lexeme = new StringBuilder(50);
         this.isNum = false;
+        this.tokenList = new LinkedList<>();
         String outlextokens = outputLocation.replace(".src", ".outlextokens");
         String outlexerrors = outputLocation.replace(".src", ".outlexerrors");
         try {
@@ -30,6 +33,13 @@ public class lexer {
         }
     }
 
+    /**
+     *
+     * @return a linked list of tokens
+     */
+    public LinkedList<token> getTokenList() {
+        return tokenList;
+    }
 
     /**
      * Read the buffered reader character by character and calls the identifyToken() method
@@ -62,7 +72,7 @@ public class lexer {
             checkTokenSpecialChar(currentStringChar, br);
         }
 
-        if (Pattern.matches("-?[0-9]+", lexeme)){
+        if (Pattern.matches("-?[0-9]+[.]?[0-9]*", lexeme) || Pattern.matches("[0-9]", currentStringChar)){
             isNum = true;
         }
 
@@ -70,21 +80,25 @@ public class lexer {
             lexeme.append(currentStringChar);
         else if ((currentStringChar.equals("e")) && (Pattern.matches("-?[0-9]*[.][0-9]*", lexeme)))
             lexeme.append(currentStringChar);
-        //regEx to match an identifier;; keywords are detected later
+            //regEx to match an identifier;; keywords are detected later
         else if(Pattern.matches("\\b([a-zA-Z][0-9a-zA-Z_]{0,31})\\b", currentStringChar) && !isNum){
             lexeme.append(currentStringChar);
+            isNum = false;
         }
         //regEx to match numbers; float and integer are classified later
         else if (Pattern.matches("-?[0-9]*[.]?[0-9]*", currentStringChar) && isNum){ //[e]?[+|-]?[0-9]*
-                lexeme.append(currentStringChar);
+            lexeme.append(currentStringChar);
+            isNum = false;
         }
         //this checks for any character that are not in the language
         else if (!(Pattern.matches("==|<>|<|>|<=|>=|\\+|-|\\*|/|=|\\(|\\)|\\{|\\}|\\[|\\]|;|,|\\.|:|::|\\n|\\r|\\t|\\s|" , currentStringChar))){
             lexeme.append(currentStringChar);
+            isNum = false;
         }
         //all the other special characters of the language
         else{
             checkTokenSpecialChar(currentStringChar, br);
+            isNum = false;
         }
     }
 
@@ -113,7 +127,7 @@ public class lexer {
                 lexeme.append(Character.toString((char) currentIntChar));
                 blockCmntToken(br);
             } else {
-                createToken("divide", lexeme, lineNum);
+                createToken("div", lexeme, lineNum);
 
                 if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
                     lexeme.append(newStringChar);
@@ -134,7 +148,7 @@ public class lexer {
 
             if (newStringChar.equals("=")) {
                 lexeme.append(Character.toString((char) currentIntChar));
-                createToken("equalequal", lexeme, lineNum);
+                createToken("eq", lexeme, lineNum);
             } else {
                 createToken("equal", lexeme, lineNum);
 
@@ -157,12 +171,12 @@ public class lexer {
 
             if (newStringChar.equals("=")) {
                 lexeme.append(Character.toString((char) currentIntChar));
-                createToken("lessthanequal", lexeme, lineNum);
+                createToken("leq", lexeme, lineNum);
             } else if (newStringChar.equals(">")) {
                 lexeme.append(Character.toString((char) currentIntChar));
-                createToken("notequal", lexeme, lineNum);
+                createToken("neq", lexeme, lineNum);
             } else {
-                createToken("lessthan", lexeme, lineNum);
+                createToken("lt", lexeme, lineNum);
 
                 if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
                     lexeme.append(newStringChar);
@@ -183,9 +197,9 @@ public class lexer {
 
             if (newStringChar.equals("=")) {
                 lexeme.append(Character.toString((char) currentIntChar));
-                createToken("greaterthanequal", lexeme, lineNum);
+                createToken("geq", lexeme, lineNum);
             } else {
-                createToken("greaterthan", lexeme, lineNum);
+                createToken("gt", lexeme, lineNum);
 
                 if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
                     lexeme.append(newStringChar);
@@ -206,7 +220,7 @@ public class lexer {
 
             if (newStringChar.equals(":")) {
                 lexeme.append(Character.toString((char) currentIntChar));
-                createToken("coloncolon", lexeme, lineNum);
+                createToken("sr", lexeme, lineNum);
             } else {
                 createToken("colon", lexeme, lineNum);
 
@@ -217,17 +231,13 @@ public class lexer {
                     checkTokenSpecialChar(newStringChar, br);
                 }
             }
-        } else if (currentIntChar == 46){ // period symbol
-            lexeme.append(currentStringChar);
-            try {
-                currentIntChar = br.read();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-            if (currentIntChar == 48) { //special case of ".0 which is allowed in the language
-                lexeme.append(Character.toString((char) currentIntChar));
-                createToken("float", lexeme, lineNum);
-            }else {
+        } else if (currentIntChar == 46){ // Period, dot or full stop
+            if ( !lexeme.toString().equals("") && !isNum){
+                checkTokenKeywords();
+                lexeme.append(currentStringChar);
+                createToken("period", lexeme, lineNum);
+            }else{
+                lexeme.append(currentStringChar);
                 createToken("period", lexeme, lineNum);
             }
         }
@@ -235,55 +245,56 @@ public class lexer {
             checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("plus", lexeme, lineNum);
-        } else if (currentIntChar == 45) {
+//            TODO: to include negative numbers check the next character after encountering minus
+        } else if (currentIntChar == 45) { // Hyphen
             checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("minus", lexeme, lineNum);
-        } else if (currentIntChar == 42) {
+        } else if (currentIntChar == 42) { // Asterisk
             checkTokenKeywords();
             lexeme.append(currentStringChar);
-            createToken("multiply", lexeme, lineNum);
-        } else if (currentIntChar == 40) {
+            createToken("mult", lexeme, lineNum);
+        } else if (currentIntChar == 40) { // Open parenthesis
             checkTokenKeywords();
             lexeme.append(currentStringChar);
-            createToken("openround", lexeme, lineNum);
-        } else if (currentIntChar == 41) {
+            createToken("lpar", lexeme, lineNum);
+        } else if (currentIntChar == 41) { // Close parenthesis
             checkTokenKeywords();
             lexeme.append(currentStringChar);
-            createToken("closeround", lexeme, lineNum);
-        } else if (currentIntChar == 123) {
+            createToken("rpar", lexeme, lineNum);
+        } else if (currentIntChar == 123) { // Opening brace
             checkTokenKeywords();
             lexeme.append(currentStringChar);
-            createToken("opencurly", lexeme, lineNum);
-        } else if (currentIntChar == 125) {
+            createToken("lcurbr", lexeme, lineNum);
+        } else if (currentIntChar == 125) { // Closing brace
             checkTokenKeywords();
             lexeme.append(currentStringChar);
-            createToken("closecurly", lexeme, lineNum);
-        } else if (currentIntChar == 91) {
+            createToken("rcurbr", lexeme, lineNum);
+        } else if (currentIntChar == 91) { // Opening bracket
             checkTokenKeywords();
             lexeme.append(currentStringChar);
-            createToken("opensquare", lexeme, lineNum);
-        } else if (currentIntChar == 93) {
+            createToken("lsqbr", lexeme, lineNum);
+        } else if (currentIntChar == 93) { // Closing bracket
             checkTokenKeywords();
             lexeme.append(currentStringChar);
-            createToken("closesquare", lexeme, lineNum);
-        } else if (currentIntChar == 59) {
+            createToken("rsqbr", lexeme, lineNum);
+        } else if (currentIntChar == 59) { // Semicolon
             checkTokenKeywords();
             lexeme.append(currentStringChar);
-            createToken("semicolon", lexeme, lineNum);
-        } else if (currentIntChar == 44) {
+            createToken("semi", lexeme, lineNum);
+        } else if (currentIntChar == 44) { // Comma
             checkTokenKeywords();
             lexeme.append(currentStringChar);
             createToken("comma", lexeme, lineNum);
-        } else if (currentIntChar == 32) {
+        } else if (currentIntChar == 32) { // Space
             checkTokenKeywords();
-        } else if (currentIntChar == 9) { //horizontal tab character
+        } else if (currentIntChar == 9) { // Horizontal Tab
             checkTokenKeywords();
-        }else if (currentIntChar == 13){ //carriage return
+        }else if (currentIntChar == 13){ // Carriage Return
             checkTokenKeywords();
-        }else if (currentIntChar == 10){ //new line character
+        }else if (currentIntChar == 10){ // Line Feed
             checkTokenKeywords();
-        }else if (currentIntChar==(-1)){ //end of file character
+        }else if (currentIntChar==(-1)){ // EOF
             checkTokenKeywords();
         }else {
             lexeme.append(currentStringChar);
@@ -361,17 +372,25 @@ public class lexer {
         else if (Pattern.matches("\\bfloat\\b", lexeme)){
             createToken("float", lexeme, lineNum);
         }
+        else if (Pattern.matches("\\bvoid\\b", lexeme)){
+            createToken("void", lexeme, lineNum);
+        }
         else if (Pattern.matches("[.]?[0]", lexeme)){
             createToken("intnum", lexeme, lineNum);
         }
         else if (Pattern.matches("-?[1-9][0-9]{0,15}", lexeme)){
             createToken("intnum", lexeme, lineNum);
+            isNum = false;
         }
         else if (Pattern.matches("-?[0][0-9]{0,15}", lexeme)){
             createToken("invalidinteger", lexeme, lineNum);
-        }
-        else if (Pattern.matches("-?[1-9][0-9]{0,10}[.]?[0-9]{0,5}[1-9]e?[+|-]?[1-9]{0,10}", lexeme)){
-            createToken("float", lexeme, lineNum);
+            isNum = false;
+        }else if (Pattern.matches("[1-9]*[.][0]", lexeme)){
+            createToken("floatnum", lexeme, lineNum);
+            isNum = false;
+        }else if (Pattern.matches("-?[1-9][0-9]{0,10}[.]?[0-9]{0,5}[1-9]e?[+|-]?[1-9]{0,10}", lexeme)){
+            createToken("floatnum", lexeme, lineNum);
+            isNum = false;
         }
         else if (Pattern.matches("-?[0-9]{0,10}[.]?[0-9]{0,5}[e]?[+|-]?[0-9]{0,10}", lexeme)){
             createToken("invalidfloat", lexeme, lineNum);
@@ -459,7 +478,9 @@ public class lexer {
      * @param token name used to create the token
      */
     private void createToken(String token, StringBuilder lexeme, int lineNum){
-        token t = new token(token, lexeme, lineNum);
+        StringBuilder lex = new StringBuilder(lexeme);
+        token t = new token(token, lex, lineNum);
+
         if (!token.contains("space/tab/newline")){
             if(token.contains("invalid")){
                 pwErrors.print(t+" ");
@@ -468,6 +489,7 @@ public class lexer {
             else{
                 pwTokens.print(t+" ");
                 pwTokens.flush();
+                this.tokenList.add(t);
             }
         }
         if(currentIntChar==10){
