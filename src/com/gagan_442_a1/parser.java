@@ -290,11 +290,246 @@ public class parser {
                 System.out.println("MEMBER_DECLARATION -> TYPE_NON_ID VARIABLE_DECLARATION .");
             }else success = false;
         }else if (e.FIRST("MEMBER_DECLARATION").contains(lookahead.getToken())){
-            if (match("id") && FUNCTION_OR_VARIABLE_DECLARATION())
-            System.out.println("MEMBER_DECLARATION -> id FUNCTION_OR_VARIABLE_DECLARATION .");
+            if (match("id") && FUNCTION_OR_VARIABLE_DECLARATION()){
+                System.out.println("MEMBER_DECLARATION -> id FUNCTION_OR_VARIABLE_DECLARATION .");
+            }else  success = false;
         }else success = false;
         return success;
     }
+
+    private boolean FUNCTION_OR_VARIABLE_DECLARATION(){
+//        FUNCTION_OR_VARIABLE_DECLARATION -> FUNCTION_DECLARATION .
+//        FUNCTION_OR_VARIABLE_DECLARATION -> VARIABLE_DECLARATION .
+        if (!skipErrors("FUNCTION_OR_VARIABLE_DECLARATION")) return false;
+        if (e.FIRST("FUNCTION_DECLARATION").contains(lookahead.getToken())){
+            if (FUNCTION_DECLARATION()){
+                System.out.println("FUNCTION_OR_VARIABLE_DECLARATION -> FUNCTION_DECLARATION .");
+            }else success = false;
+        }else if (e.FIRST("VARIABLE_DECLARATION").contains(lookahead.getToken())){
+            if (VARIABLE_DECLARATION()){
+                System.out.println("FUNCTION_OR_VARIABLE_DECLARATION -> VARIABLE_DECLARATION .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean VISIBILITY(){
+//        VISIBILITY -> public .
+//        VISIBILITY -> private .
+        if (!skipErrors("VISIBILITY")) return false;
+        if (e.FIRST("VISIBILITY").contains(lookahead.getToken())){
+            if (match("public")){
+                System.out.println("VISIBILITY -> public .");
+            }else success = false;
+        }else if (e.FIRST("VISIBILITY").contains(lookahead.getToken())){
+            if (match("private")){
+                System.out.println("VISIBILITY -> private .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean STATEMENT(){
+        if (!skipErrors("STATEMENT")) return false;
+//        STATEMENT  -> ASSIGN_STATEMENT_OR_FUNCTION_CALL .
+        if (e.FIRST("ASSIGN_STATEMENT_OR_FUNCTION_CALL").contains(lookahead.getToken())){
+            if (ASSIGN_STATEMENT_OR_FUNCTION_CALL()){
+                System.out.println("STATEMENT  -> ASSIGN_STATEMENT_OR_FUNCTION_CALL .");
+            }else success = false;
+        }
+//        STATEMENT  -> if lpar REL_EXPRESSION rpar then STATEMENT_BLOCK else STATEMENT_BLOCK semi .
+        else if (e.FIRST("STATEMENT").contains(lookahead.getToken())){
+            if ( match("if") && match("lpar") && REL_EXPRESSION() && match("rpar")
+                    && match("then") && STATEMENT_BLOCK() && match("else") && STATEMENT_BLOCK()
+                    && match("semi") ){
+                System.out.println("STATEMENT  -> if lpar REL_EXPRESSION rpar then STATEMENT_BLOCK else STATEMENT_BLOCK semi .");
+            }
+        }
+//        STATEMENT  -> while lpar REL_EXPRESSION rpar STATEMENT_BLOCK semi .
+        else if (e.FIRST("STATEMENT").contains(lookahead.getToken())){
+            if ( match("while") && match("lpar") && REL_EXPRESSION() && match("rpar")
+                    && STATEMENT_BLOCK() && match("semi") ){
+                System.out.println("STATEMENT  -> while lpar REL_EXPRESSION rpar STATEMENT_BLOCK semi .");
+            }
+        }
+//        STATEMENT  -> read lpar STATEMENT_VARIABLE rpar semi .
+        else if (e.FIRST("STATEMENT").contains(lookahead.getToken())){
+            if (match("read") && match("lpar") && STATEMENT_VARIABLE() && match("rpar")
+                    && match("semi")){
+                System.out.println("STATEMENT  -> read lpar STATEMENT_VARIABLE rpar semi .");
+            }
+        }
+//        STATEMENT  -> write lpar EXPRESSION rpar semi .
+        else if (e.FIRST("STATEMENT").contains(lookahead.getToken())){
+            if (match("write") && match("lpar") && EXPRESSION() && match("rpar")
+                    && match("semi")){
+                System.out.println("STATEMENT  -> write lpar EXPRESSION rpar semi .");
+            }
+        }
+//        STATEMENT  -> return lpar EXPRESSION rpar semi .
+        else if (e.FIRST("STATEMENT").contains(lookahead.getToken())){
+            if (match("return") && match("lpar") && EXPRESSION() && match("rpar")
+                    && match("semi")){
+                System.out.println("STATEMENT  -> return lpar EXPRESSION rpar semi .");
+            }
+        }
+        return success;
+    }
+
+    private boolean STATEMENT_VARIABLE(){
+//        STATEMENT_VARIABLE -> id STATEMENT_VARIABLE_OR_FUNCTION_CALL .
+        if (!skipErrors("STATEMENT_VARIABLE")) return false;
+        if (e.FIRST("STATEMENT_VARIABLE").contains(lookahead.getToken())){
+            if (match("id") && STATEMENT_VARIABLE_OR_FUNCTION_CALL){
+                System.out.println("STATEMENT_VARIABLE -> id STATEMENT_VARIABLE_OR_FUNCTION_CALL .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean STATEMENT_VARIABLE_OR_FUNCTION_CALL(){
+//        STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .
+//        STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar STATEMENT_FUNCTION_CALL .
+        if (!skipErrors("STATEMENT_VARIABLE_OR_FUNCTION_CALL")) return false;
+        if (e.FIRST("INDICES").contains(lookahead.getToken())){
+            if (INDICES() && STATEMENT_VARIABLE_EXT()){
+                System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .");
+            }else success = false;
+        }else if (e.FIRST("STATEMENT_VARIABLE_OR_FUNCTION_CALL").contains(lookahead.getToken())){
+            if (match("lpar") && FUNCTION_CALL_PARAMS() && match("rpar") && STATEMENT_FUNCTION_CALL()){
+                System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar STATEMENT_FUNCTION_CALL .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean STATEMENT_VARIABLE_EXT(){
+//        STATEMENT_VARIABLE_EXT -> dot STATEMENT_VARIABLE .
+//        STATEMENT_VARIABLE_EXT ->  .
+        if (!skipErrors("STATEMENT_VARIABLE_EXT")) return false;
+        if (e.FIRST("STATEMENT_VARIABLE_EXT").contains(lookahead.getToken())){
+            if (match("dot") && STATEMENT_VARIABLE()){
+                System.out.println("STATEMENT_VARIABLE_EXT -> dot STATEMENT_VARIABLE .");
+            }else success = false;
+        }else if (e.isNULLABLE("STATEMENT_VARIABLE_EXT")){
+            System.out.println("STATEMENT_VARIABLE_EXT ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean STATEMENT_FUNCTION_CALL(){
+//        STATEMENT_FUNCTION_CALL  -> dot STATEMENT_VARIABLE .
+        if (!skipErrors("STATEMENT_FUNCTION_CALL")) return false;
+        if (e.FIRST("STATEMENT_FUNCTION_CALL").contains(lookahead.getToken())){
+            if (match("dot") && STATEMENT_VARIABLE()){
+                System.out.println("STATEMENT_FUNCTION_CALL  -> dot STATEMENT_VARIABLE .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean ASSIGN_STATEMENT_OR_FUNCTION_CALL(){
+//        ASSIGN_STATEMENT_OR_FUNCTION_CALL  -> id VARIABLE_OR_FUNCTION_CALL_EXT .
+        if (!skipErrors("ASSIGN_STATEMENT_OR_FUNCTION_CALL")) return false;
+        if (e.FIRST("ASSIGN_STATEMENT_OR_FUNCTION_CALL").contains(lookahead.getToken())){
+            if (match("if") && VARIABLE_OR_FUNCTION_CALL_EXT()){
+                System.out.println("ASSIGN_STATEMENT_OR_FUNCTION_CALL  -> id VARIABLE_OR_FUNCTION_CALL_EXT .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean VARIABLE_OR_FUNCTION_CALL_EXT(){
+//        VARIABLE_OR_FUNCTION_CALL_EXT  -> INDICES VARIABLE_EXT .
+//        VARIABLE_OR_FUNCTION_CALL_EXT  -> lpar FUNCTION_CALL_PARAMS rpar FUNCTION_CALL_EXT .
+        if (!skipErrors("VARIABLE_OR_FUNCTION_CALL_EXT")) return false;
+        if (e.FIRST("INDICES").contains(lookahead.getToken())){
+            if (INDICES() && VARIABLE_EXT()){
+                System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .");
+            }else success = false;
+        }else if (e.FIRST("VARIABLE_OR_FUNCTION_CALL_EXT").contains(lookahead.getToken())){
+            if (match("lpar") && FUNCTION_CALL_PARAMS() && match("rpar") && FUNCTION_CALL_EXT()){
+                System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar STATEMENT_FUNCTION_CALL .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean VARIABLE_EXT(){
+//        VARIABLE_EXT -> ASSIGNMENT_OP EXPRESSION semi .
+//        VARIABLE_EXT -> dot ASSIGN_STATEMENT_OR_FUNCTION_CALL .
+        if (!skipErrors("VARIABLE_EXT")) return false;
+        if (e.FIRST("ASSIGNMENT_OP").contains(lookahead.getToken())){
+            if (ASSIGNMENT_OP() && EXPRESSION() && match("semi")){
+                System.out.println("VARIABLE_EXT -> ASSIGNMENT_OP EXPRESSION semi .");
+            }else success = false;
+        }else if (e.FIRST("VARIABLE_EXT").contains(lookahead.getToken())){
+            if (match("dot") && ASSIGN_STATEMENT_OR_FUNCTION_CALL()){
+                System.out.println("VARIABLE_EXT -> dot ASSIGN_STATEMENT_OR_FUNCTION_CALL .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_CALL_EXT(){
+//        FUNCTION_CALL_EXT  -> semi .
+//        FUNCTION_CALL_EXT  -> dot ASSIGN_STATEMENT_OR_FUNCTION_CALL .
+        if (!skipErrors("FUNCTION_CALL_EXT")) return false;
+        if (e.FIRST("FUNCTION_CALL_EXT").contains(lookahead.getToken())){
+            if (match("semi")){
+                System.out.println("FUNCTION_CALL_EXT  -> semi .");
+            }else success = false;
+        }else if (e.FIRST("FUNCTION_CALL_EXT").contains(lookahead.getToken())){
+            if (match("dot") && ASSIGN_STATEMENT_OR_FUNCTION_CALL()){
+                System.out.println("FUNCTION_CALL_EXT  -> dot ASSIGN_STATEMENT_OR_FUNCTION_CALL .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_PARAMS(){
+//        FUNCTION_PARAMS  -> TYPE id ARRAY_DIMENSIONS FUNCTION_PARAMS_TAILS .
+//        FUNCTION_PARAMS  ->  .
+        if (!skipErrors("FUNCTION_PARAMS")) return false;
+        if (e.FIRST("TYPE").contains(lookahead.getToken())){
+            if (TYPE() && match("id") && ARRAY_DIMENSIONS() && FUNCTION_PARAMS_TAILS()){
+                System.out.println("FUNCTION_PARAMS  -> TYPE id ARRAY_DIMENSIONS FUNCTION_PARAMS_TAILS .");
+            }else success = false;
+        }else if (e.isNULLABLE("FUNCTION_PARAMS")){
+            System.out.println("FUNCTION_PARAMS ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean ADD_OP(){
+//        ADD_OP -> plus . | minus . | or .
+        if (!skipErrors("ADD_OP")) return false;
+        if (e.FIRST("ADD_OP").contains(lookahead.getToken())){
+            if (match("plus")){
+                System.out.println("ADD_OP -> plus .");
+            }else if (match("minus")){
+                System.out.println("ADD_OP -> minus .");
+            }else if (match("or")){
+                System.out.println("ADD_OP -> or .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean OPTCLASSDECL2(){
+//        OPTCLASSDECL2  -> inherits id INHERITED_CLASSES .
+//        OPTCLASSDECL2  ->  .
+        if (!skipErrors("OPTCLASSDECL2")) return false;
+        if (e.FIRST("OPTCLASSDECL2").contains(lookahead.getToken())){
+            if (match("inherits") && match("id") && INHERITED_CLASSES()){
+                System.out.println("OPTCLASSDECL2  -> inherits id INHERITED_CLASSES .");
+            }else success = false;
+        }else if (e.isNULLABLE("OPTCLASSDECL2")){
+            System.out.println("OPTCLASSDECL2 ->  .");
+        }else success = false;
+        return success;
+    }
+
 
 }
 
