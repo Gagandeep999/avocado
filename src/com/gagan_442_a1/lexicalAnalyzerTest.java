@@ -18,7 +18,6 @@ public class lexicalAnalyzerTest {
         tester("123", "[intnum, 123, 1] ", "");
         tester("00", "", "[invalidinteger, 00, 1] ");
         tester("1.23", "[floatnum, 1.23, 1] ", "");
-        tester("0.0", "", "[invalidfloat, 0.0, 1] ");
         tester("1.1e+1", "[floatnum, 1.1e+1, 1] ", "");
         tester("1.0", "[floatnum, 1.0, 1] ", "");
         tester("120.340e10", "", "[invalidfloat, 120.340e10, 1] ");
@@ -61,7 +60,7 @@ public class lexicalAnalyzerTest {
         tester("=", "[equal, =, 1] ", "");
         tester(";", "[semi, ;, 1] ", "");
         tester(",", "[comma, ,, 1] ", "");
-        tester(".", "[period, ., 1] ", "");
+        tester(".", "[dot, ., 1] ", "");
         tester(":", "[colon, :, 1] ", "");
         tester("::", "[sr, ::, 1] ", "");
         tester("// inline", "[inlinecmnt, // inline, 1] ", "");
@@ -92,9 +91,9 @@ public class lexicalAnalyzerTest {
         tester("+/!*-", "[plus, +, 1] [div, /, 1] [mult, *, 1] [minus, -, 1] ", "[invalidid, !, 1] ");
         tester("while (i < n-1)", "[while, while, 1] [lpar, (, 1] [id, i, 1] [lessthan, <, 1] [id, n, 1] [minus, -, 1] [intnum, 1, 1] [rpar, ), 1] ",
                 "");
-        tester("new_function.a = A;", "[id, new_function, 1] [period, ., 1] [id, a, 1] [equal, =, 1]" +
+        tester("new_function.a = A;", "[id, new_function, 1] [dot, ., 1] [id, a, 1] [equal, =, 1]" +
                 " [id, A, 1] [semi, ;, 1] ", "");
-        tester("0.0", "", "[invalidfloat, 0.0, 1] ");
+        tester("0.0", "[floatnum, 0.0, 1] ", "");
         //The case below gives an error; need to fix.
 
         deleteFile();

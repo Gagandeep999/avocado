@@ -275,7 +275,7 @@ public class parser {
             if (VISIBILITY() && MEMBER_DECLARATION() && MEMBER_DECLARATIONS()){
                 System.out.println("MEMBER_DECLARATIONS  -> VISIBILITY MEMBER_DECLARATION MEMBER_DECLARATIONS .");
             }else success = false;
-        }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken())){
+        }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken()) || e.isNULLABLE("REPTCLASSDECL") ){ //
             System.out.println("REPTCLASSDECL ->  .");
         }else success = false;
         return success;
@@ -393,7 +393,7 @@ public class parser {
 //        STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .
 //        STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar STATEMENT_FUNCTION_CALL .
         if (!skipErrors("STATEMENT_VARIABLE_OR_FUNCTION_CALL")) return false;
-        if (e.FIRST("INDICES").contains(lookahead.getToken())){
+        if (e.FIRST("INDICES").contains(lookahead.getToken()) ){ //|| e.isNULLABLE("INDICES")
             if (INDICES() && STATEMENT_VARIABLE_EXT()){
                 System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .");
             }else success = false;
@@ -445,8 +445,7 @@ public class parser {
 //        VARIABLE_OR_FUNCTION_CALL_EXT  -> INDICES VARIABLE_EXT .
 //        VARIABLE_OR_FUNCTION_CALL_EXT  -> lpar FUNCTION_CALL_PARAMS rpar FUNCTION_CALL_EXT .
         if (!skipErrors("VARIABLE_OR_FUNCTION_CALL_EXT")) return false;
-        if (e.FIRST("INDICES").contains(lookahead.getToken())
-                || e.FOLLOW("INDICES").contains(lookahead.getToken())){ //|| e.isNULLABLE("INDICES")
+        if (e.FIRST("INDICES").contains(lookahead.getToken()) || e.FIRST("VARIABLE_EXT").contains(lookahead.getToken())){ // || e.isNULLABLE("INDICES") || e.FOLLOW("INDICES").contains(lookahead.getToken())
             if (INDICES() && VARIABLE_EXT()){
                 System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .");
             }else success = false;
@@ -596,7 +595,7 @@ public class parser {
 //        FUNCTION_CALL_PARAMS ->  .
         if (!skipErrors("FUNCTION_CALL_PARAMS")) return false;
         if (e.FIRST("EXPRESSION").contains(lookahead.getToken())){
-            if (FUNCTION_CALL_PARAMS_TAIL() && FUNCTION_CALL_PARAMS_TAILS()){
+            if (EXPRESSION() && FUNCTION_CALL_PARAMS_TAILS()){
                 System.out.println("FUNCTION_CALL_PARAMS -> EXPRESSION FUNCTION_CALL_PARAMS_TAILS .");
             }else success = false;
         }else if (e.FOLLOW("FUNCTION_CALL_PARAMS").contains(lookahead.getToken())){
@@ -893,7 +892,7 @@ public class parser {
 //        VARIABLE_OR_FUNCTION_CALL  -> INDICES FACTOR_VARIABLE .
 //        VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar FACTOR_FUNCTION_CALL .
         if (!skipErrors("VARIABLE_OR_FUNCTION_CALL")) return false;
-        if (e.FIRST("INDICES").contains(lookahead.getToken()) || e.isNULLABLE("INDICES")){
+        if (e.FIRST("INDICES").contains(lookahead.getToken()) || e.FOLLOW("INDICES").contains(lookahead.getToken()) ){ //
             if (INDICES() && FACTOR_VARIABLE()){
                 System.out.println("VARIABLE_OR_FUNCTION_CALL  -> INDICES FACTOR_VARIABLE .");
             }else success = false;
@@ -1069,7 +1068,7 @@ public class parser {
     private boolean FUNCBODY(){
 //        FUNCBODY  -> OPTFUNCBODY0 do REPTSTATEMENT end .
         if (!skipErrors("FUNCBODY")) return false;
-        if (e.FIRST("OPTFUNCBODY0").contains(lookahead.getToken())){
+        if (e.FIRST("OPTFUNCBODY0").contains(lookahead.getToken()) || e.isNULLABLE("OPTFUNCBODY0")){
             if (OPTFUNCBODY0() && match("do") && REPTSTATEMENT() && match("end")){
                 System.out.println("FUNCBODY  -> OPTFUNCBODY0 do REPTSTATEMENT end .");
             }else success = false;
@@ -1131,7 +1130,6 @@ public class parser {
         }else success = false;
         return success;
     }
-
 
 }
 
