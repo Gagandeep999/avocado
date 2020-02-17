@@ -53,7 +53,7 @@ public class lexicalAnalyzerTest {
         tester("]", "[rsqbr, ], 1] ", "");
         tester("{", "[lcurbr, {, 1] ", "");
         tester("}", "[rcurbr, }, 1] ", "");
-        tester("<", "[lt, <, 1] ", "");
+        tester("<", "[lessthan, <, 1] ", "");
         tester(">", "[gt, >, 1] ", "");
         tester("<=", "[leq, <=, 1] ", "");
         tester(">=", "[geq, >=, 1] ", "");
@@ -90,7 +90,7 @@ public class lexicalAnalyzerTest {
         tester("++/", "[plus, +, 1] [plus, +, 1] [div, /, 1] ", "");
         tester("a=++5", "[id, a, 1] [equal, =, 1] [plus, +, 1] [plus, +, 1] [intnum, 5, 1] ", "");
         tester("+/!*-", "[plus, +, 1] [div, /, 1] [mult, *, 1] [minus, -, 1] ", "[invalidid, !, 1] ");
-        tester("while (i < n-1)", "[while, while, 1] [lpar, (, 1] [id, i, 1] [lt, <, 1] [id, n, 1] [minus, -, 1] [intnum, 1, 1] [rpar, ), 1] ",
+        tester("while (i < n-1)", "[while, while, 1] [lpar, (, 1] [id, i, 1] [lessthan, <, 1] [id, n, 1] [minus, -, 1] [intnum, 1, 1] [rpar, ), 1] ",
                 "");
         tester("new_function.a = A;", "[id, new_function, 1] [period, ., 1] [id, a, 1] [equal, =, 1]" +
                 " [id, A, 1] [semi, ;, 1] ", "");

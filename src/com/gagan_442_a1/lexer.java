@@ -176,7 +176,7 @@ public class lexer {
                 lexeme.append(Character.toString((char) currentIntChar));
                 createToken("neq", lexeme, lineNum);
             } else {
-                createToken("lt", lexeme, lineNum);
+                createToken("lessthan", lexeme, lineNum);
 
                 if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
                     lexeme.append(newStringChar);
