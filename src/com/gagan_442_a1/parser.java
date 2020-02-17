@@ -380,7 +380,7 @@ public class parser {
 //        STATEMENT_VARIABLE -> id STATEMENT_VARIABLE_OR_FUNCTION_CALL .
         if (!skipErrors("STATEMENT_VARIABLE")) return false;
         if (e.FIRST("STATEMENT_VARIABLE").contains(lookahead.getToken())){
-            if (match("id") && STATEMENT_VARIABLE_OR_FUNCTION_CALL){
+            if (match("id") && STATEMENT_VARIABLE_OR_FUNCTION_CALL()){
                 System.out.println("STATEMENT_VARIABLE -> id STATEMENT_VARIABLE_OR_FUNCTION_CALL .");
             }else success = false;
         }else success = false;
@@ -535,7 +535,7 @@ public class parser {
 //        REL_EXPRESSION ->  .
         if (!skipErrors("REL_EXPRESSION")) return false;
         if (e.FIRST("ARITH_EXPRESSION").contains(lookahead.getToken())){
-            if (ARITH_EXPRESSION && COMPARE_OP && ARITH_EXPRESSION){
+            if (ARITH_EXPRESSION() && COMPARE_OP() && ARITH_EXPRESSION()){
                 System.out.println("REL_EXPRESSION -> ARITH_EXPRESSION COMPARE_OP ARITH_EXPRESSION .");
             }else success = false;
         }else if (e.isNULLABLE("REL_EXPRESSION")){
@@ -548,7 +548,7 @@ public class parser {
 //        FUNCTION_DECLARATION -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID semi .
         if (!skipErrors("FUNCTION_DECLARATION")) return false;
         if (e.FIRST("FUNCTION_DECLARATION").contains(lookahead.getToken())){
-            if (match("lpar") && FUNCTION_PARAMS() && match() && match("rpar") && TYPE_OR_VOID()
+            if (match("lpar") && FUNCTION_PARAMS() && match("rpar") && match("colon") && TYPE_OR_VOID()
                     && match("semi")){
                 System.out.println("FUNCTION_DECLARATION -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID semi .");
             }else success = false;
@@ -586,7 +586,7 @@ public class parser {
 //        FUNCTION_CALL_PARAMS ->  .
         if (!skipErrors("FUNCTION_CALL_PARAMS_TAILS")) return false;
         if (e.FIRST("FUNCTION_CALL_PARAMS_TAIL").contains(lookahead.getToken())){
-            if (FUNCTION_CALL_PARAMS_TAIL() && FUNCTION_CALL_PARAM_TAILS()){
+            if (FUNCTION_CALL_PARAMS_TAIL() && FUNCTION_CALL_PARAMS_TAILS()){
                 System.out.println("FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAM_TAILS .");
             }else success = false;
         }else if (e.isNULLABLE("FUNCTION_CALL_PARAMS_TAILS")){
@@ -813,10 +813,279 @@ public class parser {
     }
 
     private boolean FACTOR(){
-
+        if (!skipErrors("FACTOR")) return false;
+//        FACTOR -> VARIABLE_FUNCTION_CALL .
+        if (e.FIRST("VARIABLE_FUNCTION_CALL").contains(lookahead.getToken())){
+            if (VARIABLE_FUNCTION_CALL()){
+                System.out.println("FACTOR -> VARIABLE_FUNCTION_CALL .");
+            }else success = false;
+        }
+//        FACTOR -> SIGN FACTOR .
+        else if (e.FIRST("SIGN").contains(lookahead.getToken())){
+            if (SIGN() && FACTOR()){
+                System.out.println("FACTOR -> SIGN FACTOR .");
+            }else success = false;
+        }
+//        FACTOR -> lpar ARITH_EXPRESSION rpar .
+//        FACTOR -> not FACTOR .
+//        FACTOR -> integer .
+//        FACTOR -> float .
+        else if (e.FIRST("FACTOR").contains(lookahead.getToken())){
+            if (match("lpar") && ARITH_EXPRESSION() && match("rpar")){
+                System.out.println("FACTOR -> lpar ARITH_EXPRESSION rpar .");
+            }else if (match("not") && FACTOR()){
+                System.out.println("FACTOR -> not FACTOR .");
+            }else if (match("integer")){
+                System.out.println("FACTOR -> integer .");
+            }else if (match("float")){
+                System.out.println("FACTOR -> float .");
+            }else success = false;
+        }else success = false;
+        return success;
     }
 
+    private boolean VARIABLE_FUNCTION_CALL(){
+//        VARIABLE_FUNCTION_CALL -> id VARIABLE_OR_FUNCTION_CALL .
+        if (!skipErrors("VARIABLE_FUNCTION_CALL")) return false;
+        if (e.FIRST("VARIABLE_FUNCTION_CALL").contains(lookahead.getToken())){
+            if (match("id") && VARIABLE_OR_FUNCTION_CALL()){
+                System.out.println("VARIABLE_FUNCTION_CALL -> id VARIABLE_OR_FUNCTION_CALL .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
 
+    private boolean VARIABLE_OR_FUNCTION_CALL(){
+//        VARIABLE_OR_FUNCTION_CALL  -> INDICES FACTOR_VARIABLE .
+//        VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar FACTOR_FUNCTION_CALL .
+        if (!skipErrors("VARIABLE_OR_FUNCTION_CALL")) return false;
+        if (e.FIRST("INDICES").contains(lookahead.getToken())){
+            if (INDICES() && FACTOR_VARIABLE()){
+                System.out.println("VARIABLE_OR_FUNCTION_CALL  -> INDICES FACTOR_VARIABLE .");
+            }else success = false;
+        }else if (e.FIRST("VARIABLE_OR_FUNCTION_CALL").contains(lookahead.getToken())){
+            if (match("lpar") && FUNCTION_CALL_PARAMS() && match("rpar")
+                && FACTOR_FUNCTION_CALL())
+                System.out.println("VARIABLE_OR_FUNCTION_CALL -> lpar FUNCTION_CALL_PARAMS rpar FACTOR_FUNCTION_CALL .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean FACTOR_VARIABLE(){
+//        FACTOR_VARIABLE  -> dot VARIABLE_FUNCTION_CALL .
+//        FACTOR_VARIABLE  ->  .
+        if (!skipErrors("FACTOR_VARIABLE")) return false;
+        if (e.FIRST("FACTOR_VARIABLE").contains(lookahead.getToken())){
+            if (match("dot") && VARIABLE_FUNCTION_CALL()){
+                System.out.println("FACTOR_VARIABLE  -> dot VARIABLE_FUNCTION_CALL .");
+            }else success = false;
+        }else if (e.isNULLABLE("FACTOR_VARIABLE")){
+            System.out.println("FACTOR_VARIABLE ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean FACTOR_FUNCTION_CALL(){
+//        FACTOR_FUNCTION_CALL -> dot VARIABLE_FUNCTION_CALL .
+//        FACTOR_FUNCTION_CALL ->  .
+        if (!skipErrors("FACTOR_FUNCTION_CALL")) return false;
+        if (e.FIRST("FACTOR_FUNCTION_CALL").contains(lookahead.getToken())){
+            if (match("dot") && VARIABLE_FUNCTION_CALL()){
+                System.out.println("FACTOR_FUNCTION_CALL  -> dot VARIABLE_FUNCTION_CALL .");
+            }else success = false;
+        }else if (e.isNULLABLE("FACTOR_FUNCTION_CALL")){
+            System.out.println("FACTOR_FUNCTION_CALL ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean TERM(){
+//        TERM -> FACTOR RIGHT_REC_TERM .
+        if (!skipErrors("TERM")) return false;
+        if (e.FIRST("FACTOR").contains(lookahead.getToken())){
+            if (FACTOR() && RIGHT_REC_TERM()){
+                System.out.println("TERM -> FACTOR RIGHT_REC_TERM .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean MULT_OP(){
+//        MULT_OP  -> mult . | div . | and .
+        if (!skipErrors("MULT_OP")) return false;
+        if (e.FIRST("MULT_OP").contains(lookahead.getToken())){
+            if (match("mult")){
+                System.out.println("MULT_OP -> mult .");
+            }else if (match("div")){
+                System.out.println("MULT_OP -> div .");
+            }else if (match("and")){
+                System.out.println("MULT_OP -> and .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean RIGHT_REC_TERM(){
+//        RIGHT_REC_TERM -> MULT_OP FACTOR RIGHT_REC_TERM .
+//        RIGHT_REC_TERM ->  .
+        if (!skipErrors("RIGHT_REC_TERM")) return false;
+        if (e.FIRST("MULT_OP").contains(lookahead.getToken())){
+            if (MULT_OP() && FACTOR() && RIGHT_REC_TERM()){
+                System.out.println("RIGHT_REC_TERM -> MULT_OP FACTOR RIGHT_REC_TERM .");
+            }else success = false;
+        }else if (e.isNULLABLE("RIGHT_REC_TERM")){
+            System.out.println("RIGHT_REC_TERM ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean TYPE_OR_VOID(){
+//        TYPE_OR_VOID -> TYPE .
+//        TYPE_OR_VOID -> void .
+        if (!skipErrors("TYPE_OR_VOID")) return false;
+        if (e.FIRST("TYPE").contains(lookahead.getToken())){
+            if (TYPE()){
+                System.out.println("TYPE_OR_VOID -> TYPE .");
+            }else success = false;
+        }else if (e.FIRST("TYPE_OR_VOID").contains(lookahead.getToken())){
+            if (match("void")){
+                System.out.println("TYPE_OR_VOID -> void .");
+            }
+        }else success = false;
+        return success;
+    }
+
+    private boolean TYPE(){
+//        TYPE -> TYPE_NON_ID .
+//        TYPE -> id .
+        if (!skipErrors("TYPE")) return false;
+        if (e.FIRST("TYPE_NON_ID").contains(lookahead.getToken())){
+            if (TYPE_NON_ID()){
+                System.out.println("TYPE -> TYPE_NON_ID .");
+            }else success = false;
+        }else if (e.FIRST("TYPE").contains(lookahead.getToken())){
+            if (match("id")){
+                System.out.println("TYPE -> id .");
+            }
+        }else success = false;
+        return success;
+    }
+
+    private boolean TYPE_NON_ID(){
+//        TYPE_NON_ID  -> integer .
+//        TYPE_NON_ID  -> float .
+        if (!skipErrors("TYPE_NON_ID")) return false;
+        if (e.FIRST("TYPE_NON_ID").contains(lookahead.getToken())){
+            if (match("integer")){
+                System.out.println("TYPE_NON_ID  -> integer .");
+            }else if (match("float")){
+                System.out.println("TYPE_NON_ID  -> float .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean ARRAY_SIZE(){
+//        ARRAY_SIZE -> lsqbr OPTIONAL_INT rsqbr .
+        if (!skipErrors("ARRAY_SIZE")) return false;
+        if (e.FIRST("ARRAY_SIZE").contains(lookahead.getToken())){
+            if (match("lsqbr") && OPTIONAL_INT() && match("rsqbr")){
+                System.out.println("TERM -> FACTOR RIGHT_REC_TERM .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean OPTIONAL_INT(){
+//        OPTIONAL_INT -> integer .
+//        OPTIONAL_INT ->  .
+        if (!skipErrors("OPTIONAL_INT")) return false;
+        if (e.FIRST("OPTIONAL_INT").contains(lookahead.getToken())){
+            if (match("integer")){
+                System.out.println("OPTIONAL_INT -> integer .");
+            }else success = false;
+        }else if (e.isNULLABLE("OPTIONAL_INT")){
+            System.out.println("OPTIONAL_INT ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean VARIABLE_DECLARATION(){
+//        VARIABLE_DECLARATION -> id ARRAY_DIMENSIONS semi .
+        if (!skipErrors("VARIABLE_DECLARATION")) return false;
+        if (e.FIRST("VARIABLE_DECLARATION").contains(lookahead.getToken())){
+            if (match("id") && ARRAY_DIMENSIONS() && match("semi")){
+                System.out.println("VARIABLE_DECLARATION -> id ARRAY_DIMENSIONS semi .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCBODY(){
+//        FUNCBODY  -> OPTFUNCBODY0 do REPTSTATEMENT end .
+        if (!skipErrors("FUNCBODY")) return false;
+        if (e.FIRST("OPTFUNCBODY0").contains(lookahead.getToken())){
+            if (OPTFUNCBODY0() && match("do") && REPTSTATEMENT() && match("end")){
+                System.out.println("FUNCBODY  -> OPTFUNCBODY0 do REPTSTATEMENT end .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean STATEMENT_BLOCK(){
+//        STATEMENT_BLOCK  -> STATEMENT .
+//        STATEMENT_BLOCK  -> do REPTSTATEMENT end .
+//        STATEMENT_BLOCK  ->  .
+        if (!skipErrors("STATEMENT_BLOCK")) return false;
+        if (e.FIRST("STATEMENT").contains(lookahead.getToken())) {
+            if (STATEMENT()) {
+                System.out.println("STATEMENT_BLOCK  -> STATEMENT .");
+            } else success = false;
+        }else if (e.FIRST("STATEMENT_BLOCK").contains(lookahead.getToken())){
+            if (match("do") && REPTSTATEMENT() && match("end")){
+                System.out.println("STATEMENT_BLOCK  -> do REPTSTATEMENT end .");
+            }else success = false;
+        }else if (e.isNULLABLE("OPTIONAL_INT")){
+            System.out.println("OPTIONAL_INT ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean ASSIGNMENT_OP(){
+//        ASSIGNMENT_OP  -> eq .
+        if (!skipErrors("ASSIGNMENT_OP")) return false;
+        if (e.FIRST("ASSIGNMENT_OP").contains(lookahead.getToken())){
+            if (match("eq")){
+                System.out.println("ASSIGNMENT_OP  -> eq .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_PARAMS_TAIL(){
+//        FUNCTION_PARAMS_TAIL -> comma TYPE id ARRAY_DIMENSIONS .
+        if (!skipErrors("FUNCTION_PARAMS_TAIL")) return false;
+        if (e.FIRST("FUNCTION_PARAMS_TAIL").contains(lookahead.getToken())){
+            if (match("comma") && TYPE() && match("id") && ARRAY_DIMENSIONS()){
+                System.out.println("FUNCTION_PARAMS_TAIL -> comma TYPE id ARRAY_DIMENSIONS .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean INDICES(){
+//        INDICES  -> INDEX INDICES .
+//        INDICES  ->  .
+        if (!skipErrors("INDICES")) return false;
+        if (e.FIRST("INDEX").contains(lookahead.getToken())){
+            if (INDEX() && INDICES()){
+                System.out.println("INDICES  -> INDEX INDICES .");
+            }else success = false;
+        }else if (e.isNULLABLE("INDICES")){
+            System.out.println("INDICES ->  .");
+        }else success = false;
+        return success;
+    }
 
 
 }
