@@ -53,7 +53,7 @@
       TYPE      NO      NO      id integer float      id semi local do
       TYPE_NON_ID      NO      NO      integer float      id semi local do
       ARRAY_SIZE      NO      NO      lsqbr      semi rpar comma lsqbr
-      OPTIONAL_INT      YES      NO      integer      rsqbr
+      OPTIONAL_INT      YES      NO      intnum      rsqbr
       VARIABLE_DECLARATION      NO      NO      id      id rcurbr public private integer float do
       FUNCBODY      NO      YES      local do      semi $
       STATEMENT_BLOCK      YES      NO      id if while read write return do      semi else

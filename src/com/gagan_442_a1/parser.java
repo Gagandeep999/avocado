@@ -80,7 +80,7 @@ public class parser {
                 "      TYPE      NO      NO      id integer float      id semi local do\n" +
                 "      TYPE_NON_ID      NO      NO      integer float      id semi local do\n" +
                 "      ARRAY_SIZE      NO      NO      lsqbr      semi rpar comma lsqbr\n" +
-                "      OPTIONAL_INT      YES      NO      integer      rsqbr\n" +
+                "      OPTIONAL_INT      YES      NO      intnum      rsqbr\n" +
                 "      VARIABLE_DECLARATION      NO      NO      id      id rcurbr public private integer float do\n" +
                 "      FUNCBODY      NO      YES      local do      semi $\n" +
                 "      STATEMENT_BLOCK      YES      NO      id if while read write return do      semi else\n" +
@@ -445,11 +445,12 @@ public class parser {
 //        VARIABLE_OR_FUNCTION_CALL_EXT  -> INDICES VARIABLE_EXT .
 //        VARIABLE_OR_FUNCTION_CALL_EXT  -> lpar FUNCTION_CALL_PARAMS rpar FUNCTION_CALL_EXT .
         if (!skipErrors("VARIABLE_OR_FUNCTION_CALL_EXT")) return false;
-        if (e.FIRST("INDICES").contains(lookahead.getToken()) || e.isNULLABLE("INDICES")){
+        if (e.FIRST("INDICES").contains(lookahead.getToken())
+                || e.FOLLOW("INDICES").contains(lookahead.getToken())){ //|| e.isNULLABLE("INDICES")
             if (INDICES() && VARIABLE_EXT()){
                 System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .");
             }else success = false;
-        }else if (e.FIRST("VARIABLE_OR_FUNCTION_CALL_EXT").contains(lookahead.getToken())){
+        }else if (lookahead.getToken().equals("lpar")){
             if (match("lpar") && FUNCTION_CALL_PARAMS() && match("rpar") && FUNCTION_CALL_EXT()){
                 System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar STATEMENT_FUNCTION_CALL .");
             }else success = false;
@@ -593,13 +594,13 @@ public class parser {
     private boolean FUNCTION_CALL_PARAMS(){
 //        FUNCTION_CALL_PARAMS -> EXPRESSION FUNCTION_CALL_PARAMS_TAILS .
 //        FUNCTION_CALL_PARAMS ->  .
-        if (!skipErrors("FUNCTION_CALL_PARAMS_TAILS")) return false;
-        if (e.FIRST("FUNCTION_CALL_PARAMS_TAIL").contains(lookahead.getToken())){
+        if (!skipErrors("FUNCTION_CALL_PARAMS")) return false;
+        if (e.FIRST("EXPRESSION").contains(lookahead.getToken())){
             if (FUNCTION_CALL_PARAMS_TAIL() && FUNCTION_CALL_PARAMS_TAILS()){
-                System.out.println("FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAM_TAILS .");
+                System.out.println("FUNCTION_CALL_PARAMS -> EXPRESSION FUNCTION_CALL_PARAMS_TAILS .");
             }else success = false;
-        }else if (e.FOLLOW("FUNCTION_CALL_PARAMS_TAILS").contains(lookahead.getToken())){
-            System.out.println("FUNCTION_CALL_PARAMS_TAILS ->  .");
+        }else if (e.FOLLOW("FUNCTION_CALL_PARAMS").contains(lookahead.getToken())){
+            System.out.println("FUNCTION_CALL_PARAMS ->  .");
         }else success = false;
         return success;
     }
@@ -1045,7 +1046,7 @@ public class parser {
 //        OPTIONAL_INT ->  .
         if (!skipErrors("OPTIONAL_INT")) return false;
         if (e.FIRST("OPTIONAL_INT").contains(lookahead.getToken())){
-            if (match("integer")){
+            if (match("intnum")){
                 System.out.println("OPTIONAL_INT -> integer .");
             }else success = false;
         }else if (e.FOLLOW("OPTIONAL_INT").contains(lookahead.getToken())){
@@ -1120,7 +1121,7 @@ public class parser {
     private boolean INDICES(){
 //        INDICES  -> INDEX INDICES .
 //        INDICES  ->  .
-        if (!skipErrors("INDICES")) return false;
+        if (!skipErrors("INDICES")) return false; //|| e.isNULLABLE("INDICES")
         if (e.FIRST("INDEX").contains(lookahead.getToken())){
             if (INDEX() && INDICES()){
                 System.out.println("INDICES  -> INDEX INDICES .");

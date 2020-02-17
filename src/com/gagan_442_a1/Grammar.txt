@@ -161,7 +161,7 @@ TYPE_NON_ID  -> float .
 
 ARRAY_SIZE -> lsqbr OPTIONAL_INT rsqbr .
 
-OPTIONAL_INT -> integer .
+OPTIONAL_INT -> intnum .
 OPTIONAL_INT ->  .
 
 VARIABLE_DECLARATION -> id ARRAY_DIMENSIONS semi .
