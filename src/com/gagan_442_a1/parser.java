@@ -556,8 +556,6 @@ public class parser {
         return success;
     }
 
-    //CHANGE AFTER THIS ONE
-
     private boolean FUNCTION_CALL_PARAMS_TAILS(){
 //        FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAMS_TAILS .
 //        FUNCTION_CALL_PARAMS_TAILS ->  .
@@ -663,6 +661,162 @@ public class parser {
         }else success = false;
         return success;
     }
+
+    private boolean ARITH_EXPRESSION(){
+//        ARITH_EXPRESSION -> TERM RIGHT_REC_ARITH_EXPRESSION .
+        if (!skipErrors("ARITH_EXPRESSION")) return false;
+        if (e.FIRST("TERM").contains(lookahead.getToken())){
+            if (TERM() && RIGHT_REC_ARITH_EXPRESSION()){
+                System.out.println("ARITH_EXPRESSION -> TERM RIGHT_REC_ARITH_EXPRESSION .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean RIGHT_REC_ARITH_EXPRESSION(){
+//        RIGHT_REC_ARITH_EXPRESSION -> ADD_OP TERM RIGHT_REC_ARITH_EXPRESSION .
+//        RIGHT_REC_ARITH_EXPRESSION ->  .
+        if (!skipErrors("RIGHT_REC_ARITH_EXPRESSION")) return false;
+        if (e.FIRST("ADD_OP").contains(lookahead.getToken())){
+            if (ADD_OP() && TERM() && RIGHT_REC_ARITH_EXPRESSION()){
+                System.out.println("RIGHT_REC_ARITH_EXPRESSION -> ADD_OP TERM RIGHT_REC_ARITH_EXPRESSION .");
+            }else success = false;
+        }else if (e.isNULLABLE("RIGHT_REC_ARITH_EXPRESSION")){
+            System.out.println("RIGHT_REC_ARITH_EXPRESSION ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_SIGNATURE(){
+//        FUNCTION_SIGNATURE -> id FUNCTION_SIGNATURE_NAMESPACE .
+        if (!skipErrors("FUNCTION_SIGNATURE")) return false;
+        if (e.FIRST("FUNCTION_SIGNATURE").contains(lookahead.getToken())){
+            if (match("id") && FUNCTION_SIGNATURE_NAMESPACE()){
+                System.out.println("FUNCTION_SIGNATURE -> id FUNCTION_SIGNATURE_NAMESPACE .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_SIGNATURE_NAMESPACE(){
+//        FUNCTION_SIGNATURE_NAMESPACE -> FUNCTION_SIGNATURE_EXT .
+//        FUNCTION_SIGNATURE_NAMESPACE -> sr id FUNCTION_SIGNATURE_EXT .
+        if (!skipErrors("FUNCTION_SIGNATURE_NAMESPACE")) return false;
+        if (e.FIRST("FUNCTION_SIGNATURE_EXT").contains(lookahead.getToken())){
+            if (FUNCTION_SIGNATURE_EXT()){
+                System.out.println("FUNCTION_SIGNATURE_NAMESPACE -> FUNCTION_SIGNATURE_EXT .");
+            }else success = false;
+        }else if (e.FIRST("FUNCTION_SIGNATURE_NAMESPACE").contains(lookahead.getToken())){
+            if (match("sr") && match("id") && FUNCTION_SIGNATURE_EXT())
+            System.out.println("FUNCTION_SIGNATURE_NAMESPACE -> sr id FUNCTION_SIGNATURE_EXT .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_SIGNATURE_EXT(){
+//        FUNCTION_SIGNATURE_EXT -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID .
+        if (!skipErrors("FUNCTION_SIGNATURE_EXT")) return false;
+        if (e.FIRST("FUNCTION_SIGNATURE_EXT").contains(lookahead.getToken())){
+            if (match("lpar") && FUNCTION_PARAMS() && match("rpar")
+                    && match("colon") && TYPE_OR_VOID()){
+                System.out.println("FUNCTION_SIGNATURE_EXT -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_PARAMS_TAILS(){
+//        FUNCTION_PARAMS_TAILS  -> FUNCTION_PARAMS_TAIL FUNCTION_PARAMS_TAILS .
+//        FUNCTION_PARAMS_TAILS  ->  .
+        if (!skipErrors("FUNCTION_PARAMS_TAILS")) return false;
+        if (e.FIRST("FUNCTION_PARAMS_TAIL").contains(lookahead.getToken())){
+            if (FUNCTION_PARAMS_TAIL() && FUNCTION_PARAMS_TAILS()){
+                System.out.println("FUNCTION_PARAMS_TAILS  -> FUNCTION_PARAMS_TAIL FUNCTION_PARAMS_TAILS .");
+            }else success = false;
+        }else if (e.isNULLABLE("FUNCTION_PARAMS_TAILS")){
+            System.out.println("FUNCTION_PARAMS_TAILS ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean INHERITED_CLASSES(){
+//        INHERITED_CLASSES  -> comma id INHERITED_CLASSES .
+//        INHERITED_CLASSES  ->  .
+        if (!skipErrors("INHERITED_CLASSES")) return false;
+        if (e.FIRST("INHERITED_CLASSES").contains(lookahead.getToken())){
+            if (match("comma") && match("id") && INHERITED_CLASSES()){
+                System.out.println("INHERITED_CLASSES  -> comma id INHERITED_CLASSES .");
+            }else success = false;
+        }else if (e.isNULLABLE("INHERITED_CLASSES")){
+            System.out.println("INHERITED_CLASSES ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean SIGN(){
+//        SIGN -> plus . | minus .
+        if (!skipErrors("SIGN")) return false;
+        if (e.FIRST("SIGN").contains(lookahead.getToken())){
+            if (match("plus")){
+                System.out.println("SIGN -> plus .");
+            }else if (match("minus")){
+                System.out.println("SIGN -> minus .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean COMPARE_OP(){
+//        COMPARE_OP -> eq . | neq . | lt . | gt . | leq . | geq .
+        if (!skipErrors("COMPARE_OP")) return false;
+        if (e.FIRST("COMPARE_OP").contains(lookahead.getToken())){
+            if (match("eq")){
+                System.out.println("SIGN -> eq .");
+            }else if (match("neq")){
+                System.out.println("SIGN -> neq .");
+            }else if (match("lt")){
+                System.out.println("SIGN -> lt .");
+            }else if (match("gt")){
+                System.out.println("SIGN -> gt .");
+            }else if (match("leq")){
+                System.out.println("SIGN -> leq .");
+            }else if (match("geq")){
+                System.out.println("SIGN -> geq .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean INDEX(){
+//        INDEX  -> lsqbr ARITH_EXPRESSION rsqbr .
+        if (!skipErrors("INDEX")) return false;
+        if (e.FIRST("INDEX").contains(lookahead.getToken())){
+            if (match("lsqbr") && ARITH_EXPRESSION() && match("rsqbr")){
+                System.out.println("INDEX  -> lsqbr ARITH_EXPRESSION rsqbr .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean VARIABLE_DECLARATIONS(){
+//        VARIABLE_DECLARATIONS  -> TYPE VARIABLE_DECLARATION VARIABLE_DECLARATIONS .
+//        VARIABLE_DECLARATIONS  ->  .
+        if (!skipErrors("VARIABLE_DECLARATIONS")) return false;
+        if (e.FIRST("TYPE").contains(lookahead.getToken())){
+            if (TYPE() && VARIABLE_DECLARATION() && VARIABLE_DECLARATIONS()){
+                System.out.println("VARIABLE_DECLARATIONS  -> TYPE VARIABLE_DECLARATION VARIABLE_DECLARATIONS .");
+            }else success = false;
+        }else if (e.isNULLABLE("VARIABLE_DECLARATIONS")){
+            System.out.println("VARIABLE_DECLARATIONS ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean FACTOR(){
+
+    }
+
+
 
 
 }
