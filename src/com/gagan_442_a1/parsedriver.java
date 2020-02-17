@@ -24,12 +24,10 @@ public class parsedriver {
                 }
             }
             parser p = new parser(newTList);
-            try{
-                p.parse();
-            }catch (ParserException pe){
-                System.out.println(pe.getMessage());
-            }
-            System.out.println("parser finished!!!");
+            if (p.parse()){
+                System.out.println("parser finished!!!");
+            }else System.out.println("Error in parsing");
+
 
 
         }catch (IOException e){
