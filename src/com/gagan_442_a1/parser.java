@@ -559,24 +559,15 @@ public class parser {
     //CHANGE AFTER THIS ONE
 
     private boolean FUNCTION_CALL_PARAMS_TAILS(){
-//        FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAM_TAILS .
+//        FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAMS_TAILS .
 //        FUNCTION_CALL_PARAMS_TAILS ->  .
         if (!skipErrors("FUNCTION_CALL_PARAMS_TAILS")) return false;
         if (e.FIRST("FUNCTION_CALL_PARAMS_TAIL").contains(lookahead.getToken())){
-            if (FUNCTION_CALL_PARAMS_TAIL() && FUNCTION_CALL_PARAM_TAILS()){
-                System.out.println("FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAM_TAILS .");
+            if (FUNCTION_CALL_PARAMS_TAIL() && FUNCTION_CALL_PARAMS_TAILS()){
+                System.out.println("FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAMS_TAILS .");
             }else success = false;
         }else if (e.isNULLABLE("FUNCTION_CALL_PARAMS_TAILS")){
             System.out.println("FUNCTION_CALL_PARAMS_TAILS ->  .");
-        }else success = false;
-        return success;
-    }
-
-    private boolean FUNCTION_CALL_PARAM_TAILS(){
-//        FUNCTION_CALL_PARAM_TAILS ->  .
-        if (!skipErrors("FUNCTION_CALL_PARAM_TAILS")) return false;
-        if (e.isNULLABLE("FUNCTION_CALL_PARAM_TAILS")){
-            System.out.println("FUNCTION_CALL_PARAM_TAILS ->  .");
         }else success = false;
         return success;
     }
@@ -592,7 +583,7 @@ public class parser {
         return success;
     }
 
-    private void FUNCTION_CALL_PARAMS(){
+    private boolean FUNCTION_CALL_PARAMS(){
 //        FUNCTION_CALL_PARAMS -> EXPRESSION FUNCTION_CALL_PARAMS_TAILS .
 //        FUNCTION_CALL_PARAMS ->  .
         if (!skipErrors("FUNCTION_CALL_PARAMS_TAILS")) return false;
@@ -602,6 +593,73 @@ public class parser {
             }else success = false;
         }else if (e.isNULLABLE("FUNCTION_CALL_PARAMS_TAILS")){
             System.out.println("FUNCTION_CALL_PARAMS_TAILS ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean OPTFUNCBODY0(){
+//        OPTFUNCBODY0  -> local VARIABLE_DECLARATIONS .
+//        OPTFUNCBODY0  ->  .
+        if (!skipErrors("OPTFUNCBODY0")) return false;
+        if (e.FIRST("OPTFUNCBODY0").contains(lookahead.getToken())){
+            if (match("local") && VARIABLE_DECLARATIONS()){
+                System.out.println("OPTFUNCBODY0  -> local VARIABLE_DECLARATIONS .");
+            }else success = false;
+        }else if (e.isNULLABLE("OPTFUNCBODY0")){
+            System.out.println("OPTFUNCBODY0 ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean ARRAY_DIMENSIONS(){
+//        ARRAY_DIMENSIONS -> ARRAY_SIZE ARRAY_DIMENSIONS .
+//        ARRAY_DIMENSIONS ->  .
+        if (!skipErrors("ARRAY_DIMENSIONS")) return false;
+        if (e.FIRST("ARRAY_SIZE").contains(lookahead.getToken())){
+            if (ARRAY_SIZE() && ARRAY_DIMENSIONS()){
+                System.out.println("ARRAY_DIMENSIONS -> ARRAY_SIZE ARRAY_DIMENSIONS .");
+            }else success = false;
+        }else if (e.isNULLABLE("ARRAY_DIMENSIONS")){
+            System.out.println("ARRAY_DIMENSIONS ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean EXPRESSION(){
+//        EXPRESSION -> ARITH_EXPRESSION REL_EXPRESSION_OR_NULL .
+        if (!skipErrors("EXPRESSION")) return false;
+        if (e.FIRST("ARITH_EXPRESSION").contains(lookahead.getToken())){
+            if (ARITH_EXPRESSION() && REL_EXPRESSION_OR_NULL()){
+                System.out.println("EXPRESSION -> ARITH_EXPRESSION REL_EXPRESSION_OR_NULL .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private boolean REL_EXPRESSION_OR_NULL(){
+//        REL_EXPRESSION_OR_NULL -> COMPARE_OP ARITH_EXPRESSION .
+//        REL_EXPRESSION_OR_NULL ->  .
+        if (!skipErrors("REL_EXPRESSION_OR_NULL")) return false;
+        if (e.FIRST("COMPARE_OP").contains(lookahead.getToken())){
+            if (COMPARE_OP() && ARITH_EXPRESSION()){
+                System.out.println("REL_EXPRESSION_OR_NULL -> COMPARE_OP ARITH_EXPRESSION .");
+            }else success = false;
+        }else if (e.isNULLABLE("REL_EXPRESSION_OR_NULL")){
+            System.out.println("REL_EXPRESSION_OR_NULL ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean REPTSTATEMENT(){
+//        REPTSTATEMENT -> STATEMENT REPTSTATEMENT .
+//        REPTSTATEMENT ->  .
+        if (!skipErrors("REPTSTATEMENT")) return false;
+        if (e.FIRST("STATEMENT").contains(lookahead.getToken())){
+            if (STATEMENT() && REPTSTATEMENT()){
+                System.out.println("REPTSTATEMENT -> STATEMENT REPTSTATEMENT .");
+            }else success = false;
+        }else if (e.isNULLABLE("REPTSTATEMENT")){
+            System.out.println("REPTSTATEMENT ->  .");
         }else success = false;
         return success;
     }

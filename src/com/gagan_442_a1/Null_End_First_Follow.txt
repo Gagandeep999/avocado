@@ -23,7 +23,6 @@
       REL_EXPRESSION      YES      NO      id lpar plus minus integer float not      rpar
       FUNCTION_DECLARATION      NO      NO      lpar      rcurbr public private
       FUNCTION_CALL_PARAMS_TAILS      YES      NO      comma      rpar
-      FUNCTION_CALL_PARAM_TAILS      YES      NO      NO      rpar
       FUNCTION_CALL_PARAMS_TAIL      NO      NO      comma      rpar
       FUNCTION_CALL_PARAMS      YES      NO      id lpar plus minus integer float not      rpar
       OPTFUNCBODY0      YES      NO      local      do
