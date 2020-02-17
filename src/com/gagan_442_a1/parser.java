@@ -530,6 +530,82 @@ public class parser {
         return success;
     }
 
+    private boolean REL_EXPRESSION(){
+//        REL_EXPRESSION -> ARITH_EXPRESSION COMPARE_OP ARITH_EXPRESSION .
+//        REL_EXPRESSION ->  .
+        if (!skipErrors("REL_EXPRESSION")) return false;
+        if (e.FIRST("ARITH_EXPRESSION").contains(lookahead.getToken())){
+            if (ARITH_EXPRESSION && COMPARE_OP && ARITH_EXPRESSION){
+                System.out.println("REL_EXPRESSION -> ARITH_EXPRESSION COMPARE_OP ARITH_EXPRESSION .");
+            }else success = false;
+        }else if (e.isNULLABLE("REL_EXPRESSION")){
+            System.out.println("REL_EXPRESSION ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_DECLARATION(){
+//        FUNCTION_DECLARATION -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID semi .
+        if (!skipErrors("FUNCTION_DECLARATION")) return false;
+        if (e.FIRST("FUNCTION_DECLARATION").contains(lookahead.getToken())){
+            if (match("lpar") && FUNCTION_PARAMS() && match() && match("rpar") && TYPE_OR_VOID()
+                    && match("semi")){
+                System.out.println("FUNCTION_DECLARATION -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID semi .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    //CHANGE AFTER THIS ONE
+
+    private boolean FUNCTION_CALL_PARAMS_TAILS(){
+//        FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAM_TAILS .
+//        FUNCTION_CALL_PARAMS_TAILS ->  .
+        if (!skipErrors("FUNCTION_CALL_PARAMS_TAILS")) return false;
+        if (e.FIRST("FUNCTION_CALL_PARAMS_TAIL").contains(lookahead.getToken())){
+            if (FUNCTION_CALL_PARAMS_TAIL() && FUNCTION_CALL_PARAM_TAILS()){
+                System.out.println("FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAM_TAILS .");
+            }else success = false;
+        }else if (e.isNULLABLE("FUNCTION_CALL_PARAMS_TAILS")){
+            System.out.println("FUNCTION_CALL_PARAMS_TAILS ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_CALL_PARAM_TAILS(){
+//        FUNCTION_CALL_PARAM_TAILS ->  .
+        if (!skipErrors("FUNCTION_CALL_PARAM_TAILS")) return false;
+        if (e.isNULLABLE("FUNCTION_CALL_PARAM_TAILS")){
+            System.out.println("FUNCTION_CALL_PARAM_TAILS ->  .");
+        }else success = false;
+        return success;
+    }
+
+    private boolean FUNCTION_CALL_PARAMS_TAIL(){
+//        FUNCTION_CALL_PARAMS_TAIL  -> comma EXPRESSION .
+        if (!skipErrors("FUNCTION_CALL_PARAMS_TAIL")) return false;
+        if (e.FIRST("FUNCTION_CALL_PARAMS_TAIL").contains(lookahead.getToken())){
+            if (match("comma") && EXPRESSION() ){
+                System.out.println("FUNCTION_CALL_PARAMS_TAIL  -> comma EXPRESSION .");
+            }else success = false;
+        }else success = false;
+        return success;
+    }
+
+    private void FUNCTION_CALL_PARAMS(){
+//        FUNCTION_CALL_PARAMS -> EXPRESSION FUNCTION_CALL_PARAMS_TAILS .
+//        FUNCTION_CALL_PARAMS ->  .
+        if (!skipErrors("FUNCTION_CALL_PARAMS_TAILS")) return false;
+        if (e.FIRST("FUNCTION_CALL_PARAMS_TAIL").contains(lookahead.getToken())){
+            if (FUNCTION_CALL_PARAMS_TAIL() && FUNCTION_CALL_PARAM_TAILS()){
+                System.out.println("FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAM_TAILS .");
+            }else success = false;
+        }else if (e.isNULLABLE("FUNCTION_CALL_PARAMS_TAILS")){
+            System.out.println("FUNCTION_CALL_PARAMS_TAILS ->  .");
+        }else success = false;
+        return success;
+    }
+
 
 }
 
