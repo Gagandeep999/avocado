@@ -154,7 +154,7 @@ public class parser {
             nextToken();
             return true;
         }else {
-            System.out.println("syntax error at "+lookahead.getLinenum()+ " expected: "+token);
+            System.out.println("SYNTAX ERROR IN LINE NO: "+lookahead.getLinenum()+ " EXPECTED: "+token+" GOT "+lookahead.getToken());
             nextToken();
             return false;
         }
@@ -165,7 +165,8 @@ public class parser {
                 || ( (e.isNULLABLE(LHS)) && (e.FOLLOW(LHS).contains(lookahead.getToken())) ) ){
             return true;
         } else {
-            System.out.println("syntax error at line "+ lookahead.getLinenum()+" in method "+ LHS);
+            System.out.println("SYNTAX ERROR IN LINE NO: "+lookahead.getLinenum()+ " EXPECTED: "+lookahead.getToken()+"" +
+                    " IN METHOD: "+LHS);
             while ( (!e.FIRST(LHS).contains(lookahead.getToken()))
                     || (!e.FOLLOW(LHS).contains(lookahead.getToken())) ){
                 nextToken();

@@ -1,4 +1,5 @@
 main
-  local
-  do
-  end
+    do
+       a = a or a ;
+       a = a and a ;
+   end
