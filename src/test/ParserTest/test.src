@@ -1,5 +1,7 @@
+class POLYNOMIAL {
+	public evaluate(float x) : float;
+};
 main
-    do
-       a = a or a ;
-       a = a and a ;
-   end
+  do
+    a.b();
+  end

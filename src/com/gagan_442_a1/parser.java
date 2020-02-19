@@ -9,8 +9,10 @@ public class parser {
 
     class Node{
         String name;
+        String type;
         Node child;
         Node parent;
+        List<Node> children;
 
         public Node(String name){
             this.name = name;
@@ -151,6 +153,7 @@ public class parser {
 
     private boolean match(String token){
         if (lookahead.getToken().equals(token)){
+            //evertime the token matches put it in a stack
             nextToken();
             return true;
         }else {
@@ -179,6 +182,7 @@ public class parser {
     }
 
     public parser(LinkedList<token> tokenLinkedList){
+        //have a stack as the member which will contain nodes
         this.tokens = (LinkedList<token>) tokenLinkedList.clone();
         this.lookahead = tokenLinkedList.getFirst();
         this.e = new error();
@@ -188,8 +192,10 @@ public class parser {
 
     public boolean parse() {
 
+        //create the AST node and push it in the stack
+
         if (START())
-            System.out.println("all good!!!");
+            System.out.println("");
 //        if (lookahead.getToken() != "EPSILON")
 //            throw new ParserException("Parser Exception");
         return success;
@@ -198,9 +204,13 @@ public class parser {
     private boolean START(){
 //        START  -> PROGRAM .
         if (!skipErrors("START")) return false;
+        //if no errors deteced then pop the node from the stack ASTNode StartNode = pop from stack
         if (e.FIRST("PROGRAM").contains(lookahead.getToken())){
+            //new ProgNode for PROGRAM() and push it in stack
             if (PROGRAM()){
                 System.out.println("START  -> PROGRAM .");
+                //StartNode = pop from stack
+                //push StartNode to stack which goes back to start method
             }else success = false;
         }else success = false;
         return success;
@@ -209,8 +219,13 @@ public class parser {
     private boolean PROGRAM(){
 //        PROGRAM  ->  REPTCLASSDECL REPTFUNCDEF main FUNCBODY .
         if (!skipErrors("PROGRAM")) return false;
+        //pop ProgNode from stack
         if (e.FIRST("REPTCLASSDECL").contains(lookahead.getToken()) || e.isNULLABLE("REPTCLASSDECL")){
+            //create nodes ClassListNode() ; FuncDefNode() ; StatBlockNode()
+            //push all three to stack -> StatBlockNode() -> FuncDefNode() -> ClassListNode()
             if (REPTCLASSDECL() && REPTFUNCDEF() && match("main") && FUNCBODY()){
+                // ProgNode = pop from stack
+                // ProgNode back to stack so that it is send up the tree
                 System.out.println("PROGRAM  ->  REPTCLASSDECL REPTFUNCDEF main FUNCBODY .");
             }else success = false;
         }else success = false;
@@ -221,8 +236,12 @@ public class parser {
 //        REPTCLASSDECL -> CLASSDECL  REPTCLASSDECL .
 //        REPTCLASSDECL ->  .
         if (!skipErrors("REPTCLASSDECL")) return false;
+        //pop ClassListNode from the stack
         if (e.FIRST("CLASSDECL").contains(lookahead.getToken()) ){
+            //create a ClassDeclNode() that contains id,inheritlist,memberlist
             if (CLASSDECL() && REPTCLASSDECL()){
+                //ClassListNode = pop from stack
+                //push back to stack to send it up
                 System.out.println("REPTCLASSDECL -> CLASSDECL  REPTCLASSDECL .");
             }else success = false;
         }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken())){
@@ -234,9 +253,13 @@ public class parser {
     private boolean CLASSDECL(){
 //        CLASSDECL  -> class id OPTCLASSDECL2 lcurbr MEMBER_DECLARATIONS rcurbr semi .
         if (!skipErrors("CLASSDECL")) return false;
+        //pop the ClassDeclNode node
         if (e.FIRST("CLASSDECL").contains(lookahead.getToken())){
             if (match("class") && match("id") && OPTCLASSDECL2() && match("lcurbr")
                     && MEMBER_DECLARATIONS() && match("rcurbr") && match("semi")){
+                    //at this point class is at bottom of tokenStack() then is "id" then maybe id inherits
+                    //then is "lcurbr" then all member declrations then rcurbr then semi.
+                //HOW TO PARSE THIS THING TO CREATE TREE???
                 System.out.println("CLASSDECL  -> class id OPTCLASSDECL2 lcurbr MEMBER_DECLARATIONS rcurbr semi .");
             }else success = false;
         }else success = false;
