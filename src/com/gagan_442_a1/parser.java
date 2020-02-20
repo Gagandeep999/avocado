@@ -207,7 +207,7 @@ public class parser {
         //if no errors deteced then pop the node from the stack ASTNode StartNode = pop from stack
         if (e.FIRST("PROGRAM").contains(lookahead.getToken())){
             //new ProgNode for PROGRAM() and push it in stack
-            if (PROGRAM()){
+            if (PROGRAM() /* && ADD2PARENT() */){
                 System.out.println("START  -> PROGRAM .");
                 //StartNode = pop from stack
                 //push StartNode to stack which goes back to start method
@@ -222,8 +222,9 @@ public class parser {
         //pop ProgNode from stack
         if (e.FIRST("REPTCLASSDECL").contains(lookahead.getToken()) || e.isNULLABLE("REPTCLASSDECL")){
             //create nodes ClassListNode() ; FuncDefNode() ; StatBlockNode()
-            //push all three to stack -> StatBlockNode() -> FuncDefNode() -> ClassListNode()
-            if (REPTCLASSDECL() && REPTFUNCDEF() && match("main") && FUNCBODY()){
+            //push all three to stack -> StatBlockNode() -> FuncDefNode() -> ReptClassNode()
+            if (REPTCLASSDECL() /*MAKE SIBLING()*/ && REPTFUNCDEF() /*MAKE SIBLING()*/
+                    && match("main") && FUNCBODY() /*MAKE SIBLING*/ /* */){
                 // ProgNode = pop from stack
                 // ProgNode back to stack so that it is send up the tree
                 System.out.println("PROGRAM  ->  REPTCLASSDECL REPTFUNCDEF main FUNCBODY .");
@@ -239,12 +240,13 @@ public class parser {
         //pop ClassListNode from the stack
         if (e.FIRST("CLASSDECL").contains(lookahead.getToken()) ){
             //create a ClassDeclNode() that contains id,inheritlist,memberlist
-            if (CLASSDECL() && REPTCLASSDECL()){
+            if (CLASSDECL() && /* add sibing */ REPTCLASSDECL()){
                 //ClassListNode = pop from stack
                 //push back to stack to send it up
                 System.out.println("REPTCLASSDECL -> CLASSDECL  REPTCLASSDECL .");
             }else success = false;
         }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken())){
+            //here make all the classes that are sibling of each other; the child of
             System.out.println("REPTCLASSDECL ->  .");
         }else success = false;
         return success;
