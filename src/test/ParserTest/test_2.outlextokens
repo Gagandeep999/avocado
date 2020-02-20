@@ -1,0 +1,4 @@
+[main, main, 1] 
+[do, do, 2] 
+[return, return, 3] [lpar, (, 3] [intnum, 99, 3] [rpar, ), 3] [semi, ;, 3] 
+[end, end, 4] 

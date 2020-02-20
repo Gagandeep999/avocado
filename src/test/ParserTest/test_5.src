@@ -1,0 +1,40 @@
+//test to show that the tree is created correctly for all but statments.
+
+class ABC {
+    public X(integer x) : integer;
+    public X(integer x) : integer;
+};
+ABC::X(integer x) : integer
+local 
+    linear f1;
+    quadratic f2;
+    integer counter;
+  do 
+    return(0);
+  end;
+
+ABC::X() : integer
+local
+    integer n;
+    integer i;
+    integer j;
+    integer temp; 
+  do
+  end;
+
+ABC::X() : integer
+local
+    integer n;
+    integer i;
+    integer j;
+    integer temp; 
+  do 
+  end;
+
+main
+local
+    integer i;
+    integer j;
+    integer temp; 
+  do
+  end

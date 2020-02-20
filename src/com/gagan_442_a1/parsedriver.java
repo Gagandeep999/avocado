@@ -25,7 +25,7 @@ public class parsedriver {
             }
             parser p = new parser(newTList);
             if (p.parse()){
-                System.out.println("parser finished!!!");
+                System.out.println("Parser Finished");
             }else System.out.println("Error in parsing");
 
 
