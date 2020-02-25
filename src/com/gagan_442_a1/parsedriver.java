@@ -3,7 +3,6 @@ package com.gagan_442_a1;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class parsedriver {
@@ -23,13 +22,10 @@ public class parsedriver {
                     newTList.add(t);
                 }
             }
-            parser p = new parser(newTList);
+            parser p = new parser(newTList, filename);
             if (p.parse()){
                 System.out.println("Parser Finished");
             }else System.out.println("Error in parsing");
-
-
-
         }catch (IOException e){
             System.out.println(e.getMessage());
         }

@@ -8,6 +8,38 @@ import java.util.*;
 
 public class parser {
 
+    private LinkedList<token> tokens;
+    private token lookahead;
+    private error e;
+    private boolean success;
+    PrintWriter pwDerivation;
+    PrintWriter pwSyntaxError;
+
+    public parser(LinkedList<token> tokenLinkedList, String outputLocation){
+        this.tokens = (LinkedList<token>) tokenLinkedList.clone();
+        this.lookahead = tokenLinkedList.getFirst();
+        this.e = new error();
+        this.e.createTable();
+        this.success = true;
+
+        String outderivation = outputLocation.replace(".src", ".outderivation");
+        String outsyntaxerrors = outputLocation.replace(".src", ".outsyntaxerrors");
+        try {
+            this.pwDerivation = new PrintWriter(outderivation, "UTF-8");
+            this.pwSyntaxError = new PrintWriter(outsyntaxerrors, "UTF-8");
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+
+//        try{
+//            this.pwDerivation = new PrintWriter("src/test/ParserTest/test.outdervation");
+//            this.pwSyntaxError = new PrintWriter("src/test/ParserTest/test.outsyntaxerrors");
+//        }catch (IOException e){
+//            pwSyntaxError.write(e.getMessage());
+//        }
+
+    }
+
     class Node{
         String name;
         Node child;
@@ -42,52 +74,52 @@ public class parser {
                 "      STATEMENT_VARIABLE_EXT      YES      NO      dot      rpar\n" +
                 "      STATEMENT_FUNCTION_CALL      NO      NO      dot      rpar\n" +
                 "      ASSIGN_STATEMENT_OR_FUNCTION_CALL      NO      NO      id      id semi if else while read write return end\n" +
-                "      VARIABLE_OR_FUNCTION_CALL_EXT      NO      NO      lpar dot lsqbr equal      id semi if else while read write return end\n" +
-                "      VARIABLE_EXT      NO      NO      dot equal      id semi if else while read write return end\n" +
+                "      VARIABLE_OR_FUNCTION_CALL_EXT      NO      NO      lpar dot eq lsqbr      id semi if else while read write return end\n" +
+                "      VARIABLE_EXT      NO      NO      dot eq      id semi if else while read write return end\n" +
                 "      FUNCTION_CALL_EXT      NO      NO      semi dot      id semi if else while read write return end\n" +
                 "      FUNCTION_PARAMS      YES      NO      id integer float      rpar\n" +
-                "      ADD_OP      NO      NO      plus minus or      id lpar plus minus not intnum floatnum\n" +
+                "      ADD_OP      NO      NO      plus minus or      id lpar plus minus intnum floatnum not\n" +
                 "      OPTCLASSDECL2      YES      NO      inherits      lcurbr\n" +
-                "      REL_EXPRESSION      YES      NO      id lpar plus minus not intnum floatnum      rpar\n" +
+                "      REL_EXPRESSION      NO      NO      id lpar plus minus intnum floatnum not      rpar\n" +
                 "      FUNCTION_DECLARATION      NO      NO      lpar      rcurbr public private\n" +
                 "      FUNCTION_CALL_PARAMS_TAILS      YES      NO      comma      rpar\n" +
                 "      FUNCTION_CALL_PARAMS_TAIL      NO      NO      comma      rpar comma\n" +
-                "      FUNCTION_CALL_PARAMS      YES      NO      id lpar plus minus not intnum floatnum      rpar\n" +
+                "      FUNCTION_CALL_PARAMS      YES      NO      id lpar plus minus intnum floatnum not      rpar\n" +
                 "      OPTFUNCBODY0      YES      NO      local      do\n" +
                 "      ARRAY_DIMENSIONS      YES      NO      lsqbr      semi rpar comma\n" +
-                "      EXPRESSION      NO      NO      id lpar plus minus not intnum floatnum      semi rpar comma\n" +
-                "      REL_EXPRESSION_OR_NULL      YES      NO      eq neq lessthan gt leq geq      semi rpar comma\n" +
+                "      EXPRESSION      NO      NO      id lpar plus minus intnum floatnum not      semi rpar comma\n" +
+                "      REL_EXPRESSION_OR_NULL      YES      NO      eq neq lt gt leq geq      semi rpar comma\n" +
                 "      REPTSTATEMENT      YES      NO      id if while read write return      end\n" +
-                "      ARITH_EXPRESSION      NO      NO      id lpar plus minus not intnum floatnum      semi rpar comma eq neq lessthan gt leq geq rsqbr\n" +
-                "      RIGHT_REC_ARITH_EXPRESSION      YES      NO      plus minus or      semi rpar comma eq neq lessthan gt leq geq rsqbr\n" +
+                "      ARITH_EXPRESSION      NO      NO      id lpar plus minus intnum floatnum not      semi rpar comma eq neq lt gt leq geq rsqbr\n" +
+                "      RIGHT_REC_ARITH_EXPRESSION      YES      NO      plus minus or      semi rpar comma eq neq lt gt leq geq rsqbr\n" +
                 "      FUNCTION_SIGNATURE      NO      NO      id      local do\n" +
                 "      FUNCTION_SIGNATURE_NAMESPACE      NO      NO      lpar sr      local do\n" +
                 "      FUNCTION_SIGNATURE_EXT      NO      NO      lpar      local do\n" +
                 "      FUNCTION_PARAMS_TAILS      YES      NO      comma      rpar\n" +
                 "      INHERITED_CLASSES      YES      NO      comma      lcurbr\n" +
-                "      SIGN      NO      NO      plus minus      id lpar plus minus not intnum floatnum\n" +
-                "      COMPARE_OP      NO      NO      eq neq lessthan gt leq geq      id lpar plus minus not intnum floatnum\n" +
-                "      INDEX      NO      NO      lsqbr      semi rpar dot plus minus or comma eq neq lessthan gt leq geq lsqbr rsqbr mult div and equal\n" +
+                "      SIGN      NO      NO      plus minus      id lpar plus minus intnum floatnum not\n" +
+                "      COMPARE_OP      NO      NO      eq neq lt gt leq geq      id lpar plus minus intnum floatnum not\n" +
+                "      INDEX      NO      NO      lsqbr      semi rpar dot plus minus or comma eq neq lt gt leq geq lsqbr rsqbr mult div and\n" +
                 "      VARIABLE_DECLARATIONS      YES      NO      id integer float      do\n" +
-                "      FACTOR      NO      NO      id lpar plus minus not intnum floatnum      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and\n" +
-                "      VARIABLE_FUNCTION_CALL      NO      NO      id      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and\n" +
-                "      VARIABLE_OR_FUNCTION_CALL      YES      NO      lpar dot lsqbr      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and\n" +
-                "      FACTOR_VARIABLE      YES      NO      dot      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and\n" +
-                "      FACTOR_FUNCTION_CALL      YES      NO      dot      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and\n" +
-                "      TERM      NO      NO      id lpar plus minus not intnum floatnum      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr\n" +
-                "      MULT_OP      NO      NO      mult div and      id lpar plus minus not intnum floatnum\n" +
-                "      RIGHT_REC_TERM      YES      NO      mult div and      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr\n" +
+                "      FACTOR      NO      NO      id lpar plus minus intnum floatnum not      semi rpar plus minus or comma eq neq lt gt leq geq rsqbr mult div and\n" +
+                "      VARIABLE_FUNCTION_CALL      NO      NO      id      semi rpar plus minus or comma eq neq lt gt leq geq rsqbr mult div and\n" +
+                "      VARIABLE_OR_FUNCTION_CALL      YES      NO      lpar dot lsqbr      semi rpar plus minus or comma eq neq lt gt leq geq rsqbr mult div and\n" +
+                "      FACTOR_VARIABLE      YES      NO      dot      semi rpar plus minus or comma eq neq lt gt leq geq rsqbr mult div and\n" +
+                "      FACTOR_FUNCTION_CALL      YES      NO      dot      semi rpar plus minus or comma eq neq lt gt leq geq rsqbr mult div and\n" +
+                "      TERM      NO      NO      id lpar plus minus intnum floatnum not      semi rpar plus minus or comma eq neq lt gt leq geq rsqbr\n" +
+                "      MULT_OP      NO      NO      mult div and      id lpar plus minus intnum floatnum not\n" +
+                "      RIGHT_REC_TERM      YES      NO      mult div and      semi rpar plus minus or comma eq neq lt gt leq geq rsqbr\n" +
                 "      TYPE_OR_VOID      NO      NO      id void integer float      semi local do\n" +
                 "      TYPE      NO      NO      id integer float      id semi local do\n" +
                 "      TYPE_NON_ID      NO      NO      integer float      id semi local do\n" +
                 "      ARRAY_SIZE      NO      NO      lsqbr      semi rpar comma lsqbr\n" +
                 "      OPTIONAL_INT      YES      NO      intnum      rsqbr\n" +
                 "      VARIABLE_DECLARATION      NO      NO      id      id rcurbr public private integer float do\n" +
-                "      FUNCBODY      NO      YES      local do      semi $\n" +
+                "      FUNCBODY      NO      YES      local do      main id $\n" +
                 "      STATEMENT_BLOCK      YES      NO      id if while read write return do      semi else\n" +
-                "      ASSIGNMENT_OP      NO      NO      equal      id lpar plus minus not intnum floatnum\n" +
+                "      ASSIGNMENT_OP      NO      NO      eq      id lpar plus minus intnum floatnum not\n" +
                 "      FUNCTION_PARAMS_TAIL      NO      NO      comma      rpar comma\n" +
-                "      INDICES      YES      NO      lsqbr      semi rpar dot plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and equal\n";
+                "      INDICES      YES      NO      lsqbr      semi rpar dot plus minus or comma eq neq lt gt leq geq rsqbr mult div and\n";
 
 
         public void createTable() {
@@ -136,13 +168,6 @@ public class parser {
         }
     }
 
-    private LinkedList<token> tokens;
-    private token lookahead;
-    private error e;
-    private boolean success;
-    PrintWriter pwDerivation;
-    PrintWriter pwSyntaxError;
-
     private void nextToken(){
 //        System.out.println(lookahead);
         tokens.pop();
@@ -182,25 +207,10 @@ public class parser {
         }
     }
 
-    public parser(LinkedList<token> tokenLinkedList){
-        this.tokens = (LinkedList<token>) tokenLinkedList.clone();
-        this.lookahead = tokenLinkedList.getFirst();
-        this.e = new error();
-        this.e.createTable();
-        this.success = true;
-        try{
-            this.pwDerivation = new PrintWriter("src/test/ParserTest/output.outdervation");
-            this.pwSyntaxError = new PrintWriter("src/test/ParserTest/output.outsyntaxerrors");
-        }catch (IOException e){
-            pwSyntaxError.write(e.getMessage());
-        }
-
-    }
-
     public boolean parse() {
 
         if (START())
-            pwDerivation.write("Sucessfuly parsed the source code!");
+            System.out.println("Sucessfuly parsed the source code!");
         pwSyntaxError.flush();
         pwDerivation.flush();
         pwSyntaxError.close();
@@ -215,7 +225,7 @@ public class parser {
         if (!skipErrors("START")) return false;
         if (e.FIRST("PROGRAM").contains(lookahead.getToken())){
             if (PROGRAM()){
-                pwDerivation.write("START  -> PROGRAM .\n");
+                System.out.println("START  -> PROGRAM .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -226,7 +236,7 @@ public class parser {
         if (!skipErrors("PROGRAM")) return false;
         if (e.FIRST("REPTCLASSDECL").contains(lookahead.getToken()) || e.isNULLABLE("REPTCLASSDECL")){
             if (REPTCLASSDECL() && REPTFUNCDEF() && match("main") && FUNCBODY()){
-                pwDerivation.write("PROGRAM  ->  REPTCLASSDECL REPTFUNCDEF main FUNCBODY .\n");
+                System.out.println("PROGRAM  ->  REPTCLASSDECL REPTFUNCDEF main FUNCBODY .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -238,10 +248,10 @@ public class parser {
         if (!skipErrors("REPTCLASSDECL")) return false;
         if (e.FIRST("CLASSDECL").contains(lookahead.getToken()) ){
             if (CLASSDECL() && REPTCLASSDECL()){
-                pwDerivation.write("REPTCLASSDECL -> CLASSDECL  REPTCLASSDECL .\n");
+                System.out.println("REPTCLASSDECL -> CLASSDECL  REPTCLASSDECL .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken())){
-            pwDerivation.write("REPTCLASSDECL ->  .\n");
+            System.out.println("REPTCLASSDECL ->  .\n");
         }else success = false;
         return success;
     }
@@ -252,7 +262,7 @@ public class parser {
         if (e.FIRST("CLASSDECL").contains(lookahead.getToken())){
             if (match("class") && match("id") && OPTCLASSDECL2() && match("lcurbr")
                     && MEMBER_DECLARATIONS() && match("rcurbr") && match("semi")){
-                pwDerivation.write("CLASSDECL  -> class id OPTCLASSDECL2 lcurbr MEMBER_DECLARATIONS rcurbr semi .\n");
+                System.out.println("CLASSDECL  -> class id OPTCLASSDECL2 lcurbr MEMBER_DECLARATIONS rcurbr semi .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -264,20 +274,20 @@ public class parser {
         if (!skipErrors("REPTFUNCDEF")) return false;
         if (e.FIRST("FUNCDEF").contains(lookahead.getToken()) ){
             if (FUNCDEF() && REPTFUNCDEF()){
-                pwDerivation.write("REPTFUNCDEF -> FUNCDEF REPTFUNCDEF .\n");
+                System.out.println("REPTFUNCDEF -> FUNCDEF REPTFUNCDEF .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTFUNCDEF").contains(lookahead.getToken())){
-            pwDerivation.write("REPTFUNCDEF ->  .\n");
+            System.out.println("REPTFUNCDEF ->  .\n");
         }else success = false;
         return success;
     }
 
     private boolean FUNCDEF(){
-//        FUNCDEF  -> FUNCTION_SIGNATURE FUNCBODY semi .
+//        FUNCDEF  -> FUNCTION_SIGNATURE FUNCBODY .
         if (!skipErrors("FUNCDEF")) return false;
         if (e.FIRST("FUNCTION_SIGNATURE").contains(lookahead.getToken())){
-            if (FUNCTION_SIGNATURE() && FUNCBODY() && match("semi")){
-                pwDerivation.write("FUNCDEF  -> FUNCTION_SIGNATURE FUNCBODY semi .\n");
+            if (FUNCTION_SIGNATURE() && FUNCBODY()){
+                System.out.println("FUNCDEF  -> FUNCTION_SIGNATURE FUNCBODY semi .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -289,10 +299,10 @@ public class parser {
         if (!skipErrors("MEMBER_DECLARATIONS")) return false;
         if (e.FIRST("VISIBILITY").contains(lookahead.getToken())){
             if (VISIBILITY() && MEMBER_DECLARATION() && MEMBER_DECLARATIONS()){
-                pwDerivation.write("MEMBER_DECLARATIONS  -> VISIBILITY MEMBER_DECLARATION MEMBER_DECLARATIONS .\n");
+                System.out.println("MEMBER_DECLARATIONS  -> VISIBILITY MEMBER_DECLARATION MEMBER_DECLARATIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken()) || e.isNULLABLE("REPTCLASSDECL") ){ //
-            pwDerivation.write("REPTCLASSDECL ->  .\n");
+            System.out.println("REPTCLASSDECL ->  .\n");
         }else success = false;
         return success;
     }
@@ -303,11 +313,11 @@ public class parser {
         if (!skipErrors("MEMBER_DECLARATION")) return false;
         if (e.FIRST("TYPE_NON_ID").contains(lookahead.getToken())){
             if (TYPE_NON_ID() && VARIABLE_DECLARATION()){
-                pwDerivation.write("MEMBER_DECLARATION -> TYPE_NON_ID VARIABLE_DECLARATION .\n");
+                System.out.println("MEMBER_DECLARATION -> TYPE_NON_ID VARIABLE_DECLARATION .\n");
             }else success = false;
         }else if (e.FIRST("MEMBER_DECLARATION").contains(lookahead.getToken())){
             if (match("id") && FUNCTION_OR_VARIABLE_DECLARATION()){
-                pwDerivation.write("MEMBER_DECLARATION -> id FUNCTION_OR_VARIABLE_DECLARATION .\n");
+                System.out.println("MEMBER_DECLARATION -> id FUNCTION_OR_VARIABLE_DECLARATION .\n");
             }else  success = false;
         }else success = false;
         return success;
@@ -319,11 +329,11 @@ public class parser {
         if (!skipErrors("FUNCTION_OR_VARIABLE_DECLARATION")) return false;
         if (e.FIRST("FUNCTION_DECLARATION").contains(lookahead.getToken())){
             if (FUNCTION_DECLARATION()){
-                pwDerivation.write("FUNCTION_OR_VARIABLE_DECLARATION -> FUNCTION_DECLARATION .\n");
+                System.out.println("FUNCTION_OR_VARIABLE_DECLARATION -> FUNCTION_DECLARATION .\n");
             }else success = false;
         }else if (e.FIRST("VARIABLE_DECLARATION").contains(lookahead.getToken())){
             if (VARIABLE_DECLARATION()){
-                pwDerivation.write("FUNCTION_OR_VARIABLE_DECLARATION -> VARIABLE_DECLARATION .\n");
+                System.out.println("FUNCTION_OR_VARIABLE_DECLARATION -> VARIABLE_DECLARATION .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -336,11 +346,11 @@ public class parser {
         if (e.FIRST("VISIBILITY").contains(lookahead.getToken())){
             if (lookahead.getToken().equals("public")){
                 if (match("public")) {
-                    pwDerivation.write("VISIBILITY -> public .\n");
+                    System.out.println("VISIBILITY -> public .\n");
                 }
             }else if (lookahead.getToken().equals("private")) {
                 if (match("private")) {
-                    pwDerivation.write("VISIBILITY -> private .\n");
+                    System.out.println("VISIBILITY -> private .\n");
                 }
             }else success = false;
 
@@ -353,7 +363,7 @@ public class parser {
 //        STATEMENT  -> ASSIGN_STATEMENT_OR_FUNCTION_CALL .
         if (e.FIRST("ASSIGN_STATEMENT_OR_FUNCTION_CALL").contains(lookahead.getToken())){
             if (ASSIGN_STATEMENT_OR_FUNCTION_CALL()){
-                pwDerivation.write("STATEMENT  -> ASSIGN_STATEMENT_OR_FUNCTION_CALL .\n");
+                System.out.println("STATEMENT  -> ASSIGN_STATEMENT_OR_FUNCTION_CALL .\n");
             }else success = false;
         }
 //        STATEMENT  -> if lpar REL_EXPRESSION rpar then STATEMENT_BLOCK else STATEMENT_BLOCK semi .
@@ -367,27 +377,27 @@ public class parser {
                 if ( match("if") && match("lpar") && REL_EXPRESSION() && match("rpar")
                         && match("then") && STATEMENT_BLOCK() && match("else") && STATEMENT_BLOCK()
                         && match("semi") ){
-                    pwDerivation.write("STATEMENT  -> if lpar REL_EXPRESSION rpar then STATEMENT_BLOCK else STATEMENT_BLOCK semi .\n");
+                    System.out.println("STATEMENT  -> if lpar REL_EXPRESSION rpar then STATEMENT_BLOCK else STATEMENT_BLOCK semi .\n");
                 }
             }else if (lookahead.getToken().equals("while")){
                 if ( match("while") && match("lpar") && REL_EXPRESSION() && match("rpar")
                         && STATEMENT_BLOCK() && match("semi") ){
-                    pwDerivation.write("STATEMENT  -> while lpar REL_EXPRESSION rpar STATEMENT_BLOCK semi .\n");
+                    System.out.println("STATEMENT  -> while lpar REL_EXPRESSION rpar STATEMENT_BLOCK semi .\n");
                 }
             }else if (lookahead.getToken().equals("read")){
                 if (match("read") && match("lpar") && STATEMENT_VARIABLE() && match("rpar")
                         && match("semi")){
-                    pwDerivation.write("STATEMENT  -> read lpar STATEMENT_VARIABLE rpar semi .\n");
+                    System.out.println("STATEMENT  -> read lpar STATEMENT_VARIABLE rpar semi .\n");
                 }
             }else if (lookahead.getToken().equals("write")){
                 if (match("write") && match("lpar") && EXPRESSION() && match("rpar")
                         && match("semi")){
-                    pwDerivation.write("STATEMENT  -> write lpar EXPRESSION rpar semi .\n");
+                    System.out.println("STATEMENT  -> write lpar EXPRESSION rpar semi .\n");
                 }
             }else if (lookahead.getToken().equals("return")){
                 if (match("return") && match("lpar") && EXPRESSION() && match("rpar")
                         && match("semi")){
-                    pwDerivation.write("STATEMENT  -> return lpar EXPRESSION rpar semi .\n");
+                    System.out.println("STATEMENT  -> return lpar EXPRESSION rpar semi .\n");
                 }
             }else success = false;
         }else success = false;
@@ -399,7 +409,7 @@ public class parser {
         if (!skipErrors("STATEMENT_VARIABLE")) return false;
         if (e.FIRST("STATEMENT_VARIABLE").contains(lookahead.getToken())){
             if (match("id") && STATEMENT_VARIABLE_OR_FUNCTION_CALL()){
-                pwDerivation.write("STATEMENT_VARIABLE -> id STATEMENT_VARIABLE_OR_FUNCTION_CALL .\n");
+                System.out.println("STATEMENT_VARIABLE -> id STATEMENT_VARIABLE_OR_FUNCTION_CALL .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -411,11 +421,11 @@ public class parser {
         if (!skipErrors("STATEMENT_VARIABLE_OR_FUNCTION_CALL")) return false;
         if (e.FIRST("INDICES").contains(lookahead.getToken()) ){ //|| e.isNULLABLE("INDICES")
             if (INDICES() && STATEMENT_VARIABLE_EXT()){
-                pwDerivation.write("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .\n");
+                System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .\n");
             }else success = false;
         }else if (e.FIRST("STATEMENT_VARIABLE_OR_FUNCTION_CALL").contains(lookahead.getToken())){
             if (match("lpar") && FUNCTION_CALL_PARAMS() && match("rpar") && STATEMENT_FUNCTION_CALL()){
-                pwDerivation.write("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar STATEMENT_FUNCTION_CALL .\n");
+                System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar STATEMENT_FUNCTION_CALL .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -427,10 +437,10 @@ public class parser {
         if (!skipErrors("STATEMENT_VARIABLE_EXT")) return false;
         if (e.FIRST("STATEMENT_VARIABLE_EXT").contains(lookahead.getToken())){
             if (match("dot") && STATEMENT_VARIABLE()){
-                pwDerivation.write("STATEMENT_VARIABLE_EXT -> dot STATEMENT_VARIABLE .\n");
+                System.out.println("STATEMENT_VARIABLE_EXT -> dot STATEMENT_VARIABLE .\n");
             }else success = false;
         }else if (e.FOLLOW("STATEMENT_VARIABLE_EXT").contains(lookahead.getToken())){
-            pwDerivation.write("STATEMENT_VARIABLE_EXT ->  .\n");
+            System.out.println("STATEMENT_VARIABLE_EXT ->  .\n");
         }else success = false;
         return success;
     }
@@ -440,7 +450,7 @@ public class parser {
         if (!skipErrors("STATEMENT_FUNCTION_CALL")) return false;
         if (e.FIRST("STATEMENT_FUNCTION_CALL").contains(lookahead.getToken())){
             if (match("dot") && STATEMENT_VARIABLE()){
-                pwDerivation.write("STATEMENT_FUNCTION_CALL  -> dot STATEMENT_VARIABLE .\n");
+                System.out.println("STATEMENT_FUNCTION_CALL  -> dot STATEMENT_VARIABLE .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -451,7 +461,7 @@ public class parser {
         if (!skipErrors("ASSIGN_STATEMENT_OR_FUNCTION_CALL")) return false;
         if (e.FIRST("ASSIGN_STATEMENT_OR_FUNCTION_CALL").contains(lookahead.getToken())){
             if (match("id") && VARIABLE_OR_FUNCTION_CALL_EXT()){
-                pwDerivation.write("ASSIGN_STATEMENT_OR_FUNCTION_CALL  -> id VARIABLE_OR_FUNCTION_CALL_EXT .\n");
+                System.out.println("ASSIGN_STATEMENT_OR_FUNCTION_CALL  -> id VARIABLE_OR_FUNCTION_CALL_EXT .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -463,11 +473,11 @@ public class parser {
         if (!skipErrors("VARIABLE_OR_FUNCTION_CALL_EXT")) return false;
         if (e.FIRST("INDICES").contains(lookahead.getToken()) || e.FIRST("VARIABLE_EXT").contains(lookahead.getToken())){ // || e.isNULLABLE("INDICES") || e.FOLLOW("INDICES").contains(lookahead.getToken())
             if (INDICES() && VARIABLE_EXT()){
-                pwDerivation.write("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .\n");
+                System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> INDICES STATEMENT_VARIABLE_EXT .\n");
             }else success = false;
         }else if (lookahead.getToken().equals("lpar")){
             if (match("lpar") && FUNCTION_CALL_PARAMS() && match("rpar") && FUNCTION_CALL_EXT()){
-                pwDerivation.write("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar STATEMENT_FUNCTION_CALL .\n");
+                System.out.println("STATEMENT_VARIABLE_OR_FUNCTION_CALL  -> lpar FUNCTION_CALL_PARAMS rpar STATEMENT_FUNCTION_CALL .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -479,11 +489,11 @@ public class parser {
         if (!skipErrors("VARIABLE_EXT")) return false;
         if (e.FIRST("ASSIGNMENT_OP").contains(lookahead.getToken())){
             if (ASSIGNMENT_OP() && EXPRESSION() && match("semi")){
-                pwDerivation.write("VARIABLE_EXT -> ASSIGNMENT_OP EXPRESSION semi .\n");
+                System.out.println("VARIABLE_EXT -> ASSIGNMENT_OP EXPRESSION semi .\n");
             }else success = false;
         }else if (e.FIRST("VARIABLE_EXT").contains(lookahead.getToken())){
             if (match("dot") && ASSIGN_STATEMENT_OR_FUNCTION_CALL()){
-                pwDerivation.write("VARIABLE_EXT -> dot ASSIGN_STATEMENT_OR_FUNCTION_CALL .\n");
+                System.out.println("VARIABLE_EXT -> dot ASSIGN_STATEMENT_OR_FUNCTION_CALL .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -496,11 +506,11 @@ public class parser {
         if (e.FIRST("FUNCTION_CALL_EXT").contains(lookahead.getToken())){
             if (lookahead.getToken().equals("semi")){
                 if (match("semi")){
-                    pwDerivation.write("FUNCTION_CALL_EXT  -> semi .\n");
+                    System.out.println("FUNCTION_CALL_EXT  -> semi .\n");
                 }
             }else if (lookahead.getToken().equals("dot"))
                 if (match("dot") && ASSIGN_STATEMENT_OR_FUNCTION_CALL()){
-                pwDerivation.write("FUNCTION_CALL_EXT  -> dot ASSIGN_STATEMENT_OR_FUNCTION_CALL .\n");
+                System.out.println("FUNCTION_CALL_EXT  -> dot ASSIGN_STATEMENT_OR_FUNCTION_CALL .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -512,10 +522,10 @@ public class parser {
         if (!skipErrors("FUNCTION_PARAMS")) return false;
         if (e.FIRST("TYPE").contains(lookahead.getToken())){
             if (TYPE() && match("id") && ARRAY_DIMENSIONS() && FUNCTION_PARAMS_TAILS()){
-                pwDerivation.write("FUNCTION_PARAMS  -> TYPE id ARRAY_DIMENSIONS FUNCTION_PARAMS_TAILS .\n");
+                System.out.println("FUNCTION_PARAMS  -> TYPE id ARRAY_DIMENSIONS FUNCTION_PARAMS_TAILS .\n");
             }else success = false;
         }else if (e.FOLLOW("FUNCTION_PARAMS").contains(lookahead.getToken())){
-            pwDerivation.write("FUNCTION_PARAMS ->  .\n");
+            System.out.println("FUNCTION_PARAMS ->  .\n");
         }else success = false;
         return success;
     }
@@ -526,15 +536,15 @@ public class parser {
         if (e.FIRST("ADD_OP").contains(lookahead.getToken())){
             if (lookahead.getToken().equals("plus")){
                 if (match("plus")) {
-                    pwDerivation.write("ADD_OP -> plus .\n");
+                    System.out.println("ADD_OP -> plus .\n");
                 }
             }else if (lookahead.getToken().equals("minus")){
                 if (match("minus")) {
-                    pwDerivation.write("ADD_OP -> minus .\n");
+                    System.out.println("ADD_OP -> minus .\n");
                 }
             }else if (lookahead.getToken().equals("or")){
                 if (match("or")) {
-                    pwDerivation.write("ADD_OP -> or .\n");
+                    System.out.println("ADD_OP -> or .\n");
                 }
             }else success = false;
         }else success = false;
@@ -547,10 +557,10 @@ public class parser {
         if (!skipErrors("OPTCLASSDECL2")) return false;
         if (e.FIRST("OPTCLASSDECL2").contains(lookahead.getToken())){
             if (match("inherits") && match("id") && INHERITED_CLASSES()){
-                pwDerivation.write("OPTCLASSDECL2  -> inherits id INHERITED_CLASSES .\n");
+                System.out.println("OPTCLASSDECL2  -> inherits id INHERITED_CLASSES .\n");
             }else success = false;
         }else if (e.FOLLOW("OPTCLASSDECL2").contains(lookahead.getToken())){
-            pwDerivation.write("OPTCLASSDECL2 ->  .\n");
+            System.out.println("OPTCLASSDECL2 ->  .\n");
         }else success = false;
         return success;
     }
@@ -561,10 +571,10 @@ public class parser {
         if (!skipErrors("REL_EXPRESSION")) return false;
         if (e.FIRST("ARITH_EXPRESSION").contains(lookahead.getToken())){
             if (ARITH_EXPRESSION() && COMPARE_OP() && ARITH_EXPRESSION()){
-                pwDerivation.write("REL_EXPRESSION -> ARITH_EXPRESSION COMPARE_OP ARITH_EXPRESSION .\n");
+                System.out.println("REL_EXPRESSION -> ARITH_EXPRESSION COMPARE_OP ARITH_EXPRESSION .\n");
             }else success = false;
         }else if (e.FOLLOW("REL_EXPRESSION").contains(lookahead.getToken())){
-            pwDerivation.write("REL_EXPRESSION ->  .\n");
+            System.out.println("REL_EXPRESSION ->  .\n");
         }else success = false;
         return success;
     }
@@ -575,7 +585,7 @@ public class parser {
         if (e.FIRST("FUNCTION_DECLARATION").contains(lookahead.getToken())){
             if (match("lpar") && FUNCTION_PARAMS() && match("rpar") && match("colon") && TYPE_OR_VOID()
                     && match("semi")){
-                pwDerivation.write("FUNCTION_DECLARATION -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID semi .\n");
+                System.out.println("FUNCTION_DECLARATION -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID semi .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -587,10 +597,10 @@ public class parser {
         if (!skipErrors("FUNCTION_CALL_PARAMS_TAILS")) return false;
         if (e.FIRST("FUNCTION_CALL_PARAMS_TAIL").contains(lookahead.getToken())){
             if (FUNCTION_CALL_PARAMS_TAIL() && FUNCTION_CALL_PARAMS_TAILS()){
-                pwDerivation.write("FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAMS_TAILS .\n");
+                System.out.println("FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAMS_TAILS .\n");
             }else success = false;
         }else if (e.FOLLOW("FUNCTION_CALL_PARAMS_TAILS").contains(lookahead.getToken())){
-            pwDerivation.write("FUNCTION_CALL_PARAMS_TAILS ->  .\n");
+            System.out.println("FUNCTION_CALL_PARAMS_TAILS ->  .\n");
         }else success = false;
         return success;
     }
@@ -600,7 +610,7 @@ public class parser {
         if (!skipErrors("FUNCTION_CALL_PARAMS_TAIL")) return false;
         if (e.FIRST("FUNCTION_CALL_PARAMS_TAIL").contains(lookahead.getToken())){
             if (match("comma") && EXPRESSION() ){
-                pwDerivation.write("FUNCTION_CALL_PARAMS_TAIL  -> comma EXPRESSION .\n");
+                System.out.println("FUNCTION_CALL_PARAMS_TAIL  -> comma EXPRESSION .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -612,10 +622,10 @@ public class parser {
         if (!skipErrors("FUNCTION_CALL_PARAMS")) return false;
         if (e.FIRST("EXPRESSION").contains(lookahead.getToken())){
             if (EXPRESSION() && FUNCTION_CALL_PARAMS_TAILS()){
-                pwDerivation.write("FUNCTION_CALL_PARAMS -> EXPRESSION FUNCTION_CALL_PARAMS_TAILS .\n");
+                System.out.println("FUNCTION_CALL_PARAMS -> EXPRESSION FUNCTION_CALL_PARAMS_TAILS .\n");
             }else success = false;
         }else if (e.FOLLOW("FUNCTION_CALL_PARAMS").contains(lookahead.getToken())){
-            pwDerivation.write("FUNCTION_CALL_PARAMS ->  .\n");
+            System.out.println("FUNCTION_CALL_PARAMS ->  .\n");
         }else success = false;
         return success;
     }
@@ -626,10 +636,10 @@ public class parser {
         if (!skipErrors("OPTFUNCBODY0")) return false;
         if (e.FIRST("OPTFUNCBODY0").contains(lookahead.getToken())){
             if (match("local") && VARIABLE_DECLARATIONS()){
-                pwDerivation.write("OPTFUNCBODY0  -> local VARIABLE_DECLARATIONS .\n");
+                System.out.println("OPTFUNCBODY0  -> local VARIABLE_DECLARATIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("OPTFUNCBODY0").contains(lookahead.getToken())){
-            pwDerivation.write("OPTFUNCBODY0 ->  .\n");
+            System.out.println("OPTFUNCBODY0 ->  .\n");
         }else success = false;
         return success;
     }
@@ -640,10 +650,10 @@ public class parser {
         if (!skipErrors("ARRAY_DIMENSIONS")) return false;
         if (e.FIRST("ARRAY_SIZE").contains(lookahead.getToken())){
             if (ARRAY_SIZE() && ARRAY_DIMENSIONS()){
-                pwDerivation.write("ARRAY_DIMENSIONS -> ARRAY_SIZE ARRAY_DIMENSIONS .\n");
+                System.out.println("ARRAY_DIMENSIONS -> ARRAY_SIZE ARRAY_DIMENSIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("ARRAY_DIMENSIONS").contains(lookahead.getToken())){
-            pwDerivation.write("ARRAY_DIMENSIONS ->  .\n");
+            System.out.println("ARRAY_DIMENSIONS ->  .\n");
         }else success = false;
         return success;
     }
@@ -653,7 +663,7 @@ public class parser {
         if (!skipErrors("EXPRESSION")) return false;
         if (e.FIRST("ARITH_EXPRESSION").contains(lookahead.getToken())){
             if (ARITH_EXPRESSION() && REL_EXPRESSION_OR_NULL()){
-                pwDerivation.write("EXPRESSION -> ARITH_EXPRESSION REL_EXPRESSION_OR_NULL .\n");
+                System.out.println("EXPRESSION -> ARITH_EXPRESSION REL_EXPRESSION_OR_NULL .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -665,10 +675,10 @@ public class parser {
         if (!skipErrors("REL_EXPRESSION_OR_NULL")) return false;
         if (e.FIRST("COMPARE_OP").contains(lookahead.getToken())){
             if (COMPARE_OP() && ARITH_EXPRESSION()){
-                pwDerivation.write("REL_EXPRESSION_OR_NULL -> COMPARE_OP ARITH_EXPRESSION .\n");
+                System.out.println("REL_EXPRESSION_OR_NULL -> COMPARE_OP ARITH_EXPRESSION .\n");
             }else success = false;
         }else if (e.FOLLOW("REL_EXPRESSION_OR_NULL").contains(lookahead.getToken())){
-            pwDerivation.write("REL_EXPRESSION_OR_NULL ->  .\n");
+            System.out.println("REL_EXPRESSION_OR_NULL ->  .\n");
         }else success = false;
         return success;
     }
@@ -679,10 +689,10 @@ public class parser {
         if (!skipErrors("REPTSTATEMENT")) return false;
         if (e.FIRST("STATEMENT").contains(lookahead.getToken())){
             if (STATEMENT() && REPTSTATEMENT()){
-                pwDerivation.write("REPTSTATEMENT -> STATEMENT REPTSTATEMENT .\n");
+                System.out.println("REPTSTATEMENT -> STATEMENT REPTSTATEMENT .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTSTATEMENT").contains(lookahead.getToken())){
-            pwDerivation.write("REPTSTATEMENT ->  .\n");
+            System.out.println("REPTSTATEMENT ->  .\n");
         }else success = false;
         return success;
     }
@@ -692,7 +702,7 @@ public class parser {
         if (!skipErrors("ARITH_EXPRESSION")) return false;
         if (e.FIRST("TERM").contains(lookahead.getToken())){
             if (TERM() && RIGHT_REC_ARITH_EXPRESSION()){
-                pwDerivation.write("ARITH_EXPRESSION -> TERM RIGHT_REC_ARITH_EXPRESSION .\n");
+                System.out.println("ARITH_EXPRESSION -> TERM RIGHT_REC_ARITH_EXPRESSION .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -704,10 +714,10 @@ public class parser {
         if (!skipErrors("RIGHT_REC_ARITH_EXPRESSION")) return false;
         if (e.FIRST("ADD_OP").contains(lookahead.getToken())){
             if (ADD_OP() && TERM() && RIGHT_REC_ARITH_EXPRESSION()){
-                pwDerivation.write("RIGHT_REC_ARITH_EXPRESSION -> ADD_OP TERM RIGHT_REC_ARITH_EXPRESSION .\n");
+                System.out.println("RIGHT_REC_ARITH_EXPRESSION -> ADD_OP TERM RIGHT_REC_ARITH_EXPRESSION .\n");
             }else success = false;
         }else if (e.FOLLOW("RIGHT_REC_ARITH_EXPRESSION").contains(lookahead.getToken())){
-            pwDerivation.write("RIGHT_REC_ARITH_EXPRESSION ->  .\n");
+            System.out.println("RIGHT_REC_ARITH_EXPRESSION ->  .\n");
         }else success = false;
         return success;
     }
@@ -717,7 +727,7 @@ public class parser {
         if (!skipErrors("FUNCTION_SIGNATURE")) return false;
         if (e.FIRST("FUNCTION_SIGNATURE").contains(lookahead.getToken())){
             if (match("id") && FUNCTION_SIGNATURE_NAMESPACE()){
-                pwDerivation.write("FUNCTION_SIGNATURE -> id FUNCTION_SIGNATURE_NAMESPACE .\n");
+                System.out.println("FUNCTION_SIGNATURE -> id FUNCTION_SIGNATURE_NAMESPACE .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -729,11 +739,11 @@ public class parser {
         if (!skipErrors("FUNCTION_SIGNATURE_NAMESPACE")) return false;
         if (e.FIRST("FUNCTION_SIGNATURE_EXT").contains(lookahead.getToken())){
             if (FUNCTION_SIGNATURE_EXT()){
-                pwDerivation.write("FUNCTION_SIGNATURE_NAMESPACE -> FUNCTION_SIGNATURE_EXT .\n");
+                System.out.println("FUNCTION_SIGNATURE_NAMESPACE -> FUNCTION_SIGNATURE_EXT .\n");
             }else success = false;
         }else if (e.FIRST("FUNCTION_SIGNATURE_NAMESPACE").contains(lookahead.getToken())){
             if (match("sr") && match("id") && FUNCTION_SIGNATURE_EXT())
-            pwDerivation.write("FUNCTION_SIGNATURE_NAMESPACE -> sr id FUNCTION_SIGNATURE_EXT .\n");
+            System.out.println("FUNCTION_SIGNATURE_NAMESPACE -> sr id FUNCTION_SIGNATURE_EXT .\n");
         }else success = false;
         return success;
     }
@@ -744,7 +754,7 @@ public class parser {
         if (e.FIRST("FUNCTION_SIGNATURE_EXT").contains(lookahead.getToken())){
             if (match("lpar") && FUNCTION_PARAMS() && match("rpar")
                     && match("colon") && TYPE_OR_VOID()){
-                pwDerivation.write("FUNCTION_SIGNATURE_EXT -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID .\n");
+                System.out.println("FUNCTION_SIGNATURE_EXT -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -756,10 +766,10 @@ public class parser {
         if (!skipErrors("FUNCTION_PARAMS_TAILS")) return false;
         if (e.FIRST("FUNCTION_PARAMS_TAIL").contains(lookahead.getToken())){
             if (FUNCTION_PARAMS_TAIL() && FUNCTION_PARAMS_TAILS()){
-                pwDerivation.write("FUNCTION_PARAMS_TAILS  -> FUNCTION_PARAMS_TAIL FUNCTION_PARAMS_TAILS .\n");
+                System.out.println("FUNCTION_PARAMS_TAILS  -> FUNCTION_PARAMS_TAIL FUNCTION_PARAMS_TAILS .\n");
             }else success = false;
         }else if (e.FOLLOW("FUNCTION_PARAMS_TAILS").contains(lookahead.getToken())){
-            pwDerivation.write("FUNCTION_PARAMS_TAILS ->  .\n");
+            System.out.println("FUNCTION_PARAMS_TAILS ->  .\n");
         }else success = false;
         return success;
     }
@@ -770,10 +780,10 @@ public class parser {
         if (!skipErrors("INHERITED_CLASSES")) return false;
         if (e.FIRST("INHERITED_CLASSES").contains(lookahead.getToken())){
             if (match("comma") && match("id") && INHERITED_CLASSES()){
-                pwDerivation.write("INHERITED_CLASSES  -> comma id INHERITED_CLASSES .\n");
+                System.out.println("INHERITED_CLASSES  -> comma id INHERITED_CLASSES .\n");
             }else success = false;
         }else if (e.FOLLOW("INHERITED_CLASSES").contains(lookahead.getToken())){
-            pwDerivation.write("INHERITED_CLASSES ->  .\n");
+            System.out.println("INHERITED_CLASSES ->  .\n");
         }else success = false;
         return success;
     }
@@ -784,11 +794,11 @@ public class parser {
         if (e.FIRST("SIGN").contains(lookahead.getToken())){
             if (lookahead.getToken().equals("plus")){
                 if (match("plus")){
-                    pwDerivation.write("SIGN -> plus .\n");
+                    System.out.println("SIGN -> plus .\n");
                 }
             }else if (lookahead.getToken().equals("minus")){
                 if (match("minus")){
-                pwDerivation.write("SIGN -> minus .\n");
+                System.out.println("SIGN -> minus .\n");
             }else success = false;
             }
         }else success = false;
@@ -801,27 +811,27 @@ public class parser {
         if (e.FIRST("COMPARE_OP").contains(lookahead.getToken())){
             if (lookahead.getToken().equals("eq")) {
                 if (match("eq")) {
-                    pwDerivation.write("SIGN -> eq .\n");
+                    System.out.println("SIGN -> eq .\n");
                 }
             }else if (lookahead.getToken().equals("neq")){
                     if (match("neq")){
-                    pwDerivation.write("SIGN -> neq .\n");
+                    System.out.println("SIGN -> neq .\n");
                 }
             }else if (lookahead.getToken().equals("lessthan")){
                     if (match("lessthan")){
-                    pwDerivation.write("SIGN -> lt .\n");
+                    System.out.println("SIGN -> lt .\n");
                 }
             }else if (lookahead.getToken().equals("gt")){
                     if (match("gt")){
-                    pwDerivation.write("SIGN -> gt .\n");
+                    System.out.println("SIGN -> gt .\n");
                 }
             }else if (lookahead.getToken().equals("leq")){
                     if (match("leq")){
-                    pwDerivation.write("SIGN -> leq .\n");
+                    System.out.println("SIGN -> leq .\n");
                 }
             }else if (lookahead.getToken().equals("geq")){
                     if (match("geq")){
-                    pwDerivation.write("SIGN -> geq .\n");
+                    System.out.println("SIGN -> geq .\n");
                 }
             }else success = false;
         }else success = false;
@@ -833,7 +843,7 @@ public class parser {
         if (!skipErrors("INDEX")) return false;
         if (e.FIRST("INDEX").contains(lookahead.getToken())){
             if (match("lsqbr") && ARITH_EXPRESSION() && match("rsqbr")){
-                pwDerivation.write("INDEX  -> lsqbr ARITH_EXPRESSION rsqbr .\n");
+                System.out.println("INDEX  -> lsqbr ARITH_EXPRESSION rsqbr .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -845,10 +855,10 @@ public class parser {
         if (!skipErrors("VARIABLE_DECLARATIONS")) return false;
         if (e.FIRST("TYPE").contains(lookahead.getToken())){
             if (TYPE() && VARIABLE_DECLARATION() && VARIABLE_DECLARATIONS()){
-                pwDerivation.write("VARIABLE_DECLARATIONS  -> TYPE VARIABLE_DECLARATION VARIABLE_DECLARATIONS .\n");
+                System.out.println("VARIABLE_DECLARATIONS  -> TYPE VARIABLE_DECLARATION VARIABLE_DECLARATIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("VARIABLE_DECLARATIONS").contains(lookahead.getToken())){
-            pwDerivation.write("VARIABLE_DECLARATIONS ->  .\n");
+            System.out.println("VARIABLE_DECLARATIONS ->  .\n");
         }else success = false;
         return success;
     }
@@ -858,13 +868,13 @@ public class parser {
 //        FACTOR -> VARIABLE_FUNCTION_CALL .
         if (e.FIRST("VARIABLE_FUNCTION_CALL").contains(lookahead.getToken())){
             if (VARIABLE_FUNCTION_CALL()){
-                pwDerivation.write("FACTOR -> VARIABLE_FUNCTION_CALL .\n");
+                System.out.println("FACTOR -> VARIABLE_FUNCTION_CALL .\n");
             }else success = false;
         }
 //        FACTOR -> SIGN FACTOR .
         else if (e.FIRST("SIGN").contains(lookahead.getToken())){
             if (SIGN() && FACTOR()){
-                pwDerivation.write("FACTOR -> SIGN FACTOR .\n");
+                System.out.println("FACTOR -> SIGN FACTOR .\n");
             }else success = false;
         }
 //        FACTOR -> lpar ARITH_EXPRESSION rpar .
@@ -874,19 +884,19 @@ public class parser {
         else if (e.FIRST("FACTOR").contains(lookahead.getToken())){
             if (lookahead.getToken().equals("lpar")) {
                 if (match("lpar") && ARITH_EXPRESSION() && match("rpar")) {
-                    pwDerivation.write("FACTOR -> lpar ARITH_EXPRESSION rpar .\n");
+                    System.out.println("FACTOR -> lpar ARITH_EXPRESSION rpar .\n");
                 }
             }else if (lookahead.getToken().equals("not")){
                     if (match("not") && FACTOR()){
-                    pwDerivation.write("FACTOR -> not FACTOR .\n");
+                    System.out.println("FACTOR -> not FACTOR .\n");
                 }
             }else if (lookahead.getToken().equals("intnum")){
                     if (match("intnum")){
-                    pwDerivation.write("FACTOR -> intnum .\n");
+                    System.out.println("FACTOR -> intnum .\n");
                 }
             }else if (lookahead.getToken().equals("floatnum")){
                     if (match("floatnum")){
-                    pwDerivation.write("FACTOR -> intnum .\n");
+                    System.out.println("FACTOR -> floatnum .\n");
                 }
             }else success = false;
         }else success = false;
@@ -898,7 +908,7 @@ public class parser {
         if (!skipErrors("VARIABLE_FUNCTION_CALL")) return false;
         if (e.FIRST("VARIABLE_FUNCTION_CALL").contains(lookahead.getToken())){
             if (match("id") && VARIABLE_OR_FUNCTION_CALL()){
-                pwDerivation.write("VARIABLE_FUNCTION_CALL -> id VARIABLE_OR_FUNCTION_CALL .\n");
+                System.out.println("VARIABLE_FUNCTION_CALL -> id VARIABLE_OR_FUNCTION_CALL .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -910,12 +920,12 @@ public class parser {
         if (!skipErrors("VARIABLE_OR_FUNCTION_CALL")) return false;
         if (e.FIRST("INDICES").contains(lookahead.getToken()) || e.FOLLOW("INDICES").contains(lookahead.getToken()) ){ //
             if (INDICES() && FACTOR_VARIABLE()){
-                pwDerivation.write("VARIABLE_OR_FUNCTION_CALL  -> INDICES FACTOR_VARIABLE .\n");
+                System.out.println("VARIABLE_OR_FUNCTION_CALL  -> INDICES FACTOR_VARIABLE .\n");
             }else success = false;
         }else if (e.FIRST("VARIABLE_OR_FUNCTION_CALL").contains(lookahead.getToken())){
             if (match("lpar") && FUNCTION_CALL_PARAMS() && match("rpar")
                 && FACTOR_FUNCTION_CALL())
-                pwDerivation.write("VARIABLE_OR_FUNCTION_CALL -> lpar FUNCTION_CALL_PARAMS rpar FACTOR_FUNCTION_CALL .\n");
+                System.out.println("VARIABLE_OR_FUNCTION_CALL -> lpar FUNCTION_CALL_PARAMS rpar FACTOR_FUNCTION_CALL .\n");
         }else success = false;
         return success;
     }
@@ -926,10 +936,10 @@ public class parser {
         if (!skipErrors("FACTOR_VARIABLE")) return false;
         if (e.FIRST("FACTOR_VARIABLE").contains(lookahead.getToken())){ // || e.isNULLABLE("FACTOR_VARIABLE")
             if (match("dot") && VARIABLE_FUNCTION_CALL()){
-                pwDerivation.write("FACTOR_VARIABLE  -> dot VARIABLE_FUNCTION_CALL .\n");
+                System.out.println("FACTOR_VARIABLE  -> dot VARIABLE_FUNCTION_CALL .\n");
             }else success = false;
         }else if (e.FOLLOW("FACTOR_VARIABLE").contains(lookahead.getToken())){
-            pwDerivation.write("FACTOR_VARIABLE ->  .\n");
+            System.out.println("FACTOR_VARIABLE ->  .\n");
         }else success = false;
         return success;
     }
@@ -940,10 +950,10 @@ public class parser {
         if (!skipErrors("FACTOR_FUNCTION_CALL")) return false;
         if (e.FIRST("FACTOR_FUNCTION_CALL").contains(lookahead.getToken())){
             if (match("dot") && VARIABLE_FUNCTION_CALL()){
-                pwDerivation.write("FACTOR_FUNCTION_CALL  -> dot VARIABLE_FUNCTION_CALL .\n");
+                System.out.println("FACTOR_FUNCTION_CALL  -> dot VARIABLE_FUNCTION_CALL .\n");
             }else success = false;
         }else if (e.FOLLOW("FACTOR_FUNCTION_CALL").contains(lookahead.getToken())){
-            pwDerivation.write("FACTOR_FUNCTION_CALL ->  .\n");
+            System.out.println("FACTOR_FUNCTION_CALL ->  .\n");
         }else success = false;
         return success;
     }
@@ -953,7 +963,7 @@ public class parser {
         if (!skipErrors("TERM")) return false;
         if (e.FIRST("FACTOR").contains(lookahead.getToken())){
             if (FACTOR() && RIGHT_REC_TERM()){
-                pwDerivation.write("TERM -> FACTOR RIGHT_REC_TERM .\n");
+                System.out.println("TERM -> FACTOR RIGHT_REC_TERM .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -965,15 +975,15 @@ public class parser {
         if (e.FIRST("MULT_OP").contains(lookahead.getToken())){
             if (lookahead.getToken().equals("mult")){
                 if (match("mult")){
-                pwDerivation.write("MULT_OP -> mult .\n");
+                System.out.println("MULT_OP -> mult .\n");
                 }
             }else if (lookahead.getToken().equals("div")) {
                 if (match("div")){
-                pwDerivation.write("MULT_OP -> div .\n");
+                System.out.println("MULT_OP -> div .\n");
                 }
             }else if(lookahead.getToken().equals("and")){
                 if (match("and")){
-                pwDerivation.write("MULT_OP -> and .\n");
+                System.out.println("MULT_OP -> and .\n");
             }
             }else success = false;
         }else success = false;
@@ -986,10 +996,10 @@ public class parser {
         if (!skipErrors("RIGHT_REC_TERM")) return false;
         if (e.FIRST("MULT_OP").contains(lookahead.getToken())){
             if (MULT_OP() && FACTOR() && RIGHT_REC_TERM()){
-                pwDerivation.write("RIGHT_REC_TERM -> MULT_OP FACTOR RIGHT_REC_TERM .\n");
+                System.out.println("RIGHT_REC_TERM -> MULT_OP FACTOR RIGHT_REC_TERM .\n");
             }else success = false;
         }else if (e.FOLLOW("RIGHT_REC_TERM").contains(lookahead.getToken())){
-            pwDerivation.write("RIGHT_REC_TERM ->  .\n");
+            System.out.println("RIGHT_REC_TERM ->  .\n");
         }else success = false;
         return success;
     }
@@ -1000,11 +1010,11 @@ public class parser {
         if (!skipErrors("TYPE_OR_VOID")) return false;
         if (e.FIRST("TYPE").contains(lookahead.getToken())){
             if (TYPE()){
-                pwDerivation.write("TYPE_OR_VOID -> TYPE .\n");
+                System.out.println("TYPE_OR_VOID -> TYPE .\n");
             }else success = false;
         }else if (e.FIRST("TYPE_OR_VOID").contains(lookahead.getToken())){
             if (match("void")){
-                pwDerivation.write("TYPE_OR_VOID -> void .\n");
+                System.out.println("TYPE_OR_VOID -> void .\n");
             }
         }else success = false;
         return success;
@@ -1016,11 +1026,11 @@ public class parser {
         if (!skipErrors("TYPE")) return false;
         if (e.FIRST("TYPE_NON_ID").contains(lookahead.getToken())){
             if (TYPE_NON_ID()){
-                pwDerivation.write("TYPE -> TYPE_NON_ID .\n");
+                System.out.println("TYPE -> TYPE_NON_ID .\n");
             }else success = false;
         }else if (e.FIRST("TYPE").contains(lookahead.getToken())){
             if (match("id")){
-                pwDerivation.write("TYPE -> id .\n");
+                System.out.println("TYPE -> id .\n");
             }
         }else success = false;
         return success;
@@ -1033,11 +1043,11 @@ public class parser {
         if (e.FIRST("TYPE_NON_ID").contains(lookahead.getToken())){
             if (lookahead.getToken().equals("integer")){
                 if (match("integer")){
-                    pwDerivation.write("TYPE_NON_ID  -> integer .\n");
+                    System.out.println("TYPE_NON_ID  -> integer .\n");
                 }
             }else if (lookahead.getToken().equals("float")) {
                 if (match("float")) {
-                    pwDerivation.write("TYPE_NON_ID  -> float .\n");
+                    System.out.println("TYPE_NON_ID  -> float .\n");
                 }
             }else success = false;
 
@@ -1050,7 +1060,7 @@ public class parser {
         if (!skipErrors("ARRAY_SIZE")) return false;
         if (e.FIRST("ARRAY_SIZE").contains(lookahead.getToken())){
             if (match("lsqbr") && OPTIONAL_INT() && match("rsqbr")){
-                pwDerivation.write("TERM -> FACTOR RIGHT_REC_TERM .\n");
+                System.out.println("TERM -> FACTOR RIGHT_REC_TERM .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -1062,10 +1072,10 @@ public class parser {
         if (!skipErrors("OPTIONAL_INT")) return false;
         if (e.FIRST("OPTIONAL_INT").contains(lookahead.getToken())){
             if (match("intnum")){
-                pwDerivation.write("OPTIONAL_INT -> integer .\n");
+                System.out.println("OPTIONAL_INT -> intnum .\n");
             }else success = false;
         }else if (e.FOLLOW("OPTIONAL_INT").contains(lookahead.getToken())){
-            pwDerivation.write("OPTIONAL_INT ->  .\n");
+            System.out.println("OPTIONAL_INT ->  .\n");
         }else success = false;
         return success;
     }
@@ -1075,7 +1085,7 @@ public class parser {
         if (!skipErrors("VARIABLE_DECLARATION")) return false;
         if (e.FIRST("VARIABLE_DECLARATION").contains(lookahead.getToken())){
             if (match("id") && ARRAY_DIMENSIONS() && match("semi")){
-                pwDerivation.write("VARIABLE_DECLARATION -> id ARRAY_DIMENSIONS semi .\n");
+                System.out.println("VARIABLE_DECLARATION -> id ARRAY_DIMENSIONS semi .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -1086,7 +1096,7 @@ public class parser {
         if (!skipErrors("FUNCBODY")) return false;
         if (e.FIRST("OPTFUNCBODY0").contains(lookahead.getToken()) || e.isNULLABLE("OPTFUNCBODY0")){
             if (OPTFUNCBODY0() && match("do") && REPTSTATEMENT() && match("end")){
-                pwDerivation.write("FUNCBODY  -> OPTFUNCBODY0 do REPTSTATEMENT end .\n");
+                System.out.println("FUNCBODY  -> OPTFUNCBODY0 do REPTSTATEMENT end .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -1099,14 +1109,14 @@ public class parser {
         if (!skipErrors("STATEMENT_BLOCK")) return false;
         if (e.FIRST("STATEMENT").contains(lookahead.getToken())) {
             if (STATEMENT()) {
-                pwDerivation.write("STATEMENT_BLOCK  -> STATEMENT .\n");
+                System.out.println("STATEMENT_BLOCK  -> STATEMENT .\n");
             } else success = false;
         }else if (e.FIRST("STATEMENT_BLOCK").contains(lookahead.getToken())){
             if (match("do") && REPTSTATEMENT() && match("end")){
-                pwDerivation.write("STATEMENT_BLOCK  -> do REPTSTATEMENT end .\n");
+                System.out.println("STATEMENT_BLOCK  -> do REPTSTATEMENT end .\n");
             }else success = false;
         }else if (e.FOLLOW("STATEMENT_BLOCK").contains(lookahead.getToken())){
-            pwDerivation.write("STATEMENT_BLOCK ->  .\n");
+            System.out.println("STATEMENT_BLOCK ->  .\n");
         }else success = false;
         return success;
     }
@@ -1115,8 +1125,8 @@ public class parser {
 //        ASSIGNMENT_OP  -> eq .
         if (!skipErrors("ASSIGNMENT_OP")) return false;
         if (e.FIRST("ASSIGNMENT_OP").contains(lookahead.getToken())){
-            if (match("equal")){
-                pwDerivation.write("ASSIGNMENT_OP  -> equal .\n");
+            if (match("eq")){
+                System.out.println("ASSIGNMENT_OP  -> eq .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -1127,7 +1137,7 @@ public class parser {
         if (!skipErrors("FUNCTION_PARAMS_TAIL")) return false;
         if (e.FIRST("FUNCTION_PARAMS_TAIL").contains(lookahead.getToken())){
             if (match("comma") && TYPE() && match("id") && ARRAY_DIMENSIONS()){
-                pwDerivation.write("FUNCTION_PARAMS_TAIL -> comma TYPE id ARRAY_DIMENSIONS .\n");
+                System.out.println("FUNCTION_PARAMS_TAIL -> comma TYPE id ARRAY_DIMENSIONS .\n");
             }else success = false;
         }else success = false;
         return success;
@@ -1139,10 +1149,10 @@ public class parser {
         if (!skipErrors("INDICES")) return false; //|| e.isNULLABLE("INDICES")
         if (e.FIRST("INDEX").contains(lookahead.getToken())){
             if (INDEX() && INDICES()){
-                pwDerivation.write("INDICES  -> INDEX INDICES .\n");
+                System.out.println("INDICES  -> INDEX INDICES .\n");
             }else success = false;
         }else if (e.FOLLOW("INDICES").contains(lookahead.getToken())){
-            pwDerivation.write("INDICES ->  .\n");
+            System.out.println("INDICES ->  .\n");
         }else success = false;
         return success;
     }
