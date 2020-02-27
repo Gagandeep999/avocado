@@ -18,36 +18,36 @@
       VARIABLE_EXT      NO      NO      dot equal      id semi if else while read write return end
       FUNCTION_CALL_EXT      NO      NO      semi dot      id semi if else while read write return end
       FUNCTION_PARAMS      YES      NO      id integer float      rpar
-      ADD_OP      NO      NO      plus minus or      id lpar plus minus not intnum floatnum
+      ADD_OP      NO      NO      plus minus or      id lpar plus minus intnum floatnum not
       OPTCLASSDECL2      YES      NO      inherits      lcurbr
-      REL_EXPRESSION      YES      NO      id lpar plus minus not intnum floatnum      rpar
+      REL_EXPRESSION      NO      NO      id lpar plus minus intnum floatnum not      rpar
       FUNCTION_DECLARATION      NO      NO      lpar      rcurbr public private
       FUNCTION_CALL_PARAMS_TAILS      YES      NO      comma      rpar
       FUNCTION_CALL_PARAMS_TAIL      NO      NO      comma      rpar comma
-      FUNCTION_CALL_PARAMS      YES      NO      id lpar plus minus not intnum floatnum      rpar
+      FUNCTION_CALL_PARAMS      YES      NO      id lpar plus minus intnum floatnum not      rpar
       OPTFUNCBODY0      YES      NO      local      do
       ARRAY_DIMENSIONS      YES      NO      lsqbr      semi rpar comma
-      EXPRESSION      NO      NO      id lpar plus minus not intnum floatnum      semi rpar comma
+      EXPRESSION      NO      NO      id lpar plus minus intnum floatnum not      semi rpar comma
       REL_EXPRESSION_OR_NULL      YES      NO      eq neq lessthan gt leq geq      semi rpar comma
       REPTSTATEMENT      YES      NO      id if while read write return      end
-      ARITH_EXPRESSION      NO      NO      id lpar plus minus not intnum floatnum      semi rpar comma eq neq lessthan gt leq geq rsqbr
+      ARITH_EXPRESSION      NO      NO      id lpar plus minus intnum floatnum not      semi rpar comma eq neq lessthan gt leq geq rsqbr
       RIGHT_REC_ARITH_EXPRESSION      YES      NO      plus minus or      semi rpar comma eq neq lessthan gt leq geq rsqbr
       FUNCTION_SIGNATURE      NO      NO      id      local do
       FUNCTION_SIGNATURE_NAMESPACE      NO      NO      lpar sr      local do
       FUNCTION_SIGNATURE_EXT      NO      NO      lpar      local do
       FUNCTION_PARAMS_TAILS      YES      NO      comma      rpar
       INHERITED_CLASSES      YES      NO      comma      lcurbr
-      SIGN      NO      NO      plus minus      id lpar plus minus not intnum floatnum
-      COMPARE_OP      NO      NO      eq neq lessthan gt leq geq      id lpar plus minus not intnum floatnum
+      SIGN      NO      NO      plus minus      id lpar plus minus intnum floatnum not
+      COMPARE_OP      NO      NO      eq neq lessthan gt leq geq      id lpar plus minus intnum floatnum not
       INDEX      NO      NO      lsqbr      semi rpar dot plus minus or comma eq neq lessthan gt leq geq lsqbr rsqbr mult div and equal
       VARIABLE_DECLARATIONS      YES      NO      id integer float      do
-      FACTOR      NO      NO      id lpar plus minus not intnum floatnum      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and
+      FACTOR      NO      NO      id lpar plus minus intnum floatnum not      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and
       VARIABLE_FUNCTION_CALL      NO      NO      id      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and
       VARIABLE_OR_FUNCTION_CALL      YES      NO      lpar dot lsqbr      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and
       FACTOR_VARIABLE      YES      NO      dot      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and
       FACTOR_FUNCTION_CALL      YES      NO      dot      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and
-      TERM      NO      NO      id lpar plus minus not intnum floatnum      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr
-      MULT_OP      NO      NO      mult div and      id lpar plus minus not intnum floatnum
+      TERM      NO      NO      id lpar plus minus intnum floatnum not      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr
+      MULT_OP      NO      NO      mult div and      id lpar plus minus intnum floatnum not
       RIGHT_REC_TERM      YES      NO      mult div and      semi rpar plus minus or comma eq neq lessthan gt leq geq rsqbr
       TYPE_OR_VOID      NO      NO      id void integer float      semi local do
       TYPE      NO      NO      id integer float      id semi local do
@@ -55,8 +55,8 @@
       ARRAY_SIZE      NO      NO      lsqbr      semi rpar comma lsqbr
       OPTIONAL_INT      YES      NO      intnum      rsqbr
       VARIABLE_DECLARATION      NO      NO      id      id rcurbr public private integer float do
-      FUNCBODY      NO      YES      local do      semi $
+      FUNCBODY      NO      YES      local do      main id $
       STATEMENT_BLOCK      YES      NO      id if while read write return do      semi else
-      ASSIGNMENT_OP      NO      NO      equal      id lpar plus minus not intnum floatnum
+      ASSIGNMENT_OP      NO      NO      equal      id lpar plus minus intnum floatnum not
       FUNCTION_PARAMS_TAIL      NO      NO      comma      rpar comma
       INDICES      YES      NO      lsqbr      semi rpar dot plus minus or comma eq neq lessthan gt leq geq rsqbr mult div and equal
