@@ -352,6 +352,7 @@ public class parser {
                     derivationStack.push("VISIBILITY -> private .\n");
                     break;
                 default: success = false;
+                break;
             }
 
         }else success = false;
@@ -397,6 +398,7 @@ public class parser {
                     derivationStack.push("STATEMENT  -> return lpar EXPRESSION rpar semi .\n");
                 }break;
                 default: success = false;
+                break;
             }
 
         }else success = false;
@@ -543,7 +545,8 @@ public class parser {
                 case "or" : match("or");
                     derivationStack.push("ADD_OP -> or .\n");
                     break;
-//                default : success = false;
+                default : success = false;
+                break;
             }
         }else success = false;
         return success;
@@ -828,6 +831,7 @@ public class parser {
                     derivationStack.push("SIGN -> geq .\n");
                     break;
                 default: success = false;
+                    break;
             }
         }else success = false;
         return success;
@@ -892,6 +896,7 @@ public class parser {
                     derivationStack.push("FACTOR -> floatnum .\n");
                 }break;
                 default: success = false;
+                break;
             }
 
         }else success = false;
@@ -980,6 +985,7 @@ public class parser {
                     derivationStack.push("MULT_OP -> and .\n");
                     break;
                 default: success = false;
+                    break;
             }
         }else success = false;
         return success;

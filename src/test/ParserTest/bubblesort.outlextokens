@@ -28,7 +28,7 @@
 [end, end, 28] [semi, ;, 28] 
 [id, i, 29] [equal, =, 29] [id, i, 29] [plus, +, 29] [intnum, 1, 29] [semi, ;, 29] 
 [end, end, 30] [semi, ;, 30] 
-[end, end, 31] [semi, ;, 31] 
+[end, end, 31] 
 
 [blockcmnt, /* Print the array */, 33] 
 [id, printArray, 34] [lpar, (, 34] [integer, integer, 34] [id, arr, 34] [lsqbr, [, 34] [rsqbr, ], 34] [comma, ,, 34] [integer, integer, 34] [id, size, 34] [rpar, ), 34] [colon, :, 34] [void, void, 34] 
@@ -43,7 +43,7 @@
 [write, write, 43] [lpar, (, 43] [id, arr, 43] [lsqbr, [, 43] [id, i, 43] [rsqbr, ], 43] [rpar, ), 43] [semi, ;, 43] 
 [id, i, 44] [equal, =, 44] [id, i, 44] [plus, +, 44] [intnum, 1, 44] [semi, ;, 44] 
 [end, end, 45] [semi, ;, 45] 
-[end, end, 46] [semi, ;, 46] 
+[end, end, 46] 
 
 [inlinecmnt, // main funtion to test above, 48] 
 [main, main, 49] 

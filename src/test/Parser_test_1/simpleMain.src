@@ -1,8 +1,8 @@
 main
   local
-    integer x;
+    integer x ;
   do
-    x = 1 + 2;
+    x = 1 + 2 ;
 	write ( x ) ;
 	read ( x ) ;
 	x = x <> x;
