@@ -176,7 +176,7 @@ public class lexer {
                 lexeme.append(Character.toString((char) currentIntChar));
                 createToken("neq", lexeme, lineNum);
             } else {
-                createToken("lt", lexeme, lineNum);
+                createToken("lessthan", lexeme, lineNum);
 
                 if (Pattern.matches("[a-zA-z0-9_]", newStringChar)){
                     lexeme.append(newStringChar);
@@ -235,10 +235,10 @@ public class lexer {
             if ( !lexeme.toString().equals("") && !isNum){
                 checkTokenKeywords();
                 lexeme.append(currentStringChar);
-                createToken("period", lexeme, lineNum);
+                createToken("dot", lexeme, lineNum);
             }else{
                 lexeme.append(currentStringChar);
-                createToken("period", lexeme, lineNum);
+                createToken("dot", lexeme, lineNum);
             }
         }
         else if (currentStringChar.equals("+")) {
@@ -385,7 +385,11 @@ public class lexer {
         else if (Pattern.matches("-?[0][0-9]{0,15}", lexeme)){
             createToken("invalidinteger", lexeme, lineNum);
             isNum = false;
-        }else if (Pattern.matches("[1-9]*[.][0]", lexeme)){
+        }else if (Pattern.matches("[0][.][0]", lexeme)){
+            createToken("floatnum", lexeme, lineNum);
+            isNum = false;
+        }
+        else if (Pattern.matches("[1-9]*[.][0]", lexeme)){
             createToken("floatnum", lexeme, lineNum);
             isNum = false;
         }else if (Pattern.matches("-?[1-9][0-9]{0,10}[.]?[0-9]{0,5}[1-9]e?[+|-]?[1-9]{0,10}", lexeme)){

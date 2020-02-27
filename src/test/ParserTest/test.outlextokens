@@ -1,0 +1,5 @@
+[main, main, 1] 
+[do, do, 2] 
+[id, a, 3] [equal, =, 3] [id, a, 3] [or, or, 3] [id, a, 3] [semi, ;, 3] 
+[id, a, 4] [equal, =, 4] [id, a, 4] [and, and, 4] [id, a, 4] [semi, ;, 4] 
+[end, end, 5] 
