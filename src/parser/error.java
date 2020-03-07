@@ -1,4 +1,4 @@
-package com.gagan_442_a1;
+package parser;
 
 import java.io.BufferedReader;
 import java.io.IOException;

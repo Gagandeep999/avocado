@@ -1,4 +1,6 @@
-package com.gagan_442_a1;
+package parser;
+import lexer.token;
+import lexer.lex;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,7 +13,7 @@ public class parsedriver {
         try{
             String filename = args[0];
             BufferedReader br = new BufferedReader(new FileReader(filename));
-            lexer lex = new lexer(filename);
+            lex lex = new lex(filename);
             lex.nextToken(br);
             LinkedList<token> tlist = lex.getTokenList();
             LinkedList<token> newTList = new LinkedList<>();
@@ -22,7 +24,7 @@ public class parsedriver {
                     newTList.add(t);
                 }
             }
-            parser p = new parser(newTList, filename);
+            parse p = new parse(newTList, filename);
             if (p.parse()){
                 System.out.println("Parser Finished");
             }else System.out.println("Error in parsing");

@@ -1,10 +1,10 @@
-package com.gagan_442_a1;
+package lexer;
 
 import java.io.*;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
-public class lexer {
+public class lex {
     private int lineNum;
     private int currentIntChar;
     private StringBuilder lexeme;
@@ -17,7 +17,7 @@ public class lexer {
      * constructor for initializing the printwriter for a specific file
      * @param outputLocation: filepath of the file where the outlexors will be printed.
      */
-    public lexer(String outputLocation){
+    public lex(String outputLocation){
         this.lineNum = 1;
         this.currentIntChar = 0;
         this.lexeme = new StringBuilder(50);

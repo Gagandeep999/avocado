@@ -1,4 +1,4 @@
-package com.gagan_442_a1;
+package lexer;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -105,11 +105,11 @@ public class lexicalAnalyzerTest {
         String expectedToken = "";
         String expectedError = "";
         BufferedReader br = new BufferedReader(new StringReader(input));
-        lexer lex = new lexer("src/com/gagan_442_a1/testLex.src");
+        lex lex = new lex("src/lexer/testLex.src");
         lex.nextToken(br);
         try {
-            expectedToken = new String(Files.readAllBytes(Paths.get("src/com/gagan_442_a1/testLex.outlextokens")));
-            expectedError = new String(Files.readAllBytes(Paths.get("src/com/gagan_442_a1/testLex.outlexerrors")));
+            expectedToken = new String(Files.readAllBytes(Paths.get("src/lexer/testLex.outlextokens")));
+            expectedError = new String(Files.readAllBytes(Paths.get("src/lexer/testLex.outlexerrors")));
             Assert.assertTrue(expectedToken.equals(token));
             Assert.assertTrue(expectedError.equals(error));
         } catch (IOException e) {
@@ -121,8 +121,8 @@ public class lexicalAnalyzerTest {
     }
 
     private static void deleteFile() {
-        File outlexorsToken = new File("src/com/gagan_442_a1/testLex.outlextokens");
-        File outlexorsError = new File("src/com/gagan_442_a1/testLex.outlexerrors");
+        File outlexorsToken = new File("src/lexer/testLex.outlextokens");
+        File outlexorsError = new File("src/lexer/testLex.outlexerrors");
         if (outlexorsToken.exists()) {
             outlexorsToken.delete();
         } else {

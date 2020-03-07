@@ -1,6 +1,6 @@
-package com.gagan_442_a1;
+package lexer;
 
-class token {
+public class token {
     private String token;
     private StringBuilder lexeme;
     private int linenum;

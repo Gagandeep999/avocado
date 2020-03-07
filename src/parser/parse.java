@@ -1,21 +1,22 @@
-package com.gagan_442_a1;
+package parser;
+
+import lexer.token;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-public class parser {
+public class parse {
 
     private LinkedList<token> tokens;
     private token lookahead;
-//    private error e;
     private error e;
     private boolean success;
     Stack<String> derivationStack;
     PrintWriter pwDerivation;
     PrintWriter pwSyntaxError;
 
-    public parser(LinkedList<token> tokenLinkedList, String outputLocation){
+    public parse(LinkedList<token> tokenLinkedList, String outputLocation){
         this.tokens = (LinkedList<token>) tokenLinkedList.clone();
         this.lookahead = tokenLinkedList.getFirst();
         this.e = new error();
