@@ -2,6 +2,7 @@ package lexer;
 
 import java.io.*;
 import java.util.LinkedList;
+import java.util.Stack;
 import java.util.regex.Pattern;
 
 public class lex {
