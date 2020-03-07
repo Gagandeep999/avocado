@@ -176,3 +176,19 @@ FUNCTION_PARAMS_TAIL -> #1(param) comma TYPE #2 id #2 ARRAY_DIMENSIONS #2 .
 
 INDICES -> #1 INDEX #2 INDICES #4 .
 INDICES ->  .
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+        ---------
+Stack:  | X | Y     <- top of stack
+        ---------
+
+#1 -> create a node Z with the LHS name, push Z to stack
+#1(input) -> create a node Z with the name 'input', push Z to stack
+#2 -> pop X & Y, make Y right child of X, push X
+#3 -> pop X & Y, make X left child of Y, push Y
+#4 -> pop X & Y, X adopts Y's children, push X
+#5 -> group all the Xs on top the stack with the same name under one Z
+#6 -> delete Y
+#7 -> if X has only one child, replace it with the child
