@@ -11,7 +11,8 @@ public class parse {
     private token lookahead;
     private error e;
     private boolean success;
-    private Stack<node> ast;
+    private int nodeNum;
+    public Stack<node> ast;
     Stack<String> derivationStack;
     PrintWriter pwDerivation;
     PrintWriter pwSyntaxError;
@@ -22,6 +23,7 @@ public class parse {
         this.e = new error();
         this.e.createTable();
         this.success = true;
+        this.nodeNum = 0;
         this.derivationStack = new Stack<>();
         this.ast = new Stack<>();
 
@@ -107,8 +109,8 @@ public class parse {
                     break;
                 case "floatnum" : A_CREATEADD(lookahead);
                     break;
-//                case "integer" : A_CREATEADD(lookahead);
-//                    break;
+                case "equal" : A_CREATEADD(lookahead);
+                    break;
 //                case "integer" : A_CREATEADD(lookahead);
 //                    break;
 //                case "integer" : A_CREATEADD(lookahead);
@@ -148,7 +150,7 @@ public class parse {
 
     public boolean parse() {
 
-        if (START())
+        if (START() & A_RIGHTCHILD())
             derivationStack.push("Sucessfuly parsed the source code!\n");
 //            pwDerivation.write("Sucessfuly parsed the source code!");
 
@@ -180,7 +182,7 @@ public class parse {
         if (!skipErrors("PROGRAM")) return false;
         if (e.FIRST("REPTCLASSDECL").contains(lookahead.getToken()) || e.isNULLABLE("REPTCLASSDECL")){
             if (A_CREATEADD("PROGRAM") && REPTCLASSDECL() && A_RIGHTCHILD() && REPTFUNCDEF()
-                    && A_RIGHTCHILD() && match("main") && FUNCBODY() && A_RIGHTCHILD() && A_RIGHTCHILD()){
+                    && A_RIGHTCHILD() && match("main") && FUNCBODY() && A_RIGHTCHILD() && A_RIGHTCHILD()){ //&& A_RIGHTCHILD()
                 derivationStack.push("PROGRAM  ->  REPTCLASSDECL REPTFUNCDEF main FUNCBODY .\n");
             }else success = false;
         }else success = false;
@@ -192,12 +194,14 @@ public class parse {
 //        REPTCLASSDECL ->  .
         if (!skipErrors("REPTCLASSDECL")) return false;
         if (e.FIRST("CLASSDECL").contains(lookahead.getToken()) ){
-            if (A_CREATEADD("REPTCLASSDECL") && CLASSDECL() && A_RIGHTCHILD()
-                    && REPTCLASSDECL() && A_ADOPTS()){
+            if (A_CREATEADD("class_list") && CLASSDECL() && A_RIGHTCHILD()
+                    && REPTCLASSDECL() && A_ADOPTS() && A_RIGHTCHILD()){
                 derivationStack.push("REPTCLASSDECL -> CLASSDECL  REPTCLASSDECL .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken())){
-            derivationStack.push("REPTCLASSDECL ->  .\n");
+            if(A_CREATEADD("class_list")){
+                derivationStack.push("REPTCLASSDECL ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -220,12 +224,14 @@ public class parse {
 //        REPTFUNCDEF ->  .
         if (!skipErrors("REPTFUNCDEF")) return false;
         if (e.FIRST("FUNCDEF").contains(lookahead.getToken()) ){
-            if (A_CREATEADD("REPTFUNCDEF") && FUNCDEF() && A_RIGHTCHILD()
+            if (A_CREATEADD("function_list") && FUNCDEF() && A_RIGHTCHILD()
                     && REPTFUNCDEF() && A_ADOPTS()){
                 derivationStack.push("REPTFUNCDEF -> FUNCDEF REPTFUNCDEF .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTFUNCDEF").contains(lookahead.getToken())){
-            derivationStack.push("REPTFUNCDEF ->  .\n");
+            if(A_CREATEADD("REPTFUNCDEF")){
+                derivationStack.push("REPTFUNCDEF ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -234,7 +240,7 @@ public class parse {
 //        FUNCDEF  -> #1(function) FUNCTION_SIGNATURE #2 FUNCBODY #2 .
         if (!skipErrors("FUNCDEF")) return false;
         if (e.FIRST("FUNCTION_SIGNATURE").contains(lookahead.getToken())){
-            if (A_CREATEADD("FUNCTION") && FUNCTION_SIGNATURE() && A_RIGHTCHILD()
+            if (A_CREATEADD("func_def") && FUNCTION_SIGNATURE() && A_RIGHTCHILD()
                     && FUNCBODY() && A_RIGHTCHILD()){
                 derivationStack.push("FUNCDEF  -> FUNCTION_SIGNATURE FUNCBODY semi .\n");
             }else success = false;
@@ -252,7 +258,9 @@ public class parse {
                 derivationStack.push("MEMBER_DECLARATIONS  -> VISIBILITY MEMBER_DECLARATION MEMBER_DECLARATIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken()) || e.isNULLABLE("REPTCLASSDECL") ){ //
-            derivationStack.push("REPTCLASSDECL ->  .\n");
+            if (A_CREATEADD("MEMBER_DECLARATIONS")){
+                derivationStack.push("REPTCLASSDECL ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -294,7 +302,6 @@ public class parse {
 //        VISIBILITY -> private .
         if (!skipErrors("VISIBILITY")) return false;
         if (e.FIRST("VISIBILITY").contains(lookahead.getToken())){
-
             switch (lookahead.getToken()){
                 case "public" : match("public");
                     derivationStack.push("VISIBILITY -> public .\n");
@@ -305,7 +312,6 @@ public class parse {
                 default: success = false;
                 break;
             }
-
         }else success = false;
         return success;
     }
@@ -336,7 +342,7 @@ public class parse {
                     derivationStack.push("STATEMENT  -> while lpar REL_EXPRESSION rpar STATEMENT_BLOCK semi .\n");
                 }break;
                 case "read" : if (match("read") && match("lpar") && STATEMENT_VARIABLE() && A_DELETE()
-                        && A_GROUP() && A_RIGHTCHILD() && match("rpar") && match("semi")){
+                        && A_GROUP() && A_RIGHTCHILD()  && match("rpar") && match("semi")){
                     derivationStack.push("STATEMENT  -> read lpar STATEMENT_VARIABLE rpar semi .\n");
                 }break;
                 case "write" : if (match("write") && match("lpar") && EXPRESSION()
@@ -393,7 +399,9 @@ public class parse {
                 derivationStack.push("STATEMENT_VARIABLE_EXT -> dot STATEMENT_VARIABLE .\n");
             }else success = false;
         }else if (e.FOLLOW("STATEMENT_VARIABLE_EXT").contains(lookahead.getToken())){
-            derivationStack.push("STATEMENT_VARIABLE_EXT ->  .\n");
+            if (A_CREATEADD("STATEMENT_VARIABLE_EXT")){
+                derivationStack.push("STATEMENT_VARIABLE_EXT ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -482,7 +490,9 @@ public class parse {
                 derivationStack.push("FUNCTION_PARAMS  -> TYPE id ARRAY_DIMENSIONS FUNCTION_PARAMS_TAILS .\n");
             }else success = false;
         }else if (e.FOLLOW("FUNCTION_PARAMS").contains(lookahead.getToken())){
-            derivationStack.push("FUNCTION_PARAMS ->  .\n");
+            if (A_CREATEADD("FUNCTION_PARAMS")){
+                derivationStack.push("FUNCTION_PARAMS ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -517,7 +527,9 @@ public class parse {
                 derivationStack.push("OPTCLASSDECL2  -> inherits id INHERITED_CLASSES .\n");
             }else success = false;
         }else if (e.FOLLOW("OPTCLASSDECL2").contains(lookahead.getToken())){
-            derivationStack.push("OPTCLASSDECL2 ->  .\n");
+            if (A_CREATEADD("OPTCLASSDECL2")){
+                derivationStack.push("OPTCLASSDECL2 ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -531,7 +543,9 @@ public class parse {
                 derivationStack.push("REL_EXPRESSION -> ARITH_EXPRESSION COMPARE_OP ARITH_EXPRESSION .\n");
             }else success = false;
         }else if (e.FOLLOW("REL_EXPRESSION").contains(lookahead.getToken())){
-            derivationStack.push("REL_EXPRESSION ->  .\n");
+            if (A_CREATEADD("REL_EXPRESSION")){
+                derivationStack.push("REL_EXPRESSION ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -559,7 +573,9 @@ public class parse {
                 derivationStack.push("FUNCTION_CALL_PARAMS_TAILS -> FUNCTION_CALL_PARAMS_TAIL FUNCTION_CALL_PARAMS_TAILS .\n");
             }else success = false;
         }else if (e.FOLLOW("FUNCTION_CALL_PARAMS_TAILS").contains(lookahead.getToken())){
-            derivationStack.push("FUNCTION_CALL_PARAMS_TAILS ->  .\n");
+            if (A_CREATEADD("FUNCTION_CALL_PARAMS_TAILS")){
+                derivationStack.push("FUNCTION_CALL_PARAMS_TAILS ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -585,7 +601,9 @@ public class parse {
                 derivationStack.push("FUNCTION_CALL_PARAMS -> EXPRESSION FUNCTION_CALL_PARAMS_TAILS .\n");
             }else success = false;
         }else if (e.FOLLOW("FUNCTION_CALL_PARAMS").contains(lookahead.getToken())){
-            derivationStack.push("FUNCTION_CALL_PARAMS ->  .\n");
+            if (A_CREATEADD("FUNCTION_CALL_PARAMS")){
+                derivationStack.push("FUNCTION_CALL_PARAMS ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -599,7 +617,9 @@ public class parse {
                 derivationStack.push("OPTFUNCBODY0  -> local VARIABLE_DECLARATIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("OPTFUNCBODY0").contains(lookahead.getToken())){
-            derivationStack.push("OPTFUNCBODY0 ->  .\n");
+            if (A_CREATEADD("OPTFUNCBODY0")){
+                derivationStack.push("OPTFUNCBODY0 ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -614,7 +634,9 @@ public class parse {
                 derivationStack.push("ARRAY_DIMENSIONS -> ARRAY_SIZE ARRAY_DIMENSIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("ARRAY_DIMENSIONS").contains(lookahead.getToken())){
-            derivationStack.push("ARRAY_DIMENSIONS ->  .\n");
+            if (A_CREATEADD("ARRAY_DIMENSIONS")){
+                derivationStack.push("ARRAY_DIMENSIONS ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -639,7 +661,9 @@ public class parse {
                 derivationStack.push("REL_EXPRESSION_OR_NULL -> COMPARE_OP ARITH_EXPRESSION .\n");
             }else success = false;
         }else if (e.FOLLOW("REL_EXPRESSION_OR_NULL").contains(lookahead.getToken())){
-            derivationStack.push("REL_EXPRESSION_OR_NULL ->  .\n");
+            if (A_CREATEADD("REL_EXPRESSION_OR_NULL")){
+                derivationStack.push("REL_EXPRESSION_OR_NULL ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -654,7 +678,9 @@ public class parse {
                 derivationStack.push("REPTSTATEMENT -> STATEMENT REPTSTATEMENT .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTSTATEMENT").contains(lookahead.getToken())){
-            derivationStack.push("REPTSTATEMENT ->  .\n");
+            if (A_CREATEADD("REPTSTATEMENT")){
+                derivationStack.push("REPTSTATEMENT ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -679,7 +705,9 @@ public class parse {
                 derivationStack.push("RIGHT_REC_ARITH_EXPRESSION -> ADD_OP TERM RIGHT_REC_ARITH_EXPRESSION .\n");
             }else success = false;
         }else if (e.FOLLOW("RIGHT_REC_ARITH_EXPRESSION").contains(lookahead.getToken())){
-            derivationStack.push("RIGHT_REC_ARITH_EXPRESSION ->  .\n");
+            if (A_CREATEADD("RIGHT_REC_ARITH_EXPRESSION")){
+                derivationStack.push("RIGHT_REC_ARITH_EXPRESSION ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -735,7 +763,9 @@ public class parse {
                 derivationStack.push("FUNCTION_PARAMS_TAILS  -> FUNCTION_PARAMS_TAIL FUNCTION_PARAMS_TAILS .\n");
             }else success = false;
         }else if (e.FOLLOW("FUNCTION_PARAMS_TAILS").contains(lookahead.getToken())){
-            derivationStack.push("FUNCTION_PARAMS_TAILS ->  .\n");
+            if (A_CREATEADD("FUNCTION_PARAMS_TAILS")){
+                derivationStack.push("FUNCTION_PARAMS_TAILS ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -750,7 +780,9 @@ public class parse {
                 derivationStack.push("INHERITED_CLASSES  -> comma id INHERITED_CLASSES .\n");
             }else success = false;
         }else if (e.FOLLOW("INHERITED_CLASSES").contains(lookahead.getToken())){
-            derivationStack.push("INHERITED_CLASSES ->  .\n");
+            if (A_CREATEADD("INHERITED_CLASSES")){
+                derivationStack.push("INHERITED_CLASSES ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -824,7 +856,9 @@ public class parse {
                 derivationStack.push("VARIABLE_DECLARATIONS  -> TYPE VARIABLE_DECLARATION VARIABLE_DECLARATIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("VARIABLE_DECLARATIONS").contains(lookahead.getToken())){
-            derivationStack.push("VARIABLE_DECLARATIONS ->  .\n");
+            if (A_CREATEADD("VARIABLE_DECLARATIONS")){
+                derivationStack.push("VARIABLE_DECLARATIONS ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -907,7 +941,9 @@ public class parse {
                 derivationStack.push("FACTOR_VARIABLE  -> dot VARIABLE_FUNCTION_CALL .\n");
             }else success = false;
         }else if (e.FOLLOW("FACTOR_VARIABLE").contains(lookahead.getToken())){
-            derivationStack.push("FACTOR_VARIABLE ->  .\n");
+            if (A_CREATEADD("FACTOR_VARIABLE")){
+                derivationStack.push("FACTOR_VARIABLE ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -921,7 +957,9 @@ public class parse {
                 derivationStack.push("FACTOR_FUNCTION_CALL  -> dot VARIABLE_FUNCTION_CALL .\n");
             }else success = false;
         }else if (e.FOLLOW("FACTOR_FUNCTION_CALL").contains(lookahead.getToken())){
-            derivationStack.push("FACTOR_FUNCTION_CALL ->  .\n");
+            if (A_CREATEADD("FACTOR_FUNCTION_CALL")){
+                derivationStack.push("FACTOR_FUNCTION_CALL ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -968,7 +1006,9 @@ public class parse {
                 derivationStack.push("RIGHT_REC_TERM -> MULT_OP FACTOR RIGHT_REC_TERM .\n");
             }else success = false;
         }else if (e.FOLLOW("RIGHT_REC_TERM").contains(lookahead.getToken())){
-            derivationStack.push("RIGHT_REC_TERM ->  .\n");
+            if (A_CREATEADD("RIGHT_REC_TERM")){
+                derivationStack.push("RIGHT_REC_TERM ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -1046,7 +1086,9 @@ public class parse {
                 derivationStack.push("OPTIONAL_INT -> intnum .\n");
             }else success = false;
         }else if (e.FOLLOW("OPTIONAL_INT").contains(lookahead.getToken())){
-            derivationStack.push("OPTIONAL_INT ->  .\n");
+            if (A_CREATEADD("OPTIONAL_INT")){
+                derivationStack.push("OPTIONAL_INT ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -1063,11 +1105,14 @@ public class parse {
         return success;
     }
 
+
     private boolean FUNCBODY(){
+
 //        FUNCBODY  ->  #1 OPTFUNCBODY0 #2 do REPTSTATEMENT #2 end  .
         if (!skipErrors("FUNCBODY")) return false;
         if (e.FIRST("OPTFUNCBODY0").contains(lookahead.getToken()) || e.isNULLABLE("OPTFUNCBODY0")){
-            if (A_CREATEADD("FUNCBODY") && OPTFUNCBODY0() && A_RIGHTCHILD() && match("do")
+//            @TODO: 2020-03-07 check what is the effect of taking out A_RIGHTCHILD() here
+            if (A_CREATEADD("FUNCBODY") && OPTFUNCBODY0() /*here*/ && match("do") //&& A_RIGHTCHILD()
                     && REPTSTATEMENT() && A_RIGHTCHILD() && match("end")){
                 derivationStack.push("FUNCBODY  -> OPTFUNCBODY0 do REPTSTATEMENT end .\n");
             }else success = false;
@@ -1090,7 +1135,9 @@ public class parse {
                 derivationStack.push("STATEMENT_BLOCK  -> do REPTSTATEMENT end .\n");
             }else success = false;
         }else if (e.FOLLOW("STATEMENT_BLOCK").contains(lookahead.getToken())){
-            derivationStack.push("STATEMENT_BLOCK ->  .\n");
+            if (A_CREATEADD("STATEMENT_BLOCK")){
+                derivationStack.push("STATEMENT_BLOCK ->  .\n");
+            }
         }else success = false;
         return success;
     }
@@ -1127,20 +1174,24 @@ public class parse {
                 derivationStack.push("INDICES  -> INDEX INDICES .\n");
             }else success = false;
         }else if (e.FOLLOW("INDICES").contains(lookahead.getToken())){
-            derivationStack.push("INDICES ->  .\n");
+            if (A_CREATEADD("INDICES")){
+                derivationStack.push("INDICES ->  .\n");
+            }
         }else success = false;
         return success;
     }
 
     private boolean A_CREATEADD(String name){
-        node x = new node(name);
+        node x = new node(name, nodeNum);
         ast.push(x);
-    return true;
+        nodeNum ++;
+        return true;
     }
 
     private boolean A_CREATEADD(token t){
-        node x = new node(t);
+        node x = new node(t, nodeNum);
         ast.push(x);
+        nodeNum ++;
         return true;
     }
 
@@ -1161,7 +1212,7 @@ public class parse {
     }
 
     private boolean A_ADOPTS(){
-        node y = ast.peek();
+        node y = ast.pop();
         node x = ast.pop();
         x.adopt(y);
         ast.push(x);
@@ -1170,9 +1221,9 @@ public class parse {
 
     private boolean A_GROUP(){
         node x = ast.pop();
-        node group = new node(x.name);
+        node group = new node(x.name+"GROUP", x.num);
         group.makeRightChild(x);
-        while (ast.pop().getName().equals(x.name)){
+        while (ast.peek().getName().equals(x.name)){
             x = ast.pop();
             group.makeRightChild(x);
         }

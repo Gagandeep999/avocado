@@ -5,7 +5,9 @@ import lexer.lex;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class parsedriver {
 
@@ -28,8 +30,31 @@ public class parsedriver {
             if (p.parse()){
                 System.out.println("Parser Finished");
             }else System.out.println("Error in parsing");
+
+            String graphFile = filename.replace(".src", ".gv");
+
+            PrintWriter ast = new PrintWriter(graphFile, "UTF-8");
+            Stack<node> astTree = p.ast;
+            System.out.println("tree available");
+
+            while (!astTree.isEmpty()){
+                node x = astTree.pop();
+                ast.println(x.num+"[label=\""+x.name+"\"]");
+                for (node child :
+                        x.children) {
+                    ast.println(x.num+"->"+child.num);
+                    ast.flush();
+//                    ast.println(child.num+"[label=\""+child.name+"\"]");
+//                    ast.flush();
+
+//                    ast.println("\""+x.name+"\" -> \""+child.name+"\"");
+                    astTree.push(child);
+                }
+            }
+
         }catch (IOException e){
             System.out.println(e.getMessage());
         }
+
     }
 }

@@ -6,6 +6,7 @@ import lexer.token;
 public class node {
     String name;
     String type;
+    int num;
     LinkedList<node> children;
 
     public String getName() {
@@ -25,21 +26,24 @@ public class node {
         this.children = new LinkedList<>();
     }
 
-    public node(String name){
+    public node(String name, int num){
         this.name = name;
         this.type = "";
+        this.num = num;
         this.children = new LinkedList<>();
     }
 
-    public node(String name, String type){
+    public node(String name, String type, int num){
         this.name = name;
         this.type = type;
+        this.num = num;
         this.children = new LinkedList<>();
     }
 
-    public node(token t){
+    public node(token t, int num){
         this.name = t.getLexeme().toString();
         this.type = t.getToken();
+        this.num = num;
         this.children = new LinkedList<>();
     }
 
@@ -47,8 +51,8 @@ public class node {
         this.children.addLast(y);
     }
 
-    public void makeLeftChild(node y){
-        this.children.addFirst(y);
+    public void makeLeftChild(node x){
+        this.children.addFirst(x);
     }
 
     public void adopt(node y){
