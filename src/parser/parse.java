@@ -484,7 +484,7 @@ public class parse {
 //        FUNCTION_PARAMS  ->  .
         if (!skipErrors("FUNCTION_PARAMS")) return false;
         if (e.FIRST("TYPE").contains(lookahead.getToken())){
-            if (A_CREATEADD("fParam list") && A_CREATEADD("PARAM") && TYPE() && A_RIGHTCHILD()
+            if (A_CREATEADD("fParam list") && A_CREATEADD("fparam") && TYPE() && A_RIGHTCHILD()
                     && match("id") && A_RIGHTCHILD() && ARRAY_DIMENSIONS() && A_RIGHTCHILD() && A_RIGHTCHILD()
                     && FUNCTION_PARAMS_TAILS() && A_ADOPTS()){
                 derivationStack.push("FUNCTION_PARAMS  -> TYPE id ARRAY_DIMENSIONS FUNCTION_PARAMS_TAILS .\n");
@@ -527,7 +527,7 @@ public class parse {
                 derivationStack.push("OPTCLASSDECL2  -> inherits id INHERITED_CLASSES .\n");
             }else success = false;
         }else if (e.FOLLOW("OPTCLASSDECL2").contains(lookahead.getToken())){
-            if (A_CREATEADD("OPTINHERITS")){
+            if (A_CREATEADD("inheritance list")){
                 derivationStack.push("OPTCLASSDECL2 ->  .\n");
             }
         }else success = false;
@@ -554,7 +554,7 @@ public class parse {
 //        FUNCTION_DECLARATION -> #1 lpar FUNCTION_PARAMS #2 rpar colon TYPE_OR_VOID #2 semi  .
         if (!skipErrors("FUNCTION_DECLARATION")) return false;
         if (e.FIRST("FUNCTION_DECLARATION").contains(lookahead.getToken())){
-            if (A_CREATEADD("FUNCTION_DECLARATION") && match("lpar") && FUNCTION_PARAMS()
+            if (A_CREATEADD("func decl") && match("lpar") && FUNCTION_PARAMS()
                     && A_RIGHTCHILD() && match("rpar") && match("colon") && TYPE_OR_VOID()
                     && A_RIGHTCHILD() && match("semi")){
                 derivationStack.push("FUNCTION_DECLARATION -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID semi .\n");
@@ -629,12 +629,12 @@ public class parse {
 //        ARRAY_DIMENSIONS ->  .
         if (!skipErrors("ARRAY_DIMENSIONS")) return false;
         if (e.FIRST("ARRAY_SIZE").contains(lookahead.getToken())){
-            if (A_CREATEADD("ARRAY_DIMENSIONS") && ARRAY_SIZE() && A_RIGHTCHILD()
+            if (A_CREATEADD("dim list") && ARRAY_SIZE() && A_RIGHTCHILD()
                     && ARRAY_DIMENSIONS() && A_ADOPTS()){
                 derivationStack.push("ARRAY_DIMENSIONS -> ARRAY_SIZE ARRAY_DIMENSIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("ARRAY_DIMENSIONS").contains(lookahead.getToken())){
-            if (A_CREATEADD("ARRAY_DIMENSIONS")){
+            if (A_CREATEADD("dim list")){
                 derivationStack.push("ARRAY_DIMENSIONS ->  .\n");
             }
         }else success = false;
@@ -1097,7 +1097,7 @@ public class parse {
 //        VARIABLE_DECLARATION -> #1(var) id #2 ARRAY_DIMENSIONS #2 semi  .
         if (!skipErrors("VARIABLE_DECLARATION")) return false;
         if (e.FIRST("VARIABLE_DECLARATION").contains(lookahead.getToken())){
-            if (A_CREATEADD("VAR") && match("id") && A_RIGHTCHILD() && ARRAY_DIMENSIONS()
+            if (A_CREATEADD("var decl") && match("id") && A_RIGHTCHILD() && ARRAY_DIMENSIONS()
                     && A_RIGHTCHILD() && match("semi")){
                 derivationStack.push("VARIABLE_DECLARATION -> id ARRAY_DIMENSIONS semi .\n");
             }else success = false;
@@ -1157,7 +1157,7 @@ public class parse {
 //        FUNCTION_PARAMS_TAIL -> #1(param) comma TYPE #2 id #2 ARRAY_DIMENSIONS #2 .
         if (!skipErrors("FUNCTION_PARAMS_TAIL")) return false;
         if (e.FIRST("FUNCTION_PARAMS_TAIL").contains(lookahead.getToken())){
-            if (A_CREATEADD("PARAM") && match("comma") && TYPE() && A_RIGHTCHILD() && match("id")
+            if (A_CREATEADD("fparam") && match("comma") && TYPE() && A_RIGHTCHILD() && match("id")
                     && A_RIGHTCHILD() && ARRAY_DIMENSIONS() && A_RIGHTCHILD()){
                 derivationStack.push("FUNCTION_PARAMS_TAIL -> comma TYPE id ARRAY_DIMENSIONS .\n");
             }else success = false;
@@ -1170,11 +1170,11 @@ public class parse {
 //        INDICES  ->  .
         if (!skipErrors("INDICES")) return false; //|| e.isNULLABLE("INDICES")
         if (e.FIRST("INDEX").contains(lookahead.getToken())){
-            if (A_CREATEADD("INDICES") && INDEX() && A_RIGHTCHILD() && INDICES() && A_ADOPTS()){
+            if (A_CREATEADD("index list") && INDEX() && A_RIGHTCHILD() && INDICES() && A_ADOPTS()){
                 derivationStack.push("INDICES  -> INDEX INDICES .\n");
             }else success = false;
         }else if (e.FOLLOW("INDICES").contains(lookahead.getToken())){
-            if (A_CREATEADD("INDICES")){
+            if (A_CREATEADD("index list")){
                 derivationStack.push("INDICES ->  .\n");
             }
         }else success = false;

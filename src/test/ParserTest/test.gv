@@ -1,3 +1,4 @@
+digraph AST {
 0[label="program"]
 0->1
 0->70
@@ -19,7 +20,7 @@
 198[label="call"]
 198->199
 198->200
-200[label="INDICES"]
+200[label="index list"]
 199[label="counter"]
 167[label="="]
 167->166
@@ -30,7 +31,7 @@
 168[label="ITEM"]
 168->169
 168->170
-170[label="INDICES"]
+170[label="index list"]
 169[label="f1"]
 171[label="ITEM"]
 171->172
@@ -52,15 +53,15 @@
 162[label="call"]
 162->163
 162->164
-164[label="INDICES"]
+164[label="index list"]
 163[label="f1"]
 155[label="VARIABLE_DECLARATIONS"]
 155->157
-157[label="VAR"]
+157[label="var decl"]
 157->156
 157->158
 157->159
-159[label="ARRAY_DIMENSIONS"]
+159[label="dim list"]
 158[label="f1"]
 156[label="linear"]
 70[label="function_list"]
@@ -89,11 +90,11 @@
 142[label="float"]
 135[label="fParam list"]
 135->136
-136[label="PARAM"]
+136[label="fparam"]
 136->137
 136->138
 136->139
-139[label="ARRAY_DIMENSIONS"]
+139[label="dim list"]
 138[label="x"]
 137[label="float"]
 133[label="evaluate"]
@@ -115,15 +116,15 @@
 118[label="ITEM"]
 118->119
 118->120
-120[label="INDICES"]
+120[label="index list"]
 119[label="result"]
 110[label="VARIABLE_DECLARATIONS"]
 110->112
-112[label="VAR"]
+112[label="var decl"]
 112->111
 112->113
 112->114
-114[label="ARRAY_DIMENSIONS"]
+114[label="dim list"]
 113[label="result"]
 111[label="float"]
 96[label="FUNCTION_SIGNATURE"]
@@ -136,11 +137,11 @@
 108[label="float"]
 101[label="fParam list"]
 101->102
-102[label="PARAM"]
+102[label="fparam"]
 102->103
 102->104
 102->105
-105[label="ARRAY_DIMENSIONS"]
+105[label="dim list"]
 104[label="x"]
 103[label="float"]
 99[label="evaluate"]
@@ -169,11 +170,11 @@
 84[label="float"]
 77[label="fParam list"]
 77->78
-78[label="PARAM"]
+78[label="fparam"]
 78->79
 78->80
 78->81
-81[label="ARRAY_DIMENSIONS"]
+81[label="dim list"]
 80[label="x"]
 79[label="float"]
 75[label="evaluate"]
@@ -191,16 +192,16 @@
 51[label="var+func decl list"]
 51->54
 51->65
-65[label="VAR"]
+65[label="var decl"]
 65->63
 65->64
 65->66
 65->67
-67[label="ARRAY_DIMENSIONS"]
+67[label="dim list"]
 66[label="x"]
 64[label="float"]
 63[label="public"]
-54[label="FUNCTION_DECLARATION"]
+54[label="func decl"]
 54->52
 54->53
 54->55
@@ -208,11 +209,11 @@
 61[label="float"]
 55[label="fParam list"]
 55->56
-56[label="PARAM"]
+56[label="fparam"]
 56->57
 56->58
 56->59
-59[label="ARRAY_DIMENSIONS"]
+59[label="dim list"]
 58[label="x"]
 57[label="float"]
 53[label="evaluate"]
@@ -228,16 +229,16 @@
 27[label="var+func decl list"]
 27->30
 27->41
-41[label="VAR"]
+41[label="var decl"]
 41->39
 41->40
 41->42
 41->43
-43[label="ARRAY_DIMENSIONS"]
+43[label="dim list"]
 42[label="x"]
 40[label="float"]
 39[label="public"]
-30[label="FUNCTION_DECLARATION"]
+30[label="func decl"]
 30->28
 30->29
 30->31
@@ -245,16 +246,16 @@
 37[label="float"]
 31[label="fParam list"]
 31->32
-32[label="PARAM"]
+32[label="fparam"]
 32->33
 32->34
 32->35
-35[label="ARRAY_DIMENSIONS"]
+35[label="dim list"]
 34[label="x"]
 33[label="float"]
 29[label="evaluate"]
 28[label="public"]
-26[label="OPTINHERITS"]
+26[label="inheritance list"]
 25[label="LINEAR"]
 2[label="class"]
 2->3
@@ -263,16 +264,16 @@
 5[label="var+func decl list"]
 5->8
 5->19
-19[label="VAR"]
+19[label="var decl"]
 19->17
 19->18
 19->20
 19->21
-21[label="ARRAY_DIMENSIONS"]
+21[label="dim list"]
 20[label="x"]
 18[label="float"]
 17[label="public"]
-8[label="FUNCTION_DECLARATION"]
+8[label="func decl"]
 8->6
 8->7
 8->9
@@ -280,14 +281,15 @@
 15[label="float"]
 9[label="fParam list"]
 9->10
-10[label="PARAM"]
+10[label="fparam"]
 10->11
 10->12
 10->13
-13[label="ARRAY_DIMENSIONS"]
+13[label="dim list"]
 12[label="x"]
 11[label="float"]
 7[label="evaluate"]
 6[label="public"]
-4[label="OPTINHERITS"]
+4[label="inheritance list"]
 3[label="POLYNOMIAL"]
+}

@@ -37,6 +37,7 @@ public class parsedriver {
             Stack<node> astTree = p.ast;
             System.out.println("tree available");
 
+            ast.println("digraph AST {");
             while (!astTree.isEmpty()){
                 node x = astTree.pop();
                 ast.println(x.num+"[label=\""+x.name+"\"]");
@@ -53,6 +54,8 @@ public class parsedriver {
                     astTree.push(child);
                 }
             }
+            ast.println("}");
+            ast.flush();
 
         }catch (IOException e){
             System.out.println(e.getMessage());

@@ -1,12 +1,15 @@
+digraph AST {
+0[label="program"]
 0->1
-1[label="class_list"]
 0->2
-2[label="REPTFUNCDEF"]
 0->3
 3[label="main"]
 3->4
 4[label="FUNCBODY"]
 4->5
-5[label="OPTFUNCBODY0"]
-5->6
+4->6
 6[label="REPTSTATEMENT"]
+5[label="OPTFUNCBODY0"]
+2[label="function_list"]
+1[label="class_list"]
+}
