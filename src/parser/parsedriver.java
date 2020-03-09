@@ -46,6 +46,11 @@ public class parsedriver {
                         x.children) {
                     ast.println(x.num+"->"+child.num);
                     ast.flush();
+//                    ast.flush();
+//                    ast.println(child.num+"[label=\""+child.name+"\"]");
+//                    ast.flush();
+
+//                    ast.println("\""+x.name+"\" -> \""+child.name+"\"");
                     astTree.push(child);
                 }
             }
