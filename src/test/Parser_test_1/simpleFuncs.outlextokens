@@ -1,4 +1,4 @@
-[inlinecmnt, //Some free functions, 1] 
+[inlinecmnt, //Some free functions, 1] 
 [id, add, 2] [lpar, (, 2] [integer, integer, 2] [id, x, 2] [comma, ,, 2] [integer, integer, 2] [id, y, 2] [rpar, ), 2] [colon, :, 2] [integer, integer, 2] 
 [local, local, 3] 
 [integer, integer, 4] [id, result, 4] [semi, ;, 4] 
@@ -15,7 +15,7 @@
 [return, return, 15] [lpar, (, 15] [id, result, 15] [rpar, ), 15] [semi, ;, 15] 
 [end, end, 16] 
 
-[inlinecmnt, //It's main!, 18] 
+[inlinecmnt, //It's main!, 18] 
 [main, main, 19] 
 [local, local, 20] 
 [integer, integer, 21] [id, x, 21] [semi, ;, 21] 

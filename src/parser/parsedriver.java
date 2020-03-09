@@ -40,10 +40,12 @@ public class parsedriver {
             while (!astTree.isEmpty()){
                 node x = astTree.pop();
                 ast.println(x.num+"[label=\""+x.name+"\"]");
+                ast.flush();
                 for (node child :
                         x.children) {
                     ast.println(x.num+"->"+child.num);
                     ast.flush();
+//                    ast.flush();
 //                    ast.println(child.num+"[label=\""+child.name+"\"]");
 //                    ast.flush();
 

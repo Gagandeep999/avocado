@@ -150,7 +150,7 @@ public class parse {
 
     public boolean parse() {
 
-        if (START() & A_RIGHTCHILD())
+        if (START())
             derivationStack.push("Sucessfuly parsed the source code!\n");
 //            pwDerivation.write("Sucessfuly parsed the source code!");
 
@@ -181,7 +181,7 @@ public class parse {
 //        PROGRAM -> #1 REPTCLASSDECL #2 REPTFUNCDEF #2 main FUNCBODY #2 #2 .
         if (!skipErrors("PROGRAM")) return false;
         if (e.FIRST("REPTCLASSDECL").contains(lookahead.getToken()) || e.isNULLABLE("REPTCLASSDECL")){
-            if (A_CREATEADD("PROGRAM") && REPTCLASSDECL() && A_RIGHTCHILD() && REPTFUNCDEF()
+            if (A_CREATEADD("program") && REPTCLASSDECL() && A_RIGHTCHILD() && REPTFUNCDEF()
                     && A_RIGHTCHILD() && match("main") && FUNCBODY() && A_RIGHTCHILD() && A_RIGHTCHILD()){ //&& A_RIGHTCHILD()
                 derivationStack.push("PROGRAM  ->  REPTCLASSDECL REPTFUNCDEF main FUNCBODY .\n");
             }else success = false;
@@ -195,7 +195,7 @@ public class parse {
         if (!skipErrors("REPTCLASSDECL")) return false;
         if (e.FIRST("CLASSDECL").contains(lookahead.getToken()) ){
             if (A_CREATEADD("class_list") && CLASSDECL() && A_RIGHTCHILD()
-                    && REPTCLASSDECL() && A_ADOPTS() && A_RIGHTCHILD()){
+                    && REPTCLASSDECL() && A_ADOPTS()){
                 derivationStack.push("REPTCLASSDECL -> CLASSDECL  REPTCLASSDECL .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken())){
@@ -210,7 +210,7 @@ public class parse {
 //        CLASSDECL -> class id #2 OPTCLASSDECL2 #2 lcurbr MEMBER_DECLARATIONS #2 rcurbr semi  .
         if (!skipErrors("CLASSDECL")) return false;
         if (e.FIRST("CLASSDECL").contains(lookahead.getToken())){
-            if (match("class") && match("id")
+            if (match("class") && match("id") && A_RIGHTCHILD()
                     && OPTCLASSDECL2() && A_RIGHTCHILD() && match("lcurbr")
                     && MEMBER_DECLARATIONS() && A_RIGHTCHILD() && match("rcurbr") && match("semi")){
                 derivationStack.push("CLASSDECL  -> class id OPTCLASSDECL2 lcurbr MEMBER_DECLARATIONS rcurbr semi .\n");
@@ -229,7 +229,7 @@ public class parse {
                 derivationStack.push("REPTFUNCDEF -> FUNCDEF REPTFUNCDEF .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTFUNCDEF").contains(lookahead.getToken())){
-            if(A_CREATEADD("REPTFUNCDEF")){
+            if(A_CREATEADD("function_list")){
                 derivationStack.push("REPTFUNCDEF ->  .\n");
             }
         }else success = false;
@@ -253,12 +253,12 @@ public class parse {
 //        MEMBER_DECLARATIONS  ->  .
         if (!skipErrors("MEMBER_DECLARATIONS")) return false;
         if (e.FIRST("VISIBILITY").contains(lookahead.getToken())){
-            if (A_CREATEADD("MEMBER_DECLARATIONS") && VISIBILITY() && MEMBER_DECLARATION() && A_LEFTCHILD()
+            if (A_CREATEADD("var+func decl list") && VISIBILITY() && MEMBER_DECLARATION() && A_LEFTCHILD()
                     && A_RIGHTCHILD() && MEMBER_DECLARATIONS() && A_ADOPTS()){
                 derivationStack.push("MEMBER_DECLARATIONS  -> VISIBILITY MEMBER_DECLARATION MEMBER_DECLARATIONS .\n");
             }else success = false;
         }else if (e.FOLLOW("REPTCLASSDECL").contains(lookahead.getToken()) || e.isNULLABLE("REPTCLASSDECL") ){ //
-            if (A_CREATEADD("MEMBER_DECLARATIONS")){
+            if (A_CREATEADD("var+func decl list")){
                 derivationStack.push("REPTCLASSDECL ->  .\n");
             }
         }else success = false;
@@ -365,7 +365,7 @@ public class parse {
 //        STATEMENT_VARIABLE -> #1(item) id #2 STATEMENT_VARIABLE_OR_FUNCTION_CALL .
         if (!skipErrors("STATEMENT_VARIABLE")) return false;
         if (e.FIRST("STATEMENT_VARIABLE").contains(lookahead.getToken())){
-            if (A_CREATEADD("ITEM") && match("id") && A_RIGHTCHILD()
+            if (A_CREATEADD("call") && match("id") && A_RIGHTCHILD()
                     && STATEMENT_VARIABLE_OR_FUNCTION_CALL()){
                 derivationStack.push("STATEMENT_VARIABLE -> id STATEMENT_VARIABLE_OR_FUNCTION_CALL .\n");
             }else success = false;
@@ -421,7 +421,7 @@ public class parse {
 //        ASSIGN_STATEMENT_OR_FUNCTION_CALL  -> #1(item) id #2 VARIABLE_OR_FUNCTION_CALL_EXT .
         if (!skipErrors("ASSIGN_STATEMENT_OR_FUNCTION_CALL")) return false;
         if (e.FIRST("ASSIGN_STATEMENT_OR_FUNCTION_CALL").contains(lookahead.getToken())){
-            if (A_CREATEADD("ITEM") && match("id") && A_RIGHTCHILD() && VARIABLE_OR_FUNCTION_CALL_EXT()){
+            if (A_CREATEADD("call") && match("id") && A_RIGHTCHILD() && VARIABLE_OR_FUNCTION_CALL_EXT()){
                 derivationStack.push("ASSIGN_STATEMENT_OR_FUNCTION_CALL  -> id VARIABLE_OR_FUNCTION_CALL_EXT .\n");
             }else success = false;
         }else success = false;
@@ -484,7 +484,7 @@ public class parse {
 //        FUNCTION_PARAMS  ->  .
         if (!skipErrors("FUNCTION_PARAMS")) return false;
         if (e.FIRST("TYPE").contains(lookahead.getToken())){
-            if (A_CREATEADD("FUNCTION_PARAMS") && A_CREATEADD("PARAM") && TYPE() && A_RIGHTCHILD()
+            if (A_CREATEADD("fParam list") && A_CREATEADD("PARAM") && TYPE() && A_RIGHTCHILD()
                     && match("id") && A_RIGHTCHILD() && ARRAY_DIMENSIONS() && A_RIGHTCHILD() && A_RIGHTCHILD()
                     && FUNCTION_PARAMS_TAILS() && A_ADOPTS()){
                 derivationStack.push("FUNCTION_PARAMS  -> TYPE id ARRAY_DIMENSIONS FUNCTION_PARAMS_TAILS .\n");
@@ -527,7 +527,7 @@ public class parse {
                 derivationStack.push("OPTCLASSDECL2  -> inherits id INHERITED_CLASSES .\n");
             }else success = false;
         }else if (e.FOLLOW("OPTCLASSDECL2").contains(lookahead.getToken())){
-            if (A_CREATEADD("OPTCLASSDECL2")){
+            if (A_CREATEADD("OPTINHERITS")){
                 derivationStack.push("OPTCLASSDECL2 ->  .\n");
             }
         }else success = false;
@@ -1112,7 +1112,7 @@ public class parse {
         if (!skipErrors("FUNCBODY")) return false;
         if (e.FIRST("OPTFUNCBODY0").contains(lookahead.getToken()) || e.isNULLABLE("OPTFUNCBODY0")){
 //            @TODO: 2020-03-07 check what is the effect of taking out A_RIGHTCHILD() here
-            if (A_CREATEADD("FUNCBODY") && OPTFUNCBODY0() /*here*/ && match("do") //&& A_RIGHTCHILD()
+            if (A_CREATEADD("FUNCBODY") && OPTFUNCBODY0() && A_RIGHTCHILD() && match("do") //&& A_RIGHTCHILD()
                     && REPTSTATEMENT() && A_RIGHTCHILD() && match("end")){
                 derivationStack.push("FUNCBODY  -> OPTFUNCBODY0 do REPTSTATEMENT end .\n");
             }else success = false;
@@ -1221,7 +1221,9 @@ public class parse {
 
     private boolean A_GROUP(){
         node x = ast.pop();
-        node group = new node(x.name+"GROUP", x.num);
+        nodeNum ++;
+        node group = new node((x.name+"GROUP"), nodeNum);
+        nodeNum++;
         group.makeRightChild(x);
         while (ast.peek().getName().equals(x.name)){
             x = ast.pop();

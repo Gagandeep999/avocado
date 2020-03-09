@@ -1,5 +1,5 @@
-[inlinecmnt, // This is the simplest program which can be written in this language., 1] 
-[inlinecmnt, // It does nothing . . ., 2] 
+[inlinecmnt, // This is the simplest program which can be written in this language., 1] 
+[inlinecmnt, // It does nothing . . ., 2] 
 [main, main, 3] 
 [do, do, 4] 
 [end, end, 5] 

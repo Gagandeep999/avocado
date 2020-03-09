@@ -94,6 +94,7 @@ public class lexicalAnalyzerTest {
         tester("new_function.a = A;", "[id, new_function, 1] [dot, ., 1] [id, a, 1] [equal, =, 1]" +
                 " [id, A, 1] [semi, ;, 1] ", "");
         tester("0.0", "[floatnum, 0.0, 1] ", "");
+        tester("==", "[eq, ==, 1] ", "");
         //The case below gives an error; need to fix.
 
         deleteFile();

@@ -1,5 +1,43 @@
+// ====== Class declarations ====== //
+class POLYNOMIAL {
+	public evaluate(float x) : float;
+	public float x;
+};
+
+class LINEAR {
+	public evaluate(float x) : float;
+    public float x;
+};
+
+class QUADRATIC inherits POLYNOMIAL {
+	public evaluate(float x) : float;
+    public float x;
+};
+
+
+// ====== Function Definitions ====== //
+POLYNOMIAL::evaluate(float x) : float
+  do
+    return (0);
+  end
+
+LINEAR::evaluate(float x) : float
+  local
+    float result;
+  do
+    return (result);
+  end
+
+QUADRATIC::evaluate(float x) : float
+  do
+    return (0);
+  end
+
+
 main
-    do
-       a = a or a;
-       a = a and a ;
-   end
+  local
+    linear f1;
+  do
+    f1 = f1.build(-2.0, 1.0, 0.0);
+    counter = 1;
+  end
