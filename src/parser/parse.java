@@ -1,6 +1,8 @@
 package parser;
 
 import lexer.token;
+import nodes.node;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -745,8 +747,8 @@ public class parse {
         if (!skipErrors("FUNCTION_SIGNATURE_EXT")) return false;
         if (e.FIRST("FUNCTION_SIGNATURE_EXT").contains(lookahead.getToken())){
             if (A_CREATEADD("FUNCTION_SIGNATURE_EXT") && match("lpar") && FUNCTION_PARAMS()
-                    && A_RIGHTCHILD() && match("rpar") && match("colon") && A_CREATEADD("RETURNS")
-                    && TYPE_OR_VOID() && A_RIGHTCHILD() && A_RIGHTCHILD()){
+                    && A_RIGHTCHILD() && match("rpar") && match("colon") //&& A_CREATEADD("RETURNS")
+                    && TYPE_OR_VOID() && A_RIGHTCHILD() ){ //&& A_RIGHTCHILD()){
                 derivationStack.push("FUNCTION_SIGNATURE_EXT -> lpar FUNCTION_PARAMS rpar colon TYPE_OR_VOID .\n");
             }else success = false;
         }else success = false;
@@ -900,7 +902,6 @@ public class parse {
                 default: success = false;
                 break;
             }
-
         }else success = false;
         return success;
     }
@@ -1222,10 +1223,10 @@ public class parse {
     private boolean A_GROUP(){
         node x = ast.pop();
         nodeNum ++;
-        node group = new node((x.name+"GROUP"), nodeNum);
+        node group = new node((x.getName()+"GROUP"), nodeNum);
         nodeNum++;
         group.makeRightChild(x);
-        while (ast.peek().getName().equals(x.name)){
+        while (ast.peek().getName().equals(x.getName())){
             x = ast.pop();
             group.makeRightChild(x);
         }
@@ -1240,8 +1241,8 @@ public class parse {
 
     private boolean A_UNIFY(){
         node x = ast.pop();
-        if (x.children.size()==1){
-            x = x.children.pop();
+        if (x.getChildren().size()==1){
+            x = x.getChildren().pop();
         }
         ast.push(x);
         return true;

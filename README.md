@@ -1,6 +1,27 @@
-Academic project of designing a compiler.
+<h1>Avocado</h1>
 
-The project was developed in IntelliJ. 
+<h4> What is it? </h3>
+
+An academic project of designing a compiler.
+
+<h4> How it works?</h4>
+
+The process is divided into 4 parts:
+--Lexer
+--Parser
+--Abstract Syntax Tree
+--Code Generation
+
+<h4>LEXER</h4>
+--
+<h4>PARSER</h4>
+--
+<h4>ABSTRACT SYNTAX TREE</h4>
+--
+<h4>CODE GENERATION</h4>
+--
+
+---
 
 Directory structure is as follows-
 Test cases are all located in src/test/LexerTest and src/test/ParserTest

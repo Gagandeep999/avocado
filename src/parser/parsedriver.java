@@ -1,6 +1,7 @@
 package parser;
 import lexer.token;
 import lexer.lex;
+import nodes.node;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -40,11 +41,11 @@ public class parsedriver {
             ast.println("digraph AST {");
             while (!astTree.isEmpty()){
                 node x = astTree.pop();
-                ast.println(x.num+"[label=\""+x.name+"\"]");
+                ast.println(x.getNum()+"[label=\""+x.getName()+"\"]");
                 ast.flush();
                 for (node child :
-                        x.children) {
-                    ast.println(x.num+"->"+child.num);
+                        x.getChildren()) {
+                    ast.println(x.getNum()+"->"+child.getNum());
                     ast.flush();
 //                    ast.flush();
 //                    ast.println(child.num+"[label=\""+child.name+"\"]");

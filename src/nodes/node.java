@@ -1,7 +1,8 @@
-package parser;
+package nodes;
 
 import java.util.LinkedList;
 import lexer.token;
+import visitor.visitor;
 
 public class node {
     String name;
@@ -15,6 +16,10 @@ public class node {
 
     public String getType() {
         return type;
+    }
+
+    public int getNum() {
+        return num;
     }
 
     public LinkedList<node> getChildren() {
@@ -60,6 +65,10 @@ public class node {
                 y.children) {
             this.children.addLast(child);
         }
+    }
+
+    public void accept(visitor visitorNode){
+        visitorNode.visit(this);
     }
 
 
