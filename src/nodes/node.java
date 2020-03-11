@@ -5,24 +5,13 @@ import lexer.token;
 import visitor.visitor;
 
 public abstract class node {
-    String name; //corresponds to the lexeme
-    String type; //corresponds to the token
+
     String data;
-    int num;
     int myNum;
     static int curNum;
     LinkedList<node> children;
     node parent;
 
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public int getNum() { return num; }
 
     public String getData() {
         return data;
@@ -45,17 +34,15 @@ public abstract class node {
     }
 
     public node(){
-        this.name = "";
-        this.type = "";
         this.data = "";
         this.children = new LinkedList<>();
     }
 
     public node(String data){
-        this.name = "";
-        this.type = "";
+//        this.name = "";
+//        this.type = "";
         this.data = data;
-        this.num = 0;
+//        this.num = 0;
         this.myNum = curNum;
         this.children = new LinkedList<>();
         this.parent = null;
@@ -66,27 +53,6 @@ public abstract class node {
         this.data = data;
         this.parent = parent;
         node.curNum++;
-    }
-
-    public node(String name, int num){
-        this.name = name;
-        this.type = "";
-        this.num = num;
-        this.children = new LinkedList<>();
-    }
-
-    public node(String name, String type, int num){
-        this.name = name;
-        this.type = type;
-        this.num = num;
-        this.children = new LinkedList<>();
-    }
-
-    public node(token t, int num){
-        this.name = t.getLexeme().toString();
-        this.type = t.getToken();
-        this.num = num;
-        this.children = new LinkedList<>();
     }
 
     public void makeRightChild(node y){

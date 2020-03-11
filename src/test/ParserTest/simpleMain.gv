@@ -1,0 +1,87 @@
+digraph AST {
+0[label="program"]
+0->1
+0->2
+0->3
+3[label="main"]
+3->4
+4[label="FUNCBODY"]
+4->5
+4->11
+11[label="REPTSTATEMENT"]
+11->17
+11->26
+11->37
+11->50
+50[label="="]
+50->49
+50->59
+59[label="<>"]
+59->56
+59->65
+65[label="ITEMGROUP"]
+65->60
+60[label="ITEM"]
+60->61
+60->62
+62[label="index list"]
+61[label="x"]
+56[label="ITEMGROUP"]
+56->51
+51[label="ITEM"]
+51->52
+51->53
+53[label="index list"]
+52[label="x"]
+49[label="callGROUP"]
+49->45
+45[label="call"]
+45->46
+45->47
+47[label="index list"]
+46[label="x"]
+37[label="read"]
+37->43
+43[label="callGROUP"]
+43->38
+38[label="call"]
+38->39
+38->40
+40[label="index list"]
+39[label="x"]
+26[label="write"]
+26->32
+32[label="ITEMGROUP"]
+32->27
+27[label="ITEM"]
+27->28
+27->29
+29[label="index list"]
+28[label="x"]
+17[label="="]
+17->16
+17->20
+20[label="+"]
+20->18
+20->21
+21[label="2"]
+18[label="1"]
+16[label="callGROUP"]
+16->12
+12[label="call"]
+12->13
+12->14
+14[label="index list"]
+13[label="x"]
+5[label="VARIABLE_DECLARATIONS"]
+5->7
+7[label="var decl"]
+7->6
+7->8
+7->9
+9[label="dim list"]
+8[label="x"]
+6[label="integer"]
+2[label="function_list"]
+1[label="class_list"]
+}

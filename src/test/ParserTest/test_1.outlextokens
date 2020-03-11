@@ -1,0 +1,21 @@
+[inlinecmnt, // ====== Class declarations ====== //, 1] 
+[class, class, 2] [id, POLYNOMIAL, 2] [lcurbr, {, 2] 
+[public, public, 3] [id, evaluate, 3] [lpar, (, 3] [float, float, 3] [id, x, 3] [rpar, ), 3] [colon, :, 3] [float, float, 3] [semi, ;, 3] 
+[public, public, 4] [float, float, 4] [id, x, 4] [semi, ;, 4] 
+[rcurbr, }, 5] [semi, ;, 5] 
+
+
+[inlinecmnt, // ====== Function Definitions ====== //, 8] 
+[id, QUADRATIC, 9] [sr, ::, 9] [id, evaluate, 9] [lpar, (, 9] [float, float, 9] [id, x, 9] [rpar, ), 9] [colon, :, 9] [float, float, 9] 
+[do, do, 10] 
+[return, return, 11] [lpar, (, 11] [intnum, 0, 11] [rpar, ), 11] [semi, ;, 11] 
+[end, end, 12] 
+
+
+[main, main, 15] 
+[local, local, 16] 
+[id, linear, 17] [id, f1, 17] [semi, ;, 17] 
+[do, do, 18] 
+[id, f1, 19] [equal, =, 19] [id, f1, 19] [dot, ., 19] [id, build, 19] [lpar, (, 19] [minus, -, 19] [floatnum, 2.0, 19] [comma, ,, 19] [floatnum, 1.0, 19] [comma, ,, 19] [floatnum, 0.0, 19] [rpar, ), 19] [semi, ;, 19] 
+[id, counter, 20] [equal, =, 20] [intnum, 1, 20] [semi, ;, 20] 
+[end, end, 21] 

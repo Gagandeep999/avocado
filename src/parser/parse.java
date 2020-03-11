@@ -53,7 +53,7 @@ public class parse {
     private boolean match(String token){
         if (lookahead.getToken().equals(token)){
             switch (token){
-                case "id" : A_CREATEADD(lookahead.getToken());
+                case "id" : ast.push(new IdNode(lookahead.getLexeme().toString()));
                     break;
                 case "class" : A_CREATEADD(lookahead.getToken());
                     break;
@@ -1183,34 +1183,30 @@ public class parse {
 
     private boolean A_CREATEADD(String name){
 
-//        switch (name){
-//            case "program": ast.push(new ProgNode(""));
-//            return true;
-//            case "class_list": ast.push(new ClassListNode(""));
-//            return true;
-//            case "function_list": ast.push(new FuncDefList(""));
-//            return true;
-//            case "class": ast.push(new ClassNode(""));
-//            return true;
-//            case "id": ast.push(new IdNode(lookahead.getLexeme().toString()));
-//            return true;
-//            default: ast.push(new GeneralNode(""));
-//            break;
-//
-//        }
-
-        node x = new GeneralNode(name);
-        ast.push(x);
-        nodeNum ++;
+        switch (name){
+            case "program":
+                ast.push(new ProgNode(name));
+                return true;
+            case "class_list":
+                ast.push(new ClassListNode(name));
+                return true;
+            case "function_list":
+                ast.push(new FuncDefList(name));
+                return true;
+            case "class":
+                ast.push(new ClassNode(name));
+                return true;
+            case "plus":
+            case "minus":
+            case "or":
+                ast.push(new AddOpNode(name));
+                return true;
+            case "equal":
+            default: ast.push(new GeneralNode(name));
+            break;
+        }
         return true;
     }
-
-//    private boolean A_CREATEADD(token t){
-//        node x = new node(t, nodeNum);
-//        ast.push(x);
-//        nodeNum ++;
-//        return true;
-//    }
 
     private boolean A_RIGHTCHILD(){
         node y = ast.pop();
@@ -1239,7 +1235,7 @@ public class parse {
     private boolean A_GROUP(){
         node x = ast.pop();
         nodeNum ++;
-        node group = new GeneralNode(x.getName()+"GROUP");
+        node group = new GeneralNode(x.getData()+"GROUP");
         nodeNum++;
         group.makeRightChild(x);
         while (ast.peek().getData().equals(x.getData())){

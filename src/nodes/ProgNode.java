@@ -13,13 +13,13 @@ public class ProgNode extends node {
         super(data, parent);
     }
 
-    public ProgNode(String name, int num){
-        super(name, num);
-    }
+//    public ProgNode(String name, int num){
+//        super(name, num);
+//    }
 
-    public ProgNode(token t, int num){
-        super(t, num);
-    }
+//    public ProgNode(token t, int num){
+//        super(t, num);
+//    }
 
     @Override
     public void accept(visitor visitorNode) {

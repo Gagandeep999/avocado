@@ -9,13 +9,13 @@ public class GeneralNode extends node {
         super(data);
     }
 
-    public GeneralNode(String name, int num){
-        super(name, num);
-    }
+//    public GeneralNode(String name, int num){
+//        super(name, num);
+//    }
 
-    public GeneralNode(token t, int num){
-        super(t, num);
-    }
+//    public GeneralNode(token t, int num){
+//        super(t, num);
+//    }
 
     @Override
     public void accept(visitor visitorNode) {
