@@ -45,7 +45,7 @@ public class parsedriver {
                 ast.flush();
                 for (node child :
                         x.getChildren()) {
-                    ast.println(x.getNum()+"->"+child.getNum());
+                    ast.println(x.getMyNum()+"->"+child.getMyNum());
                     ast.flush();
 //                    ast.flush();
 //                    ast.println(child.num+"[label=\""+child.name+"\"]");

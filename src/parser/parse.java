@@ -1,7 +1,7 @@
 package parser;
 
 import lexer.token;
-import nodes.node;
+import nodes.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -53,65 +53,65 @@ public class parse {
     private boolean match(String token){
         if (lookahead.getToken().equals(token)){
             switch (token){
-                case "id" : A_CREATEADD(lookahead);
+                case "id" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "class" : A_CREATEADD(lookahead);
+                case "class" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "inherits" : A_CREATEADD(lookahead);
+                case "inherits" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "public" : A_CREATEADD(lookahead);
+                case "public" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "private" : A_CREATEADD(lookahead);
+                case "private" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "if" : A_CREATEADD(lookahead);
+                case "if" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "while" : A_CREATEADD(lookahead);
+                case "while" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "read" : A_CREATEADD(lookahead);
+                case "read" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "write" : A_CREATEADD(lookahead);
+                case "write" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "return" : A_CREATEADD(lookahead);
+                case "return" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "plus" : A_CREATEADD(lookahead);
+                case "plus" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "minus" : A_CREATEADD(lookahead);
+                case "minus" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "or" : A_CREATEADD(lookahead);
+                case "or" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "eq" : A_CREATEADD(lookahead);
+                case "eq" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "neq" : A_CREATEADD(lookahead);
+                case "neq" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "lessthan" : A_CREATEADD(lookahead);
+                case "lessthan" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "gt" : A_CREATEADD(lookahead);
+                case "gt" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "leq" : A_CREATEADD(lookahead);
+                case "leq" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "geq" : A_CREATEADD(lookahead);
+                case "geq" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "mult" : A_CREATEADD(lookahead);
+                case "mult" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "div" : A_CREATEADD(lookahead);
+                case "div" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "and" : A_CREATEADD(lookahead);
+                case "and" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "integer" : A_CREATEADD(lookahead);
+                case "integer" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "float" : A_CREATEADD(lookahead);
+                case "float" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "not" : A_CREATEADD(lookahead);
+                case "not" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "main" : A_CREATEADD(lookahead);
+                case "main" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "void" : A_CREATEADD(lookahead);
+                case "void" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "intnum" : A_CREATEADD(lookahead);
+                case "intnum" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "floatnum" : A_CREATEADD(lookahead);
+                case "floatnum" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "equal" : A_CREATEADD(lookahead);
+                case "equal" : A_CREATEADD(lookahead.getToken());
                     break;
 //                case "integer" : A_CREATEADD(lookahead);
 //                    break;
@@ -1106,7 +1106,6 @@ public class parse {
         return success;
     }
 
-
     private boolean FUNCBODY(){
 
 //        FUNCBODY  ->  #1 OPTFUNCBODY0 #2 do REPTSTATEMENT #2 end  .
@@ -1183,18 +1182,35 @@ public class parse {
     }
 
     private boolean A_CREATEADD(String name){
-        node x = new node(name, nodeNum);
+
+//        switch (name){
+//            case "program": ast.push(new ProgNode(""));
+//            return true;
+//            case "class_list": ast.push(new ClassListNode(""));
+//            return true;
+//            case "function_list": ast.push(new FuncDefList(""));
+//            return true;
+//            case "class": ast.push(new ClassNode(""));
+//            return true;
+//            case "id": ast.push(new IdNode(lookahead.getLexeme().toString()));
+//            return true;
+//            default: ast.push(new GeneralNode(""));
+//            break;
+//
+//        }
+
+        node x = new GeneralNode(name);
         ast.push(x);
         nodeNum ++;
         return true;
     }
 
-    private boolean A_CREATEADD(token t){
-        node x = new node(t, nodeNum);
-        ast.push(x);
-        nodeNum ++;
-        return true;
-    }
+//    private boolean A_CREATEADD(token t){
+//        node x = new node(t, nodeNum);
+//        ast.push(x);
+//        nodeNum ++;
+//        return true;
+//    }
 
     private boolean A_RIGHTCHILD(){
         node y = ast.pop();
@@ -1223,7 +1239,7 @@ public class parse {
     private boolean A_GROUP(){
         node x = ast.pop();
         nodeNum ++;
-        node group = new node((x.getName()+"GROUP"), nodeNum);
+        node group = new GeneralNode(x.getName()+"GROUP");
         nodeNum++;
         group.makeRightChild(x);
         while (ast.peek().getName().equals(x.getName())){

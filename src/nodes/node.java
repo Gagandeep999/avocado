@@ -4,11 +4,15 @@ import java.util.LinkedList;
 import lexer.token;
 import visitor.visitor;
 
-public class node {
-    String name;
-    String type;
+public abstract class node {
+    String name; //corresponds to the lexeme
+    String type; //corresponds to the token
+    String data;
     int num;
+    int myNum;
+    static int curNum;
     LinkedList<node> children;
+    node parent;
 
     public String getName() {
         return name;
@@ -18,8 +22,22 @@ public class node {
         return type;
     }
 
-    public int getNum() {
-        return num;
+    public int getNum() { return num; }
+
+    public String getData() {
+        return data;
+    }
+
+    public int getMyNum() {
+        return myNum;
+    }
+
+    public static int getCurNum() {
+        return curNum;
+    }
+
+    public node getParent() {
+        return parent;
     }
 
     public LinkedList<node> getChildren() {
@@ -29,6 +47,18 @@ public class node {
     public node(){
         this.name = "";
         this.children = new LinkedList<>();
+    }
+
+    public node(String data){
+        this.data = data;
+        this.myNum = curNum;
+        node.curNum++;
+    }
+
+    public node(String data, node parent){
+        this.data = data;
+        this.parent = parent;
+        node.curNum++;
     }
 
     public node(String name, int num){
@@ -70,6 +100,4 @@ public class node {
     public void accept(visitor visitorNode){
         visitorNode.visit(this);
     }
-
-
 }

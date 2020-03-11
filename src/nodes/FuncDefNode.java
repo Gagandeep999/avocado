@@ -1,0 +1,19 @@
+package nodes;
+
+import visitor.visitor;
+
+public class FuncDefNode extends node {
+
+    public FuncDefNode(String data){
+        super(data);
+    }
+
+    public FuncDefNode(String data, node parent){
+        super(data, parent);
+    }
+
+    @Override
+    public void accept(visitor visitorNode) {
+        visitorNode.visit(this);
+    }
+}

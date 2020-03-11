@@ -1,11 +1,21 @@
-class ABC {
-    public X(integer x) : integer;
+// ====== Class declarations ====== //
+class POLYNOMIAL {
+	public evaluate(float x) : float;
+	public float x;
 };
-ABC::X(integer x) : integer
-  do 
-    return(0);
-  end;
+
+
+// ====== Function Definitions ====== //
+QUADRATIC::evaluate(float x) : float
+  do
+    return (0);
+  end
+
 
 main
+  local
+    linear f1;
   do
+    f1 = f1.build(-2.0, 1.0, 0.0);
+    counter = 1;
   end
