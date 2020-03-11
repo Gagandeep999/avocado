@@ -2,13 +2,13 @@ package nodes;
 
 import visitor.visitor;
 
-public class AddOpNode extends node {
+public class NumNode extends node {
 
-    public AddOpNode(String data){
+    public NumNode(String data){
         super(data);
     }
 
-    public AddOpNode(String data, node parent){
+    public NumNode(String data, node parent){
         super(data, parent);
     }
 

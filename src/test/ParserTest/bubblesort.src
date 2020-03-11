@@ -48,7 +48,7 @@ printArray(integer arr[], integer size) : void
 // main funtion to test above
 main
   local
-    integer arr[7];
+    integer arr[7][9];
   do
     arr[0] = 64;
     arr[1] = 34;

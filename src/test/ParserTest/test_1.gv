@@ -1,102 +1,48 @@
 digraph AST {
 0[label="program"]
 0->1
-0->24
-0->48
-48[label="main"]
-48->49
-49[label="FUNCBODY"]
-49->50
-49->56
-56[label="REPTSTATEMENT"]
-56->61
-56->95
-95[label="equal"]
-95->94
-95->96
-96[label="intnum"]
-94[label="callGROUP"]
-94->91
-91[label="call"]
-91->92
-91->93
-93[label="index list"]
-92[label="counter"]
-61[label="equal"]
-61->60
-61->86
-86[label="ITEMGROUP"]
-86->65
-86->62
-62[label="ITEM"]
-62->63
-62->64
-64[label="index list"]
-63[label="f1"]
-65[label="ITEM"]
-65->66
-65->67
-67[label="FUNCTION_CALL_PARAMS"]
-67->68
-67->75
-67->80
-80[label="floatnum"]
-75[label="floatnum"]
-68[label="FACTOR"]
-68->69
-68->70
-70[label="floatnum"]
-69[label="minus"]
-66[label="build"]
-60[label="callGROUP"]
-60->57
-57[label="call"]
-57->58
-57->59
-59[label="index list"]
-58[label="f1"]
-50[label="VARIABLE_DECLARATIONS"]
-50->52
-52[label="var decl"]
-52->51
-52->53
-52->54
-54[label="dim list"]
-53[label="f1"]
-51[label="linear"]
-24[label="function_list"]
-24->25
-25[label="func_def"]
-25->26
-25->38
-38[label="FUNCBODY"]
-38->39
-38->40
-40[label="REPTSTATEMENT"]
-40->41
-41[label="return"]
-41->42
-42[label="intnum"]
-39[label="OPTFUNCBODY0"]
-26[label="FUNCTION_SIGNATURE"]
-26->28
-26->29
-26->31
-26->37
-37[label="float"]
-31[label="fParam list"]
-31->32
-32[label="fparam"]
+0->18
+0->42
+42[label="main"]
+42->43
+43[label="FUNCBODY"]
+43->44
+43->45
+45[label="REPTSTATEMENT"]
+44[label="OPTFUNCBODY0"]
+18[label="function_list"]
+18->19
+19[label="func_def"]
+19->20
+19->32
+32[label="FUNCBODY"]
 32->33
 32->34
-32->35
-35[label="dim list"]
-34[label="x"]
-33[label="float"]
-29[label="evaluate"]
-28[label="NAMESPACE"]
-28->27
-27[label="QUADRATIC"]
+34[label="REPTSTATEMENT"]
+34->35
+35[label="return"]
+35->36
+36[label="intnum"]
+33[label="OPTFUNCBODY0"]
+20[label="FUNCTION_SIGNATURE"]
+20->22
+20->23
+20->25
+20->31
+31[label="integer"]
+25[label="fParam list"]
+25->26
+26[label="fparam"]
+26->27
+26->28
+26->29
+29[label="dim list"]
+28[label="x"]
+27[label="integer"]
+23[label="X"]
+22[label="NAMESPACE"]
+22->21
+21[label="ABC"]
 1[label="class_list"]
 1->2
 2[label="class"]
@@ -105,22 +51,12 @@ digraph AST {
 2->5
 5[label="var+func decl list"]
 5->8
-5->19
-19[label="var decl"]
-19->17
-19->18
-19->20
-19->21
-21[label="dim list"]
-20[label="x"]
-18[label="float"]
-17[label="public"]
 8[label="func decl"]
 8->6
 8->7
 8->9
 8->15
-15[label="float"]
+15[label="integer"]
 9[label="fParam list"]
 9->10
 10[label="fparam"]
@@ -129,9 +65,9 @@ digraph AST {
 10->13
 13[label="dim list"]
 12[label="x"]
-11[label="float"]
-7[label="evaluate"]
+11[label="integer"]
+7[label="X"]
 6[label="public"]
 4[label="inheritance list"]
-3[label="POLYNOMIAL"]
+3[label="ABC"]
 }

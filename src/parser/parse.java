@@ -55,29 +55,23 @@ public class parse {
             switch (token){
                 case "id" : ast.push(new IdNode(lookahead.getLexeme().toString()));
                     break;
-                case "class" : A_CREATEADD(lookahead.getToken());
+                case "class" : ast.push(new ClassNode(token));
                     break;
-                case "inherits" : A_CREATEADD(lookahead.getToken());
+                case "inherits" : ast.push(new GeneralNode(token));
                     break;
-                case "public" : A_CREATEADD(lookahead.getToken());
+                case "public" :
+                case "private" : ast.push(new TypeNode(token));
                     break;
-                case "private" : A_CREATEADD(lookahead.getToken());
+                case "if" :
+                case "while" :
+                case "read" :
+                case "write" :
+                case "return" : ast.push(new StatBlockNode(token));
                     break;
-                case "if" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "while" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "read" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "write" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "return" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "plus" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "minus" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "or" : A_CREATEADD(lookahead.getToken());
+                case "plus" :
+                case "minus" :
+                case "or" :
+                    ast.push(new AddOpNode(lookahead.getLexeme().toString()));
                     break;
                 case "eq" : A_CREATEADD(lookahead.getToken());
                     break;
@@ -91,11 +85,10 @@ public class parse {
                     break;
                 case "geq" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "mult" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "div" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "and" : A_CREATEADD(lookahead.getToken());
+                case "mult" :
+                case "div" :
+                case "and" :
+                    ast.push(new MultOpNode(lookahead.getLexeme().toString()));
                     break;
                 case "integer" : A_CREATEADD(lookahead.getToken());
                     break;
@@ -103,15 +96,15 @@ public class parse {
                     break;
                 case "not" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "main" : A_CREATEADD(lookahead.getToken());
+                case "main" : ast.push(new FuncDefNode(token));
                     break;
                 case "void" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "intnum" : A_CREATEADD(lookahead.getToken());
+                case "intnum" : ast.push(new NumNode(lookahead.getLexeme().toString()));
                     break;
-                case "floatnum" : A_CREATEADD(lookahead.getToken());
+                case "floatnum" : ast.push(new NumNode(lookahead.getLexeme().toString()));
                     break;
-                case "equal" : A_CREATEADD(lookahead.getToken());
+                case "equal" : ast.push(new AssignStatNode(lookahead.getLexeme().toString()));
                     break;
 //                case "integer" : A_CREATEADD(lookahead);
 //                    break;
@@ -627,11 +620,11 @@ public class parse {
     }
 
     private boolean ARRAY_DIMENSIONS(){
-//        ARRAY_DIMENSIONS -> #1 ARRAY_SIZE #2 ARRAY_DIMENSIONS #4 .
+//        ARRAY_DIMENSIONS -> #1 ARRAY_SIZE #2 #7 ARRAY_DIMENSIONS #4 .
 //        ARRAY_DIMENSIONS ->  .
         if (!skipErrors("ARRAY_DIMENSIONS")) return false;
         if (e.FIRST("ARRAY_SIZE").contains(lookahead.getToken())){
-            if (A_CREATEADD("dim list") && ARRAY_SIZE() && A_RIGHTCHILD()
+            if (A_CREATEADD("dim list") && ARRAY_SIZE() && A_RIGHTCHILD() && A_UNIFY()
                     && ARRAY_DIMENSIONS() && A_ADOPTS()){
                 derivationStack.push("ARRAY_DIMENSIONS -> ARRAY_SIZE ARRAY_DIMENSIONS .\n");
             }else success = false;
@@ -728,14 +721,14 @@ public class parse {
 
     private boolean FUNCTION_SIGNATURE_NAMESPACE(){
 //        FUNCTION_SIGNATURE_NAMESPACE -> #2 FUNCTION_SIGNATURE_EXT .
-//        FUNCTION_SIGNATURE_NAMESPACE -> #1(namespace) #3 #2 coloncolon id #2 FUNCTION_SIGNATURE_EXT .
+//        FUNCTION_SIGNATURE_NAMESPACE -> #1(namespace) #3 #7 #2 coloncolon id #2 FUNCTION_SIGNATURE_EXT .
         if (!skipErrors("FUNCTION_SIGNATURE_NAMESPACE")) return false;
         if (e.FIRST("FUNCTION_SIGNATURE_EXT").contains(lookahead.getToken())){
             if (A_RIGHTCHILD() && FUNCTION_SIGNATURE_EXT()){
                 derivationStack.push("FUNCTION_SIGNATURE_NAMESPACE -> FUNCTION_SIGNATURE_EXT .\n");
             }else success = false;
         }else if (e.FIRST("FUNCTION_SIGNATURE_NAMESPACE").contains(lookahead.getToken())){
-            if (A_CREATEADD("NAMESPACE") && A_LEFTCHILD() && A_RIGHTCHILD() && match("sr")
+            if (A_CREATEADD("NAMESPACE") && A_LEFTCHILD() && A_UNIFY() && A_RIGHTCHILD() && match("sr")
                     && match("id") && A_RIGHTCHILD() && FUNCTION_SIGNATURE_EXT())
             derivationStack.push("FUNCTION_SIGNATURE_NAMESPACE -> sr id FUNCTION_SIGNATURE_EXT .\n");
         }else success = false;
@@ -1067,11 +1060,11 @@ public class parse {
     }
 
     private boolean ARRAY_SIZE(){
-//        ARRAY_SIZE -> #1 lsqbr OPTIONAL_INT #2 rsqbr .
+//        ARRAY_SIZE -> #1 lsqbr OPTIONAL_INT #2 #7 rsqbr .
         if (!skipErrors("ARRAY_SIZE")) return false;
         if (e.FIRST("ARRAY_SIZE").contains(lookahead.getToken())){
             if (A_CREATEADD("ARRAY_SIZE") && match("lsqbr") && OPTIONAL_INT() && A_RIGHTCHILD()
-                    && match("rsqbr")){
+                    && A_UNIFY() && match("rsqbr")){
                 derivationStack.push("TERM -> FACTOR RIGHT_REC_TERM .\n");
             }else success = false;
         }else success = false;
@@ -1083,11 +1076,11 @@ public class parse {
 //        OPTIONAL_INT ->  .
         if (!skipErrors("OPTIONAL_INT")) return false;
         if (e.FIRST("OPTIONAL_INT").contains(lookahead.getToken())){
-            if (A_CREATEADD("OPTIONAL_INT") && match("intnum") && A_RIGHTCHILD()){
+            if (A_CREATEADD("arr_size") && match("intnum") && A_RIGHTCHILD()){
                 derivationStack.push("OPTIONAL_INT -> intnum .\n");
             }else success = false;
         }else if (e.FOLLOW("OPTIONAL_INT").contains(lookahead.getToken())){
-            if (A_CREATEADD("OPTIONAL_INT")){
+            if (A_CREATEADD("arr_size")){
                 derivationStack.push("OPTIONAL_INT ->  .\n");
             }
         }else success = false;
@@ -1191,17 +1184,15 @@ public class parse {
                 ast.push(new ClassListNode(name));
                 return true;
             case "function_list":
-                ast.push(new FuncDefList(name));
+                ast.push(new FuncDefListNode(name));
                 return true;
-            case "class":
-                ast.push(new ClassNode(name));
+            case "var decl":
+                ast.push(new VarDeclNode(name));
                 return true;
-            case "plus":
-            case "minus":
-            case "or":
-                ast.push(new AddOpNode(name));
+            case "func decl":
+                ast.push(new FuncDeclNode(name));
                 return true;
-            case "equal":
+
             default: ast.push(new GeneralNode(name));
             break;
         }

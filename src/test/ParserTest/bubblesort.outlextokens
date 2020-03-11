@@ -48,7 +48,7 @@
 [inlinecmnt, // main funtion to test above, 48] 
 [main, main, 49] 
 [local, local, 50] 
-[integer, integer, 51] [id, arr, 51] [lsqbr, [, 51] [intnum, 7, 51] [rsqbr, ], 51] [semi, ;, 51] 
+[integer, integer, 51] [id, arr, 51] [lsqbr, [, 51] [intnum, 7, 51] [rsqbr, ], 51] [lsqbr, [, 51] [intnum, 9, 51] [rsqbr, ], 51] [semi, ;, 51] 
 [do, do, 52] 
 [id, arr, 53] [lsqbr, [, 53] [intnum, 0, 53] [rsqbr, ], 53] [equal, =, 53] [intnum, 64, 53] [semi, ;, 53] 
 [id, arr, 54] [lsqbr, [, 54] [intnum, 1, 54] [rsqbr, ], 54] [equal, =, 54] [intnum, 34, 54] [semi, ;, 54] 

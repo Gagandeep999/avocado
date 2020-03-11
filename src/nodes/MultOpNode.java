@@ -2,13 +2,13 @@ package nodes;
 
 import visitor.visitor;
 
-public class AddOpNode extends node {
+public class MultOpNode extends node {
 
-    public AddOpNode(String data){
+    public MultOpNode(String data){
         super(data);
     }
 
-    public AddOpNode(String data, node parent){
+    public MultOpNode(String data, node parent){
         super(data, parent);
     }
 

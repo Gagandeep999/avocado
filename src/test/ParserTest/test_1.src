@@ -1,21 +1,12 @@
-// ====== Class declarations ====== //
-class POLYNOMIAL {
-	public evaluate(float x) : float;
-	public float x;
+class ABC {
+    public X(integer x) : integer;
 };
 
-
-// ====== Function Definitions ====== //
-QUADRATIC::evaluate(float x) : float
+ABC::X(integer x) : integer
   do
-    return (0);
+    return(0);
   end
 
-
 main
-  local
-    linear f1;
   do
-    f1 = f1.build(-2.0, 1.0, 0.0);
-    counter = 1;
   end
