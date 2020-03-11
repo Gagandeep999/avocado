@@ -1242,7 +1242,7 @@ public class parse {
         node group = new GeneralNode(x.getName()+"GROUP");
         nodeNum++;
         group.makeRightChild(x);
-        while (ast.peek().getName().equals(x.getName())){
+        while (ast.peek().getData().equals(x.getData())){
             x = ast.pop();
             group.makeRightChild(x);
         }

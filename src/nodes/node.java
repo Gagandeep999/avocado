@@ -46,12 +46,19 @@ public abstract class node {
 
     public node(){
         this.name = "";
+        this.type = "";
+        this.data = "";
         this.children = new LinkedList<>();
     }
 
     public node(String data){
+        this.name = "";
+        this.type = "";
         this.data = data;
+        this.num = 0;
         this.myNum = curNum;
+        this.children = new LinkedList<>();
+        this.parent = null;
         node.curNum++;
     }
 

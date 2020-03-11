@@ -41,7 +41,7 @@ public class parsedriver {
             ast.println("digraph AST {");
             while (!astTree.isEmpty()){
                 node x = astTree.pop();
-                ast.println(x.getNum()+"[label=\""+x.getName()+"\"]");
+                ast.println(x.getMyNum()+"[label=\""+x.getData()+"\"]");
                 ast.flush();
                 for (node child :
                         x.getChildren()) {
