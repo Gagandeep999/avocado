@@ -13,6 +13,10 @@ public class symbolTableVisitor extends visitor {
 
     String outputfile;
 
+    public symbolTableVisitor(){
+
+    }
+
     public symbolTableVisitor(String outputfile){
         this.outputfile = outputfile;
     }
