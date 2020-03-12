@@ -3,17 +3,17 @@ package nodes;
 import lexer.token;
 import visitor.visitor;
 
-public class GeneralNode extends node {
+public class generalNode extends node {
 
-    public GeneralNode(String data){
+    public generalNode(String data){
         super(data);
     }
 
-//    public GeneralNode(String name, int num){
+//    public generalNode(String name, int num){
 //        super(name, num);
 //    }
 
-//    public GeneralNode(token t, int num){
+//    public generalNode(token t, int num){
 //        super(t, num);
 //    }
 

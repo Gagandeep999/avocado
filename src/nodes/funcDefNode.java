@@ -2,13 +2,13 @@ package nodes;
 
 import visitor.visitor;
 
-public class TypeNode extends node {
+public class funcDefNode extends node {
 
-    public TypeNode(String data){
+    public funcDefNode(String data){
         super(data);
     }
 
-    public TypeNode(String data, node parent){
+    public funcDefNode(String data, node parent){
         super(data, parent);
     }
 

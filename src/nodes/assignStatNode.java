@@ -2,13 +2,13 @@ package nodes;
 
 import visitor.visitor;
 
-public class IdNode extends node {
+public class assignStatNode extends node {
 
-    public IdNode(String data){
+    public assignStatNode(String data){
         super(data);
     }
 
-    public IdNode(String data, node parent){
+    public assignStatNode(String data, node parent){
         super(data, parent);
     }
 

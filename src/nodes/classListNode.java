@@ -3,21 +3,21 @@ package nodes;
 import lexer.token;
 import visitor.visitor;
 
-public class ProgNode extends node {
+public class classListNode extends node {
 
-    public ProgNode(String data){
+    public classListNode(String data){
         super(data);
     }
 
-    public ProgNode(String data, node parent){
+    public classListNode(String data, node parent){
         super(data, parent);
     }
 
-//    public ProgNode(String name, int num){
+//    public classListNode(String name, int num){
 //        super(name, num);
 //    }
 
-//    public ProgNode(token t, int num){
+//    public classListNode(token t, int num){
 //        super(t, num);
 //    }
 
@@ -26,3 +26,4 @@ public class ProgNode extends node {
         visitorNode.visit(this);
     }
 }
+

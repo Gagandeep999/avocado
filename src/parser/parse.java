@@ -53,25 +53,25 @@ public class parse {
     private boolean match(String token){
         if (lookahead.getToken().equals(token)){
             switch (token){
-                case "id" : ast.push(new IdNode(lookahead.getLexeme().toString()));
+                case "id" : ast.push(new idNode(lookahead.getLexeme().toString()));
                     break;
-                case "class" : ast.push(new ClassNode(token));
+                case "class" : ast.push(new classNode(token));
                     break;
-                case "inherits" : ast.push(new GeneralNode(token));
+                case "inherits" : ast.push(new generalNode(token));
                     break;
                 case "public" :
-                case "private" : ast.push(new TypeNode(token));
+                case "private" : ast.push(new typeNode(token));
                     break;
                 case "if" :
                 case "while" :
                 case "read" :
                 case "write" :
-                case "return" : ast.push(new StatBlockNode(token));
+                case "return" : ast.push(new statBlockNode(token));
                     break;
                 case "plus" :
                 case "minus" :
                 case "or" :
-                    ast.push(new AddOpNode(lookahead.getLexeme().toString()));
+                    ast.push(new addOpNode(lookahead.getLexeme().toString()));
                     break;
                 case "eq" : A_CREATEADD(lookahead.getToken());
                     break;
@@ -88,7 +88,7 @@ public class parse {
                 case "mult" :
                 case "div" :
                 case "and" :
-                    ast.push(new MultOpNode(lookahead.getLexeme().toString()));
+                    ast.push(new multOpNode(lookahead.getLexeme().toString()));
                     break;
                 case "integer" : A_CREATEADD(lookahead.getToken());
                     break;
@@ -96,15 +96,15 @@ public class parse {
                     break;
                 case "not" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "main" : ast.push(new FuncDefNode(token));
+                case "main" : ast.push(new mainNode(token));
                     break;
                 case "void" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "intnum" : ast.push(new NumNode(lookahead.getLexeme().toString()));
+                case "intnum" : ast.push(new numNode(lookahead.getLexeme().toString()));
                     break;
-                case "floatnum" : ast.push(new NumNode(lookahead.getLexeme().toString()));
+                case "floatnum" : ast.push(new numNode(lookahead.getLexeme().toString()));
                     break;
-                case "equal" : ast.push(new AssignStatNode(lookahead.getLexeme().toString()));
+                case "equal" : ast.push(new assignStatNode(lookahead.getLexeme().toString()));
                     break;
 //                case "integer" : A_CREATEADD(lookahead);
 //                    break;
@@ -458,7 +458,7 @@ public class parse {
     }
 
     private boolean FUNCTION_CALL_EXT(){
-//        FUNCTION_CALL_EXT  -> FUNCTION_CALL_EXT -> #5 #1(func_call) #3 semi .
+//        FUNCTION_CALL_EXT  -> #5 #1(func_call) #3 semi .
 //        FUNCTION_CALL_EXT  -> dot ASSIGN_STATEMENT_OR_FUNCTION_CALL .
         if (!skipErrors("FUNCTION_CALL_EXT")) return false;
         if (e.FIRST("FUNCTION_CALL_EXT").contains(lookahead.getToken())){
@@ -860,7 +860,7 @@ public class parse {
 
     private boolean FACTOR(){
         if (!skipErrors("FACTOR")) return false;
-//        FACTOR -> VARIABLE_FUNCTION_CALL #6 #5 .
+//        FACTOR -> VARIABLE_FUNCTION_CALL #6 #5.
         if (e.FIRST("VARIABLE_FUNCTION_CALL").contains(lookahead.getToken())){
             if (VARIABLE_FUNCTION_CALL() && A_DELETE() && A_GROUP()){
                 derivationStack.push("FACTOR -> VARIABLE_FUNCTION_CALL .\n");
@@ -1178,22 +1178,25 @@ public class parse {
 
         switch (name){
             case "program":
-                ast.push(new ProgNode(name));
+                ast.push(new progNode(name));
                 return true;
             case "class_list":
-                ast.push(new ClassListNode(name));
+                ast.push(new classListNode(name));
                 return true;
             case "function_list":
-                ast.push(new FuncDefListNode(name));
+                ast.push(new funcDefListNode(name));
                 return true;
             case "var decl":
-                ast.push(new VarDeclNode(name));
+                ast.push(new varDeclNode(name));
                 return true;
             case "func decl":
-                ast.push(new FuncDeclNode(name));
+                ast.push(new funcDeclNode(name));
+                return true;
+            case "func_def":
+                ast.push(new funcDefNode(name));
                 return true;
 
-            default: ast.push(new GeneralNode(name));
+            default: ast.push(new generalNode(name));
             break;
         }
         return true;
@@ -1226,7 +1229,7 @@ public class parse {
     private boolean A_GROUP(){
         node x = ast.pop();
         nodeNum ++;
-        node group = new GeneralNode(x.getData()+"GROUP");
+        node group = new generalNode(x.getData()+"GROUP");
         nodeNum++;
         group.makeRightChild(x);
         while (ast.peek().getData().equals(x.getData())){
@@ -1245,7 +1248,7 @@ public class parse {
     private boolean A_UNIFY(){
         node x = ast.pop();
         if (x.getChildren().size()==1){
-            x = x.getChildren().pop();
+            x = x.getChildren().get(0);
         }
         ast.push(x);
         return true;

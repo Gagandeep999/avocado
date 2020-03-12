@@ -2,13 +2,13 @@ package nodes;
 
 import visitor.visitor;
 
-public class AddOpNode extends node {
+public class funcDefListNode extends node {
 
-    public AddOpNode(String data){
+    public funcDefListNode(String data){
         super(data);
     }
 
-    public AddOpNode(String data, node parent){
+    public funcDefListNode(String data, node parent){
         super(data, parent);
     }
 

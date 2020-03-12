@@ -1,7 +1,10 @@
 package nodes;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import lexer.token;
+import symbolTable.symTab;
+import symbolTable.symTabEntry;
 import visitor.visitor;
 
 public abstract class node {
@@ -9,8 +12,10 @@ public abstract class node {
     String data;
     int myNum;
     static int curNum;
-    LinkedList<node> children;
+    ArrayList<node> children;
     node parent;
+    public symTab table;
+    public symTabEntry entry;
 
 
     public String getData() {
@@ -29,22 +34,19 @@ public abstract class node {
         return parent;
     }
 
-    public LinkedList<node> getChildren() {
+    public ArrayList<node> getChildren() {
         return children;
     }
 
     public node(){
         this.data = "";
-        this.children = new LinkedList<>();
+        this.children = new ArrayList<>();
     }
 
     public node(String data){
-//        this.name = "";
-//        this.type = "";
         this.data = data;
-//        this.num = 0;
         this.myNum = curNum;
-        this.children = new LinkedList<>();
+        this.children = new ArrayList<>();
         this.parent = null;
         node.curNum++;
     }
@@ -56,17 +58,17 @@ public abstract class node {
     }
 
     public void makeRightChild(node y){
-        this.children.addLast(y);
+        this.children.add(y);
     }
 
     public void makeLeftChild(node x){
-        this.children.addFirst(x);
+        this.children.add(0, x);
     }
 
     public void adopt(node y){
         for (node child :
                 y.children) {
-            this.children.addLast(child);
+            this.children.add(child);
         }
     }
 
