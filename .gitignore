@@ -1,0 +1,24 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+#ignore lex outputs in the ParserTest directory
+src/test/ParserTest/*.outlexerror
+src/test/ParserTest/*.outlextoken
+
+#ignore lex outputs and parser output in the SymbolTableTest directory
+src/test/SymbolTableTest/*.outlexerror
+src/test/SymbolTableTest/*.outlextoken
+src/test/SymbolTableTest/*.outderivation
+src/test/SymbolTableTest/*.outsyntaxerrors
