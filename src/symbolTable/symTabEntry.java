@@ -1,13 +1,31 @@
 package symbolTable;
 
-import java.util.HashMap;
-
 public class symTabEntry {
 
     String name;
     String kind;
     String type;
     symTab link;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public symTab getLink() {
+        return link;
+    }
+
+    public void setLink(symTab link) {
+        this.link = link;
+    }
 
     public symTabEntry(){
         this.name = "";
@@ -30,8 +48,7 @@ public class symTabEntry {
         this.link = null;
     }
 
-    public symTabEntry(String name, String kind, symTab link){
-        this.name = name;
+    public symTabEntry(String kind, symTab link){
         this.kind = kind;
         this.type = "";
         this.link = link;
@@ -45,6 +62,6 @@ public class symTabEntry {
     }
 
     public String toString(){
-        return ("name-> "+this.name+" kind-> "+this.kind+" type-> "+this.type+" link-> "+this.link);
+        return (this.name+" | "+this.kind+" | "+this.type);
     }
 }

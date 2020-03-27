@@ -1,7 +1,0 @@
-global
-	{POLYNOMIAL=name-> POLYNOMIAL kind-> class type->  link-> POLYNOMIAL
-	{}, evaluate=name-> evaluate kind-> function type-> float link-> evaluate
-	{x=name-> x kind-> variable type-> float link-> null}, LINEAR=name-> LINEAR kind-> class type->  link-> LINEAR
-	{}, QUADRATIC=name-> QUADRATIC kind-> class type->  link-> QUADRATIC
-	{}, build=name-> build kind-> function type-> QUADRATIC link-> build
-	{A=name-> A kind-> variable type-> float link-> null, B=name-> B kind-> variable type-> float link-> null, C=name-> C kind-> variable type-> float link-> null}}

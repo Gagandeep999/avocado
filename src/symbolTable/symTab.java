@@ -1,35 +1,39 @@
 package symbolTable;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class symTab {
 
     String name;
-    HashMap<String, symTabEntry> tableMap;
+    ArrayList<symTabEntry> tableList;
 
     public symTab(){
-        this.name = "";
-        this.tableMap = new HashMap<>();
+        this.tableList = new ArrayList<>();
     }
 
     public symTab(String name){
         this.name = name;
-        this.tableMap = new HashMap<>();
+        this.tableList = new ArrayList<>();
     }
 
-    public symTab(String name, HashMap tableMap){
+    public symTab(String name, ArrayList tableList){
         this.name = name;
-        this.tableMap = tableMap;
+        this.tableList = tableList;
     }
 
-    public void addToTable(String entryName, symTabEntry entry){
-        this.tableMap.put(entryName, entry);
+    public String getName() {
+        return name;
+    }
+
+    public void setTableList(ArrayList<symTabEntry> tableList) {
+        this.tableList = tableList;
+    }
+
+    public ArrayList<symTabEntry> getTableList() {
+        return tableList;
     }
 
     public String toString(){
-        String output = this.name;
-        output += "\n\t";
-        output += tableMap;
-        return output;
+        return " ";
     }
 }

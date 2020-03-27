@@ -1,24 +1,33 @@
 package symbolTable;
 
+import java.util.ArrayList;
+
 public class funcEntry extends symTabEntry {
+
+    String scope;
+    ArrayList<String> params;
 
     public funcEntry(){
         super();
     }
 
-    public funcEntry(String name, String kind){
-        super(name, kind);
-    }
-
-    public funcEntry(String name, String kind, String type){
-        super(name, kind, type);
-    }
-
-    public funcEntry(String name, String kind, symTab link){
-        super(name, kind, link);
-    }
-
-    public funcEntry(String name, String kind, String type, symTab link){
+    public funcEntry(String scope, ArrayList params, String name, String kind, String type, symTab link){
         super(name, kind, type, link);
+        this.scope = scope;
+        this.params = params;
+    }
+
+    public funcEntry(ArrayList params, String name, String kind, String type, symTab link){
+        super(name, kind, type, link);
+        this.scope = "global";
+        this.params = params;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public void setParams(ArrayList<String> params) {
+        this.params = params;
     }
 }
