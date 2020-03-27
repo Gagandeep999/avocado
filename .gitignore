@@ -14,11 +14,11 @@
 *.rar
 
 #ignore lex outputs in the ParserTest directory
-src/test/ParserTest/*.outlexerror
-src/test/ParserTest/*.outlextoken
+src/test/ParserTest/*.outlexerrors
+src/test/ParserTest/*.outlextokens
 
 #ignore lex outputs and parser output in the SymbolTableTest directory
-src/test/SymbolTableTest/*.outlexerror
-src/test/SymbolTableTest/*.outlextoken
+src/test/SymbolTableTest/*.outlexerrors
+src/test/SymbolTableTest/*.outlextokens
 src/test/SymbolTableTest/*.outderivation
 src/test/SymbolTableTest/*.outsyntaxerrors

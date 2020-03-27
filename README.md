@@ -25,10 +25,12 @@ A LL(1) grammar is used to generate the AST.
 <h4> > ABSTRACT SYNTAX TREE</h4>
 --
 This step is where, the complete code that becomes a list of token, is converted into a tree data structure.
-The nodes of the tree are extended from an abstract class which allows to use the visitor pattern to complete
+The nodes of the tree are extended from an abstract class which allows to use the <b>visitor pattern</b> to complete
 other tasks like symbol table generation and type checking easily and conveniently.
+
 The idea is to have special nodes for some of the tokens, e.g. - funcDefNode() or classDeclNode() which when 
 visited act differently than others.
+Symbol table is generated in this step and all the semantic checks are performed here. 
 
 <h4> > CODE GENERATION</h4>
 --
