@@ -1,3 +1,14 @@
+ GLOBAL->
+	[POLYNOMIAL | class |  
+	 LINEAR | class |  
+	 QUADRATIC | class |  
+	 main | mainFunction | void] 
+
+ POLYNOMIAL->
+	[public | evaluate | function | float] 
+		 evaluate->
+			[x | parameter | float] 
+
  LINEAR->
 	[private | a | variable | float
 	 private | b | variable | float
@@ -10,14 +21,6 @@
 		 evaluate->
 			[x | parameter | float
 			 result | variable | float] 
-
-
- GLOBAL->
-	[POLYNOMIAL | class |  
-	 LINEAR | class |  
-	 QUADRATIC | class |  
-	 main | mainFunction | void] 
-
 
  QUADRATIC->
 	[private | a | variable | float
@@ -33,13 +36,6 @@
 		 evaluate->
 			[x | parameter | float
 			 result | variable | float] 
-
-
- POLYNOMIAL->
-	[public | evaluate | function | float] 
-		 evaluate->
-			[x | parameter | float] 
-
 
  main->
 	[f1 | variable | linear

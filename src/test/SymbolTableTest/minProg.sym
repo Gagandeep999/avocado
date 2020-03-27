@@ -1,6 +1,5 @@
  GLOBAL->
 	[main | mainFunction | void] 
 
-
  main->
 	[] 

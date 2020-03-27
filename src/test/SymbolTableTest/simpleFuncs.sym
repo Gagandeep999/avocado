@@ -3,11 +3,13 @@
 	 global | add | function | integer
 	 main | mainFunction | void] 
 
-
  add->
 	[arr | parameter | integer
 	 result | variable | integer] 
 
+ add->
+	[arr | parameter | integer
+	 result | variable | integer] 
 
  main->
 	[x | variable | integer] 

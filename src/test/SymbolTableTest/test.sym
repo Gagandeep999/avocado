@@ -1,24 +1,8 @@
- LINEAR->
-	[public | evaluate | function | float
-	 public | x | variable | float] 
-		 evaluate->
-			[x | parameter | float
-			 result | variable | float] 
-
-
  GLOBAL->
 	[POLYNOMIAL | class |  
 	 LINEAR | class |  
 	 QUADRATIC | class |  
 	 main | mainFunction | void] 
-
-
- QUADRATIC->
-	[public | evaluate | function | float
-	 public | x | variable | float] 
-		 evaluate->
-			[x | parameter | float] 
-
 
  POLYNOMIAL->
 	[public | evaluate | function | float
@@ -26,6 +10,18 @@
 		 evaluate->
 			[x | parameter | float] 
 
+ LINEAR->
+	[public | evaluate | function | float
+	 public | x | variable | float] 
+		 evaluate->
+			[x | parameter | float
+			 result | variable | float] 
+
+ QUADRATIC->
+	[public | evaluate | function | float
+	 public | x | variable | float] 
+		 evaluate->
+			[x | parameter | float] 
 
  main->
 	[f1 | variable | linear] 

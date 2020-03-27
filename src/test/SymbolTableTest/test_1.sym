@@ -1,13 +1,11 @@
- ABC->
-	[public | X | function | integer] 
-		 X->
-			[x | parameter | integer] 
-
-
  GLOBAL->
 	[ABC | class |  
 	 main | mainFunction | void] 
 
+ ABC->
+	[public | X | function | integer] 
+		 X->
+			[x | parameter | integer] 
 
  main->
 	[] 

@@ -410,50 +410,75 @@ public class symbolTableVisitor extends visitor {
     }
 
     public void printSymbolTable(){
-
         for (String key :
             tables.keySet()) {
-            //special case of class functions
-            if (key.contains("_CLASS")){
-                String table = tables.get(key).toString();
-                String[] _table = table.split("->");
-                out.print(_table[0]+"->\n");
-                String[] _entries = _table[1].split(",");
-                for (String eachEntry :
-                        _entries) {
-                    out.print("\t"+eachEntry+"\n");
+            //firstly print all the entries of the global table
+            if (key.contains("GLOBAL")){
+                String globalTableStr = tables.get(key).toString();
+                String[] _globalEntry = globalTableStr.split("->");
+                out.print(_globalEntry[0]+"->\n");
+                String[] _globalEntries = _globalEntry[1].split(",");
+                for (String eachGlobalEntry :
+                        _globalEntries) {
+                    out.print("\t"+eachGlobalEntry+"\n");
                     out.flush();
                 }
-                symTab classTable = tables.get(key);
-                ArrayList<symTabEntry> classEntries = classTable.getTableList();
+//                out.println("\n");
+                //now get the table and print table of each function and class
+                symTab globalTableTab = tables.get("GLOBAL");
+                ArrayList<symTabEntry> globalEntries = globalTableTab.getTableList();
                 for (symTabEntry eachEntry :
-                        classEntries) {
-                    if (eachEntry.getKind().equals("function")){
-                        out.print("\t\t");
-                        String funcTable = eachEntry.getLink().toString();
-                        String[] _funcTable = funcTable.split("->");
-                        out.print(_funcTable[0]+"->\n");
-                        String[] _funcTableEntries = _funcTable[1].split(",");
-                        for (String eachFuncEntry :
-                                _funcTableEntries) {
-                            out.print("\t\t\t"+eachFuncEntry+"\n");
+                        globalEntries) {
+                    if (eachEntry.getKind().equals("function") || eachEntry.getKind().equals("mainFunction")){
+                        //if it is a free function entry; move cursor to newline
+                        //newline -> funcName ->newline -> tabspace -> FuncEntry ->newline
+                        out.print("\n");
+                        String globalFuncTable = eachEntry.getLink().toString();
+                        String[] _globalFuncTable = globalFuncTable.split("->");
+                        out.print(_globalFuncTable[0]+"->\n");
+                        String[] _globalfuncTableEntries = _globalFuncTable[1].split(",");
+                        for (String eachGlobalFuncEntry :
+                                _globalfuncTableEntries) {
+                            out.print("\t"+eachGlobalFuncEntry+"\n");
                             out.flush();
+                        }
+                    }
+                    else if (eachEntry.getKind().equals("class")){
+                        //if it is a class, first print the class table
+                        //newline -> classname ->newline -> tabspace -> classEntry ->newline
+                        out.print("\n");
+                        String classTableStr = eachEntry.getLink().toString();
+                        String[] _classTable = classTableStr.split("->");
+                        out.print(_classTable[0]+"->\n");
+                        String[] _classEntries = _classTable[1].split(",");
+                        for (String eachClassEntry :
+                                _classEntries) {
+                            out.print("\t"+eachClassEntry+"\n");
+                            out.flush();
+                        }
+                        symTab classTableTab = eachEntry.getLink();
+                        ArrayList<symTabEntry> classEntries = classTableTab.getTableList();
+                        for (symTabEntry eachClassEntryTab :
+                                classEntries) {
+                            if (eachClassEntryTab.getKind().equals("function")){
+                                //if it is a class function entry
+                                //we don't want to add extra space, so we don't add new line here
+                                //two tabspace -> classFuncName -> newline -> three tabspace -> classFuncEntry -> newline
+                                out.print("\t\t");
+                                String classFuncTable = eachClassEntryTab.getLink().toString();
+                                String[] _classFuncTable = classFuncTable.split("->");
+                                out.print(_classFuncTable[0]+"->\n");
+                                String[] _classFuncTableEntries = _classFuncTable[1].split(",");
+                                for (String eachClassFuncEntry :
+                                        _classFuncTableEntries) {
+                                    out.print("\t\t\t"+eachClassFuncEntry+"\n");
+                                    out.flush();
+                                }
+                            }
                         }
                     }
                 }
             }
-            else {
-                String table = tables.get(key).toString();
-                String[] _entry = table.split("->");
-                out.print(_entry[0]+"->\n");
-                String[] _entries = _entry[1].split(",");
-                for (String eachEntry :
-                        _entries) {
-                    out.print("\t"+eachEntry+"\n");
-                    out.flush();
-                }
-            }
-            out.println("\n");
         }
     }
 }
