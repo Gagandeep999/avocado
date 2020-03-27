@@ -30,4 +30,8 @@ public class funcEntry extends symTabEntry {
     public void setParams(ArrayList<String> params) {
         this.params = params;
     }
+
+    public String toString(){
+        return (this.scope+" | "+this.name+" | "+this.kind+" | "+this.type);
+    }
 }

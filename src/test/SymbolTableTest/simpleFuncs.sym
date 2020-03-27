@@ -1,13 +1,13 @@
- global -> 
-[add | function | integer
- add | function | integer
- main | mainFunction | void] 
+ GLOBAL->
+	[global | add | function | integer
+	 global | add | function | integer
+	 main | mainFunction | void] 
 
 
- add -> 
-[arr | parameter | integer
- result | variable | integer] 
+ add->
+	[arr | parameter | integer
+	 result | variable | integer] 
 
 
- main -> 
-[x | variable | integer] 
+ main->
+	[x | variable | integer] 

@@ -50,6 +50,7 @@ public class symbolTableVisitor extends visitor {
                     symTab classTab = new symTab(className);
                     symTabEntry classEntry = new symTabEntry(className, "class", " ", classTab);
                     globalList.add(classEntry);
+                    className = className.concat("_CLASS");
                     tables.put(className, classTab);
                 }
             }else if (child.getClass().toString().contains("funcDefList")) {
@@ -81,8 +82,8 @@ public class symbolTableVisitor extends visitor {
             }
         }
         //create the global table and add it to the hash map with key global
-        symTab globalTab = new symTab("global", globalList);
-        tables.put("global", globalTab);
+        symTab globalTab = new symTab("GLOBAL", globalList);
+        tables.put("GLOBAL", globalTab);
 
         for (node child :
                 p_node.getChildren()) {
@@ -104,6 +105,7 @@ public class symbolTableVisitor extends visitor {
          * and also the classEntry in the global table
          */
         String className = p_node.getChildren().get(0).getData();
+
         ArrayList<symTabEntry> classList = new ArrayList<>();
         node varfuncDecl = p_node.getChildren().get(2);
 
@@ -135,13 +137,9 @@ public class symbolTableVisitor extends visitor {
                 classList.add(func);
             }
         }
-        // now the className in the globalList points to the table of this class
-        symTab prevClass = tables.get(className);
-        prevClass.setTableList(classList);
-
         //fetch the classEntry from the globalTable and set it's link to point to the new classTable
         symTab classTab = new symTab(className, classList);
-        symTab prevClassTab = tables.get("global");
+        symTab prevClassTab = tables.get("GLOBAL");
         ArrayList<symTabEntry> prevClassEntries = prevClassTab.getTableList();
         for (symTabEntry prevEachEntry:
                 prevClassEntries) {
@@ -149,6 +147,11 @@ public class symbolTableVisitor extends visitor {
                 prevEachEntry.setLink(classTab);
             }
         }
+
+        // now the className in the globalList points to the table of this class
+        className = className.concat("_CLASS");
+        symTab prevClass = tables.get(className);
+        prevClass.setTableList(classList);
 
         for (node child :
                 p_node.getChildren()) {
@@ -196,7 +199,7 @@ public class symbolTableVisitor extends visitor {
             symTab funcTab = tables.get(funcName);
             funcTab.setTableList(funcList);
             //get entry from the global table and assign the link
-            symTab global = tables.get("global");
+            symTab global = tables.get("GLOBAL");
             ArrayList<symTabEntry> prevFuncEntries = global.getTableList();
             for (symTabEntry prevEachEntry:
                     prevFuncEntries) {
@@ -231,18 +234,9 @@ public class symbolTableVisitor extends visitor {
                 funcList.add(var);
             }
             symTab funcTable = new symTab(funcName, funcList);
-            //get classtable from the hash map and assign it
-            symTab classTab = tables.get(className);
-            ArrayList<symTabEntry> prevClassEntries = classTab.getTableList();
-            for (symTabEntry prevEachEntry:
-                    prevClassEntries) {
-                if (prevEachEntry.getName().equals(funcName)){
-                    prevEachEntry.setLink(funcTable);
-                }
-            }
             //get globaltable -> get classEntry -> get functionEntry -> make link
-            symTab globalTab = tables.get("global");
-            ArrayList<symTabEntry> prevGlobalEntries = classTab.getTableList();
+            symTab globalTab = tables.get("GLOBAL");
+            ArrayList<symTabEntry> prevGlobalEntries = globalTab.getTableList();
             for (symTabEntry prevClassEntry :
                     prevGlobalEntries) {
                 if (prevClassEntry.getName().equals(className)){
@@ -256,6 +250,16 @@ public class symbolTableVisitor extends visitor {
                             ((funcEntry) prevGlobalClassFuncEntry).setParams(paramlist);
                         }
                     }
+                }
+            }
+            //get classtable from the hash map and assign it
+            className = className.concat("_CLASS");
+            symTab classTab = tables.get(className);
+            ArrayList<symTabEntry> prevClassEntries = classTab.getTableList();
+            for (symTabEntry prevEachEntry:
+                    prevClassEntries) {
+                if (prevEachEntry.getName().equals(funcName)){
+                    prevEachEntry.setLink(funcTable);
                 }
             }
         }
@@ -276,7 +280,7 @@ public class symbolTableVisitor extends visitor {
         symTab mainTab = tables.get("main");
         mainTab.setTableList(mainList);
 
-        symTab globalTab = tables.get("global");
+        symTab globalTab = tables.get("GLOBAL");
         ArrayList<symTabEntry> prevMainEntry = globalTab.getTableList();
         for (symTabEntry prevEachEntry:
                 prevMainEntry) {
@@ -406,28 +410,50 @@ public class symbolTableVisitor extends visitor {
     }
 
     public void printSymbolTable(){
-//        out.print(tables);
-        String globalTable = tables.get("global").toString();
-        String[] globalEntry = globalTable.split(",");
-        for (String entry :
-                globalEntry) {
-            out.println(entry);
-            out.flush();
-        }
-        out.println("\n");
-        for (String key :
-                tables.keySet()) {
-            if (!key.equals("global")){
-                String table = tables.get(key).toString();
-                String[] entry = table.split(",");
-                for (String eachEntry :
-                        entry) {
-                    out.println(eachEntry);
 
+        for (String key :
+            tables.keySet()) {
+            //special case of class functions
+            if (key.contains("_CLASS")){
+                String table = tables.get(key).toString();
+                String[] _table = table.split("->");
+                out.print(_table[0]+"->\n");
+                String[] _entries = _table[1].split(",");
+                for (String eachEntry :
+                        _entries) {
+                    out.print("\t"+eachEntry+"\n");
                     out.flush();
                 }
-                out.println("\n");
+                symTab classTable = tables.get(key);
+                ArrayList<symTabEntry> classEntries = classTable.getTableList();
+                for (symTabEntry eachEntry :
+                        classEntries) {
+                    if (eachEntry.getKind().equals("function")){
+                        out.print("\t\t");
+                        String funcTable = eachEntry.getLink().toString();
+                        String[] _funcTable = funcTable.split("->");
+                        out.print(_funcTable[0]+"->\n");
+                        String[] _funcTableEntries = _funcTable[1].split(",");
+                        for (String eachFuncEntry :
+                                _funcTableEntries) {
+                            out.print("\t\t\t"+eachFuncEntry+"\n");
+                            out.flush();
+                        }
+                    }
+                }
             }
+            else {
+                String table = tables.get(key).toString();
+                String[] _entry = table.split("->");
+                out.print(_entry[0]+"->\n");
+                String[] _entries = _entry[1].split(",");
+                for (String eachEntry :
+                        _entries) {
+                    out.print("\t"+eachEntry+"\n");
+                    out.flush();
+                }
+            }
+            out.println("\n");
         }
     }
 }

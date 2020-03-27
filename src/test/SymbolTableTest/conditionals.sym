@@ -1,7 +1,7 @@
- global -> 
-[main | mainFunction | void] 
+ GLOBAL->
+	[main | mainFunction | void] 
 
 
- main -> 
-[x | variable | integer
- num | variable | float] 
+ main->
+	[x | variable | integer
+	 num | variable | float] 

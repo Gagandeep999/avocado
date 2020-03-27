@@ -1,11 +1,13 @@
- global -> 
-[ABC | class |  
- main | mainFunction | void] 
+ ABC->
+	[public | X | function | integer] 
+		 X->
+			[x | parameter | integer] 
 
 
- ABC -> 
-[X | function | integer] 
+ GLOBAL->
+	[ABC | class |  
+	 main | mainFunction | void] 
 
 
- main -> 
-[] 
+ main->
+	[] 

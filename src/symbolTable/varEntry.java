@@ -2,7 +2,7 @@ package symbolTable;
 
 public class varEntry extends symTabEntry {
 
-    String scope;
+    String scope="";
 
     public varEntry(){
         super();
@@ -15,5 +15,11 @@ public class varEntry extends symTabEntry {
 
     public varEntry(String name, String kind, String type){
         super(name, kind, type);
+    }
+
+    public String toString(){
+        if (this.scope.equals(""))
+            return (this.name+" | "+this.kind+" | "+this.type);
+        return (this.scope+" | "+this.name+" | "+this.kind+" | "+this.type);
     }
 }

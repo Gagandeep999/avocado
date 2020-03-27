@@ -1,6 +1,6 @@
- global -> 
-[main | mainFunction | void] 
+ GLOBAL->
+	[main | mainFunction | void] 
 
 
- main -> 
-[] 
+ main->
+	[] 
