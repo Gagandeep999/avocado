@@ -1,0 +1,11 @@
+ global -> 
+[ABC | class |  
+ main | mainFunction | void] 
+
+
+ ABC -> 
+[X | function | integer] 
+
+
+ main -> 
+[] 

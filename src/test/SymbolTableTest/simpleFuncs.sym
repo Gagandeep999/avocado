@@ -1,0 +1,13 @@
+ global -> 
+[add | function | integer
+ add | function | integer
+ main | mainFunction | void] 
+
+
+ add -> 
+[arr | parameter | integer
+ result | variable | integer] 
+
+
+ main -> 
+[x | variable | integer] 

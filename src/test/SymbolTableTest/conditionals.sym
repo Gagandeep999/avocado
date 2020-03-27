@@ -1,0 +1,7 @@
+ global -> 
+[main | mainFunction | void] 
+
+
+ main -> 
+[x | variable | integer
+ num | variable | float] 

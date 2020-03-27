@@ -34,6 +34,6 @@ public class symTab {
     }
 
     public String toString(){
-        return " ";
+        return (" "+ this.name + " -> \n"+ this.tableList +" ");
     }
 }

@@ -1,13 +1,11 @@
 package visitor;
 
-import com.sun.tools.corba.se.idl.StringGen;
 import nodes.*;
 import symbolTable.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -77,7 +75,7 @@ public class symbolTableVisitor extends visitor {
                  * create an empty table for the main function -> add entry to globalList
                  */
                 symTab mainTab = new symTab("main");
-                symTabEntry mainEntry = new symTabEntry("main", "mainFunction", " ", mainTab);
+                symTabEntry mainEntry = new symTabEntry("main", "mainFunction", "void", mainTab);
                 globalList.add(mainEntry);
                 tables.put("main", mainTab);
             }
@@ -91,6 +89,9 @@ public class symbolTableVisitor extends visitor {
             child.table = p_node.table;
             child.accept(this);
         }
+
+        //print the symbol table
+        printSymbolTable();
 
     }
 
@@ -401,6 +402,32 @@ public class symbolTableVisitor extends visitor {
                 p_node.getChildren()) {
             child.table = p_node.table;
             child.accept(this);
+        }
+    }
+
+    public void printSymbolTable(){
+//        out.print(tables);
+        String globalTable = tables.get("global").toString();
+        String[] globalEntry = globalTable.split(",");
+        for (String entry :
+                globalEntry) {
+            out.println(entry);
+            out.flush();
+        }
+        out.println("\n");
+        for (String key :
+                tables.keySet()) {
+            if (!key.equals("global")){
+                String table = tables.get(key).toString();
+                String[] entry = table.split(",");
+                for (String eachEntry :
+                        entry) {
+                    out.println(eachEntry);
+
+                    out.flush();
+                }
+                out.println("\n");
+            }
         }
     }
 }

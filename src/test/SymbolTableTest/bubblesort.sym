@@ -1,0 +1,24 @@
+ global -> 
+[bubbleSort | function | void
+ printArray | function | void
+ main | mainFunction | void] 
+
+
+ printArray -> 
+[arr | parameter | integer
+ size | parameter | integer
+ n | variable | integer
+ i | variable | integer] 
+
+
+ bubbleSort -> 
+[arr | parameter | integer
+ size | parameter | integer
+ n | variable | integer
+ i | variable | integer
+ j | variable | integer
+ temp | variable | integer] 
+
+
+ main -> 
+[arr | variable | integer] 

@@ -1,0 +1,24 @@
+ global -> 
+[POLYNOMIAL | class |  
+ LINEAR | class |  
+ QUADRATIC | class |  
+ main | mainFunction | void] 
+
+
+ POLYNOMIAL -> 
+[evaluate | function | float
+ x | variable | float] 
+
+
+ LINEAR -> 
+[evaluate | function | float
+ x | variable | float] 
+
+
+ QUADRATIC -> 
+[evaluate | function | float
+ x | variable | float] 
+
+
+ main -> 
+[f1 | variable | linear] 
