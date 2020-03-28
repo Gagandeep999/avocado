@@ -6,6 +6,7 @@ public class funcEntry extends symTabEntry {
 
     String scope;
     ArrayList<String> params;
+    boolean isOverloaded;
 
     public funcEntry(){
         super();
@@ -15,12 +16,14 @@ public class funcEntry extends symTabEntry {
         super(name, kind, type, link);
         this.scope = scope;
         this.params = params;
+        this.isOverloaded = false;
     }
 
     public funcEntry(ArrayList params, String name, String kind, String type, symTab link){
         super(name, kind, type, link);
         this.scope = "global";
         this.params = params;
+        this.isOverloaded = false;
     }
 
     public void setScope(String scope) {
@@ -29,6 +32,14 @@ public class funcEntry extends symTabEntry {
 
     public void setParams(ArrayList<String> params) {
         this.params = params;
+    }
+
+    public boolean isOverloaded() {
+        return isOverloaded;
+    }
+
+    public void setOverloaded(boolean overloaded) {
+        isOverloaded = overloaded;
     }
 
     public String toString(){

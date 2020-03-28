@@ -6,6 +6,7 @@ import symbolTable.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +14,10 @@ public class symbolTableVisitor extends visitor {
 
     String outputfile;
     PrintWriter out;
-    HashMap<String, symTab> tables;
+    HashMap<String, ArrayList<symTab>> tables;
+    int funcOverLoadCounter;
+    boolean isFuncOverload;
+    boolean isClassFuncOverloaded;
 
     public symbolTableVisitor(){
         this.outputfile = "";
@@ -28,12 +32,17 @@ public class symbolTableVisitor extends visitor {
         }catch (FileNotFoundException e){
             System.out.println(e.getMessage());
         }
+        this.funcOverLoadCounter = 0;
+        this.isFuncOverload = false;
+        this.isClassFuncOverloaded = false;
     }
 
     @Override
     public void visit(progNode p_node) {
 
-        ArrayList<symTabEntry> globalList = new ArrayList<>();
+        ArrayList<symTabEntry> globalListEntry = new ArrayList<>();
+        ArrayList<symTab> funcList = new ArrayList<>();
+        ArrayList<symTab> globalListTable = new ArrayList<>();
 
         //iterate over the children of prog_node
         for (node child :
@@ -46,12 +55,14 @@ public class symbolTableVisitor extends visitor {
                      * -> create a symbolTableEntry -> add entry to global scope ->
                      * -> add classname and empty table in hashmap that will be completed later on.
                      */
+                    ArrayList<symTab> classList = new ArrayList<>();
                     String className = classChild.getChildren().get(0).getData();
                     symTab classTab = new symTab(className);
                     symTabEntry classEntry = new symTabEntry(className, "class", " ", classTab);
-                    globalList.add(classEntry);
+                    globalListEntry.add(classEntry);
                     className = className.concat("_CLASS");
-                    tables.put(className, classTab);
+                    classList.add(classTab);
+                    tables.put(className, classList);
                 }
             }else if (child.getClass().toString().contains("funcDefList")) {
                 for (node funcDefChild :
@@ -67,23 +78,43 @@ public class symbolTableVisitor extends visitor {
                         symTab funcTab = new symTab(funcName);
                         ArrayList<String> params = new ArrayList<>();
                         funcEntry funcEntryTab = new funcEntry(params, funcName, "function", funcType, funcTab);
-                        globalList.add(funcEntryTab);
-                        tables.put(funcName, funcTab);
+                        if (tables.containsKey(funcName)){ // function overloading
+
+//                            for (symTabEntry globalTableEntry :
+//                                    globalListEntry) {
+//                                if (globalTableEntry.getName().equals(funcName)){
+////                                    ((funcEntry) globalTableEntry).setOverloaded(true);
+//                                }
+//                            }
+
+//                            funcEntryTab.setOverloaded(true);
+                            ArrayList<symTab> prevFuncList = tables.get(funcName);
+                            prevFuncList.add(funcTab);
+                            globalListEntry.add(funcEntryTab);
+                            isFuncOverload = true;
+                        }else{ // no function overloading
+                            globalListEntry.add(funcEntryTab);
+                            funcList.add(funcTab);
+                            tables.put(funcName, funcList);
+                        }
                     }
                 }
             }else {
                 /**
                  * create an empty table for the main function -> add entry to globalList
                  */
+                ArrayList<symTab> mainList = new ArrayList<>();
                 symTab mainTab = new symTab("main");
                 symTabEntry mainEntry = new symTabEntry("main", "mainFunction", "void", mainTab);
-                globalList.add(mainEntry);
-                tables.put("main", mainTab);
+                globalListEntry.add(mainEntry);
+                mainList.add(mainTab);
+                tables.put("main", mainList);
             }
         }
         //create the global table and add it to the hash map with key global
-        symTab globalTab = new symTab("GLOBAL", globalList);
-        tables.put("GLOBAL", globalTab);
+        symTab globalTab = new symTab("GLOBAL", globalListEntry);
+        globalListTable.add(globalTab);
+        tables.put("GLOBAL", globalListTable);
 
         for (node child :
                 p_node.getChildren()) {
@@ -134,12 +165,20 @@ public class symbolTableVisitor extends visitor {
                 }
 //                @TODO how to handle dimlist
                 funcEntry func = new funcEntry(funcScope, fparamList, funcName, "function", funcType, funcTab);
+                for (symTabEntry classFunc :
+                        classList) {
+                    if (classFunc.getName().equals(funcName)){
+//                        ((funcEntry) classFunc).setOverloaded(true);
+//                        func.setOverloaded(true);
+                        isClassFuncOverloaded = true;
+                    }
+                }
                 classList.add(func);
             }
         }
         //fetch the classEntry from the globalTable and set it's link to point to the new classTable
         symTab classTab = new symTab(className, classList);
-        symTab prevClassTab = tables.get("GLOBAL");
+        symTab prevClassTab = tables.get("GLOBAL").get(0);
         ArrayList<symTabEntry> prevClassEntries = prevClassTab.getTableList();
         for (symTabEntry prevEachEntry:
                 prevClassEntries) {
@@ -150,7 +189,7 @@ public class symbolTableVisitor extends visitor {
 
         // now the className in the globalList points to the table of this class
         className = className.concat("_CLASS");
-        symTab prevClass = tables.get(className);
+        symTab prevClass = tables.get(className).get(0);
         prevClass.setTableList(classList);
 
         for (node child :
@@ -168,6 +207,7 @@ public class symbolTableVisitor extends visitor {
         //free function can be found in the hashmap and  globalList and class function will be there in the class table
 
         int numChild = p_node.getChildren().get(0).getChildren().size();
+
         String funcName = "";
         String funcType = "";
         String className = "";
@@ -195,17 +235,33 @@ public class symbolTableVisitor extends visitor {
                 varEntry var = new varEntry(varName, "variable", varType);
                 funcList.add(var);
             }
+            //create a new table for the function
+            symTab funcTab = new symTab(funcName, funcList);
+
             //get table from the hash map and assign it
-            symTab funcTab = tables.get(funcName);
-            funcTab.setTableList(funcList);
+            ArrayList<symTab> prevFuncTabList = tables.get(funcName);
+            if (prevFuncTabList.size() != 1){ // function is overloaded
+                symTab prevFuncTab = prevFuncTabList.get(funcOverLoadCounter);
+                prevFuncTab.setTableList(funcList);
+                funcOverLoadCounter++;
+            }else { // function is not overloaded
+                symTab prevFuncTab = prevFuncTabList.get(0);
+                prevFuncTab.setTableList(funcList);
+            }
+
             //get entry from the global table and assign the link
-            symTab global = tables.get("GLOBAL");
-            ArrayList<symTabEntry> prevFuncEntries = global.getTableList();
+            symTab global = tables.get("GLOBAL").get(0);
             for (symTabEntry prevEachEntry:
-                    prevFuncEntries) {
-                if (prevEachEntry.getName().equals(funcName)){
-                    prevEachEntry.setLink(funcTab);
-                    ((funcEntry) prevEachEntry).setParams(paramlist);
+                    global.getTableList()) {
+                if (prevEachEntry.getName().equals(funcName) && !((funcEntry)prevEachEntry).isOverloaded() ) {
+                    if (((funcEntry) prevEachEntry).isOverloaded()) {
+                        prevEachEntry.setLink(funcTab);
+                        ((funcEntry) prevEachEntry).setParams(paramlist);
+                        ((funcEntry) prevEachEntry).setOverloaded(true);
+                        break;
+                    } else {
+                        continue;
+                    }
                 }
             }
         }
@@ -233,33 +289,39 @@ public class symbolTableVisitor extends visitor {
                 varEntry var = new varEntry(varName, "variable", varType);
                 funcList.add(var);
             }
+
             symTab funcTable = new symTab(funcName, funcList);
             //get globaltable -> get classEntry -> get functionEntry -> make link
-            symTab globalTab = tables.get("GLOBAL");
-            ArrayList<symTabEntry> prevGlobalEntries = globalTab.getTableList();
+            symTab globalTab = tables.get("GLOBAL").get(0);
             for (symTabEntry prevClassEntry :
-                    prevGlobalEntries) {
+                    globalTab.getTableList()) {
                 if (prevClassEntry.getName().equals(className)){
                     symTab classTable = prevClassEntry.getLink();
-                    ArrayList<symTabEntry> prevGlobalClassEntry = classTable.getTableList();
                     for (symTabEntry prevGlobalClassFuncEntry :
-                            prevGlobalClassEntry) {
-                        if (prevGlobalClassFuncEntry.getName().equals(funcName)) {
-                            prevGlobalClassFuncEntry = (funcEntry)prevGlobalClassFuncEntry;
+                            classTable.getTableList()) {
+                        if (prevGlobalClassFuncEntry.getName().equals(funcName)
+                                && !((funcEntry) prevGlobalClassFuncEntry).isOverloaded() ) {
                             prevGlobalClassFuncEntry.setLink(funcTable);
                             ((funcEntry) prevGlobalClassFuncEntry).setParams(paramlist);
+                            ((funcEntry) prevGlobalClassFuncEntry).setOverloaded(true);
+                            break;
+                        }else {
+                            continue;
                         }
                     }
                 }
             }
             //get classtable from the hash map and assign it
             className = className.concat("_CLASS");
-            symTab classTab = tables.get(className);
-            ArrayList<symTabEntry> prevClassEntries = classTab.getTableList();
+            symTab classTab = tables.get(className).get(0);
             for (symTabEntry prevEachEntry:
-                    prevClassEntries) {
-                if (prevEachEntry.getName().equals(funcName)){
+                    classTab.getTableList()) {
+                if (prevEachEntry.getName().equals(funcName) && !((funcEntry) prevEachEntry).isOverloaded()){
                     prevEachEntry.setLink(funcTable);
+                    ((funcEntry) prevEachEntry).setOverloaded(true);
+                    break;
+                }else {
+                    continue;
                 }
             }
         }
@@ -277,10 +339,10 @@ public class symbolTableVisitor extends visitor {
             varEntry var = new varEntry(varName, "variable", varType);
             mainList.add(var);
         }
-        symTab mainTab = tables.get("main");
+        symTab mainTab = tables.get("main").get(0);
         mainTab.setTableList(mainList);
 
-        symTab globalTab = tables.get("GLOBAL");
+        symTab globalTab = tables.get("GLOBAL").get(0);
         ArrayList<symTabEntry> prevMainEntry = globalTab.getTableList();
         for (symTabEntry prevEachEntry:
                 prevMainEntry) {
@@ -409,7 +471,7 @@ public class symbolTableVisitor extends visitor {
         }
     }
 
-    public void printSymbolTable(){
+    private void printSymbolTable(){
         for (String key :
             tables.keySet()) {
             //firstly print all the entries of the global table
@@ -425,7 +487,7 @@ public class symbolTableVisitor extends visitor {
                 }
 //                out.println("\n");
                 //now get the table and print table of each function and class
-                symTab globalTableTab = tables.get("GLOBAL");
+                symTab globalTableTab = tables.get("GLOBAL").get(0);
                 ArrayList<symTabEntry> globalEntries = globalTableTab.getTableList();
                 for (symTabEntry eachEntry :
                         globalEntries) {
