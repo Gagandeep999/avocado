@@ -1,7 +1,7 @@
- GLOBAL->
+[ GLOBAL->
 	[global | bubbleSort | function | void
 	 global | printArray | function | void
-	 main | mainFunction | void] 
+	 main | mainFunction | void] ]
 
  bubbleSort->
 	[arr | parameter | integer

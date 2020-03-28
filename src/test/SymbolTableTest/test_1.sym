@@ -1,6 +1,6 @@
- GLOBAL->
+[ GLOBAL->
 	[ABC | class |  
-	 main | mainFunction | void] 
+	 main | mainFunction | void] ]
 
  ABC->
 	[public | X | function | integer] 

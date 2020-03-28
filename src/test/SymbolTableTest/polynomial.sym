@@ -1,8 +1,8 @@
- GLOBAL->
+[ GLOBAL->
 	[POLYNOMIAL | class |  
 	 LINEAR | class |  
 	 QUADRATIC | class |  
-	 main | mainFunction | void] 
+	 main | mainFunction | void] ]
 
  POLYNOMIAL->
 	[public | evaluate | function | float] 
