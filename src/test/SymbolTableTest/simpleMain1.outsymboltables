@@ -1,0 +1,7 @@
+[ GLOBAL->
+	[main | mainFunction | void] ]
+
+ main->
+	[x | variable | integer
+	 y | variable | integer
+	 z | variable | integer] 

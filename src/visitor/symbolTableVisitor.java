@@ -13,7 +13,9 @@ import java.util.HashMap;
 public class symbolTableVisitor extends visitor {
 
     String outputfile;
+    String errorFile;
     PrintWriter out;
+    PrintWriter err;
     HashMap<String, ArrayList<symTab>> tables;
     int funcOverLoadCounter;
     boolean isFuncOverload;
@@ -21,14 +23,17 @@ public class symbolTableVisitor extends visitor {
 
     public symbolTableVisitor(){
         this.outputfile = "";
+
         this.tables = new HashMap<>();
     }
 
-    public symbolTableVisitor(String outputfile){
+    public symbolTableVisitor(String outputfile, String errorFile){
         this.outputfile = outputfile;
+        this.errorFile = errorFile;
         this.tables = new HashMap<>();
         try {
             this.out = new PrintWriter(new File(this.outputfile));
+            this.err = new PrintWriter(new File(this.errorFile));
         }catch (FileNotFoundException e){
             System.out.println(e.getMessage());
         }

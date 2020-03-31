@@ -1,0 +1,43 @@
+[ GLOBAL->
+	[POLYNOMIAL | class |  
+	 LINEAR | class |  
+	 QUADRATIC | class |  
+	 main | mainFunction | void] ]
+
+ POLYNOMIAL->
+	[public | evaluate | function | float] 
+		 evaluate->
+			[x | parameter | float] 
+
+ LINEAR->
+	[private | a | variable | float
+	 private | b | variable | float
+	 public | build | function | LINEAR
+	 public | evaluate | function | float] 
+		 build->
+			[A | parameter | float
+			 B | parameter | float
+			 new_function | variable | LINEAR] 
+		 evaluate->
+			[x | parameter | float
+			 result | variable | float] 
+
+ QUADRATIC->
+	[private | a | variable | float
+	 private | b | variable | float
+	 private | c | variable | float
+	 public | build | function | QUADRATIC
+	 public | evaluate | function | float] 
+		 build->
+			[A | parameter | float
+			 B | parameter | float
+			 C | parameter | float
+			 new_function | variable | QUADRATIC] 
+		 evaluate->
+			[x | parameter | float
+			 result | variable | float] 
+
+ main->
+	[f1 | variable | LINEAR
+	 f2 | variable | QUADRATIC
+	 counter | variable | integer] 
