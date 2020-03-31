@@ -79,15 +79,6 @@ public class symbolTableVisitor extends visitor {
                         ArrayList<String> params = new ArrayList<>();
                         funcEntry funcEntryTab = new funcEntry(params, funcName, "function", funcType, funcTab);
                         if (tables.containsKey(funcName)){ // function overloading
-
-//                            for (symTabEntry globalTableEntry :
-//                                    globalListEntry) {
-//                                if (globalTableEntry.getName().equals(funcName)){
-////                                    ((funcEntry) globalTableEntry).setOverloaded(true);
-//                                }
-//                            }
-
-//                            funcEntryTab.setOverloaded(true);
                             ArrayList<symTab> prevFuncList = tables.get(funcName);
                             prevFuncList.add(funcTab);
                             globalListEntry.add(funcEntryTab);
@@ -168,8 +159,6 @@ public class symbolTableVisitor extends visitor {
                 for (symTabEntry classFunc :
                         classList) {
                     if (classFunc.getName().equals(funcName)){
-//                        ((funcEntry) classFunc).setOverloaded(true);
-//                        func.setOverloaded(true);
                         isClassFuncOverloaded = true;
                     }
                 }
