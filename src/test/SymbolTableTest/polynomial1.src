@@ -25,6 +25,7 @@
 
 // ====== Class declarations ====== //
 class POLYNOMIAL {
+	private integer z;
 	public evaluate(float x) : float;
 };
 

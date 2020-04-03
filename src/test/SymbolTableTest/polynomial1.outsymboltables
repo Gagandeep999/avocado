@@ -5,7 +5,8 @@
 	 main | mainFunction | void] ]
 
  POLYNOMIAL->
-	[public | evaluate | function | float] 
+	[private | z | variable | integer
+	 public | evaluate | function | float] 
 		 evaluate->
 			[x | parameter | float] 
 

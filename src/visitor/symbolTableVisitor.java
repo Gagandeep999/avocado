@@ -64,8 +64,12 @@ public class symbolTableVisitor extends visitor {
                     String className = classChild.getChildren().get(0).getData();
                     symTab classTab = new symTab(className);
                     symTabEntry classEntry = new symTabEntry(className, "class", " ", classTab);
-                    globalListEntry.add(classEntry);
                     className = className.concat("_CLASS");
+                    if (tables.containsKey(className)){ // multiple classname
+                        err.print("ERROR: CLASS "+className.substring(0,className.length()-6)+" ALREADY DECLARED.\n");
+                        err.flush();
+                    }
+                    globalListEntry.add(classEntry);
                     classList.add(classTab);
                     tables.put(className, classList);
                 }
@@ -84,6 +88,8 @@ public class symbolTableVisitor extends visitor {
                         ArrayList<String> params = new ArrayList<>();
                         funcEntry funcEntryTab = new funcEntry(params, funcName, "function", funcType, funcTab);
                         if (tables.containsKey(funcName)){ // function overloading
+                            err.print("WARNING: FUNCTIONS "+funcName+" IS OVERLOADED.\n");
+                            err.flush();
                             ArrayList<symTab> prevFuncList = tables.get(funcName);
                             prevFuncList.add(funcTab);
                             globalListEntry.add(funcEntryTab);
@@ -145,6 +151,13 @@ public class symbolTableVisitor extends visitor {
                 String varName = varOrFunc.getChildren().get(2).getData();
 //                @TODO what to do in case of dimlist not beig zero
                 varEntry var = new varEntry(varScope, varName, "variable", varType);
+                for (symTabEntry classFunc :
+                        classList) {
+                    if (classFunc.getName().equals(varName)){
+                        err.print("ERROR: VARIABLE "+varName+" ALREADY DECLARED.\n");
+                        err.flush();
+                    }
+                }
                 classList.add(var);
             }
             else { // the only other child will be a funcDecl
@@ -164,6 +177,8 @@ public class symbolTableVisitor extends visitor {
                 for (symTabEntry classFunc :
                         classList) {
                     if (classFunc.getName().equals(funcName)){
+                        err.print("WARNING: FUNCTION "+funcName+" IN CLASS "+className+" IS OVERLOADED.\n");
+                        err.flush();
                         isClassFuncOverloaded = true;
                     }
                 }
@@ -227,6 +242,13 @@ public class symbolTableVisitor extends visitor {
                 String varName = varDecl.getChildren().get(1).getData();
                 String dimlist = varDecl.getChildren().get(2).getData();
                 varEntry var = new varEntry(varName, "variable", varType);
+                for (symTabEntry prevVarEntry:
+                        funcList) {
+                    if (prevVarEntry.getName().equals(varName)){
+                        err.print("ERROR: VARIABLE "+varName+" ALREADY DECLARED IN FUNCTION "+funcName+".\n");
+                        err.flush();
+                    }
+                }
                 funcList.add(var);
             }
             //create a new table for the function
@@ -281,6 +303,13 @@ public class symbolTableVisitor extends visitor {
                 String varName = varDecl.getChildren().get(1).getData();
                 String dimlist = varDecl.getChildren().get(2).getData();
                 varEntry var = new varEntry(varName, "variable", varType);
+                for (symTabEntry prevVarEntry:
+                        funcList) {
+                    if (prevVarEntry.getName().equals(varName)){
+                        err.print("ERROR: VARIABLE "+varName+" ALREADY DECLARED IN FUNCTION "+funcName+".\n");
+                        err.flush();
+                    }
+                }
                 funcList.add(var);
             }
 
@@ -331,6 +360,13 @@ public class symbolTableVisitor extends visitor {
             String varName = varDeclChild.getChildren().get(1).getData();
             String varDimList = varDeclChild.getChildren().get(2).getData();
             varEntry var = new varEntry(varName, "variable", varType);
+            for (symTabEntry prevVarEntry:
+                    mainList) {
+                if (prevVarEntry.getName().equals(varName)){
+                    err.print("ERROR: VARIABLE "+varName+" ALREADY DECLARED IN MAIN FUNCTION.\n");
+                    err.flush();
+                }
+            }
             mainList.add(var);
         }
         symTab mainTab = tables.get("main").get(0);

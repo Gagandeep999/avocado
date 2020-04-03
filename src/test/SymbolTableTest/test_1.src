@@ -2,11 +2,19 @@ class ABC {
     public X(integer x) : integer;
 };
 
+class ABC {
+    public X(integer x) : integer;
+};
+
 ABC::X(integer x) : integer
   do
     return(0);
   end
 
 main
+  local
+    integer a;
+    integer a;
   do
+    return(0);
   end

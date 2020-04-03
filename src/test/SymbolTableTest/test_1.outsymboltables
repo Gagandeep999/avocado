@@ -1,5 +1,6 @@
 [ GLOBAL->
 	[ABC | class |  
+	 ABC | class |  
 	 main | mainFunction | void] ]
 
  ABC->
@@ -7,5 +8,11 @@
 		 X->
 			[x | parameter | integer] 
 
+ ABC->
+	[public | X | function | integer] 
+		 X->
+			[x | parameter | integer] 
+
  main->
-	[] 
+	[a | variable | integer
+	 a | variable | integer] 
