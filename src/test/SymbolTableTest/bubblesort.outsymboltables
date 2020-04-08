@@ -1,21 +1,27 @@
-[ GLOBAL->
-	[global | bubbleSort | function | void
-	 global | printArray | function | void
-	 main | mainFunction | void] ]
 
- bubbleSort->
-	[arr | parameter | integer
-	 size | parameter | integer
-	 n | variable | integer
-	 i | variable | integer
-	 j | variable | integer
-	 temp | variable | integer] 
-
- printArray->
-	[arr | parameter | integer
-	 size | parameter | integer
-	 n | variable | integer
-	 i | variable | integer] 
-
- main->
-	[arr | variable | integer] 
+=============================================================================
+| table: global           scope offset: 0           |function parameters 
+=============================================================================
+| function  | bubbleSort| void                      | [integer, integer]    |
+| function  | printArray| void                      | [integer, integer]    |
+main | function | void
+=============================================================================
+|    =============================================================================
+|    | table: bubbleSort       scope offset: 0           |function parameters 
+|    =============================================================================
+|    | variable  | n         | integer                   |                       |
+|    | variable  | i         | integer                   |                       |
+|    | variable  | j         | integer                   |                       |
+|    | variable  | temp      | integer                   |                       |
+|    =============================================================================
+|    =============================================================================
+|    | table: printArray       scope offset: 0           |function parameters 
+|    =============================================================================
+|    | variable  | n         | integer                   |                       |
+|    | variable  | i         | integer                   |                       |
+|    =============================================================================
+|    =============================================================================
+|    | table: main             scope offset: 0           |function parameters 
+|    =============================================================================
+|    | variable  | arr       | integer                   |                       |
+|    =============================================================================

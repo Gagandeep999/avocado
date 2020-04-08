@@ -38,8 +38,9 @@ public class visitorDriverSymbolTable {
 
 //            System.out.println("start to create symbol table");
             symbolTableVisitor symTabVisit = new symbolTableVisitor(symTableFile, symTableError);
-            astTree.pop().accept(symTabVisit);
-//            System.out.println("symbol table created");
+
+            astTree.peek().accept(symTabVisit);
+            System.out.println("symbol table created");
 
         }catch (IOException e){
             System.out.println(e.getMessage());

@@ -6,4 +6,11 @@ public class classEntry extends symTabEntry {
         super();
     }
 
+    public String toString(){
+        return 	String.format("%-12s" , "| " + kind) +
+                String.format("%-40s" , "| " + name) +
+                "|" +
+                link;
+    }
+
 }

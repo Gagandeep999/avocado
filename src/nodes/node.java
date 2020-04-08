@@ -16,6 +16,7 @@ public abstract class node {
     node parent;
     public symTab table;
     public symTabEntry entry;
+    public String moonVarName = new String();
 
 
     public String getData() {
@@ -41,6 +42,7 @@ public abstract class node {
     public node(){
         this.data = "";
         this.children = new ArrayList<>();
+        this.moonVarName = new String();
     }
 
     public node(String data){
@@ -70,6 +72,39 @@ public abstract class node {
                 y.children) {
             this.children.add(child);
         }
+    }
+
+//    public void print(){
+//        System.out.println("=====================================================================");
+//        System.out.println("Node type                 | data      | type      | subtreestring");
+//        System.out.println("=====================================================================");
+//        this.printSubtree();
+//        System.out.println("=====================================================================");
+//    }
+//
+//    public void printSubtree(){
+//        for (int i = 0; i < Node.m_nodelevel; i++ )
+//            System.out.print("  ");
+//
+//        String toprint = String.format("%-25s" , this.getClass().getName());
+//        for (int i = 0; i < Node.m_nodelevel; i++ )
+//            toprint = toprint.substring(0, toprint.length() - 2);
+//        toprint += String.format("%-12s" , (this.getData() == null || this.getData().isEmpty())         ? " | " : " | " + this.getData());
+//        toprint += String.format("%-12s" , (this.getType() == null || this.getType().isEmpty())         ? " | " : " | " + this.getType());
+//        toprint += (String.format("%-16s" , (this.m_subtreeString == null || this.m_subtreeString.isEmpty()) ? " | " : " | " + (this.m_subtreeString.replaceAll("\\n+",""))));
+//
+//        System.out.println(toprint);
+//
+//        Node.m_nodelevel++;
+//        List<Node> children = this.getChildren();
+//        for (int i = 0; i < children.size(); i++ ){
+//            children.get(i).printSubtree();
+//        }
+//        Node.m_nodelevel--;
+//    }
+
+    public String toString(){
+        return table.toString();
     }
 
     public void accept(visitor visitorNode){

@@ -42,7 +42,16 @@ public class funcEntry extends symTabEntry {
         isOverloaded = overloaded;
     }
 
+//    public String toString(){
+//        return (this.scope+" | "+this.name+" | "+this.kind+" | "+this.type);
+//    }
+
     public String toString(){
-        return (this.scope+" | "+this.name+" | "+this.kind+" | "+this.type);
+        return 	String.format("%-12s" , "| " + kind) +
+                String.format("%-12s" , "| " + name) +
+                String.format("%-28s"  , "| " + type) +
+                String.format("%-24s"  , "| " + params) +
+                "|" ;
+//                params;
     }
 }
