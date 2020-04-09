@@ -13,6 +13,11 @@ public class classListNode extends node {
         super(data, parent);
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
 //    public classListNode(String name, int num){
 //        super(name, num);
 //    }

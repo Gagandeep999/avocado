@@ -58,13 +58,13 @@ public class symTab {
         String prelinespacing = new String();
         for (int i = 0; i < this.level; i++)
             prelinespacing += "|    ";
-        stringtoreturn += "\n" + prelinespacing + "=============================================================================\n";
-        stringtoreturn += prelinespacing + String.format("%-25s" , "| table: " + name) + String.format("%-27s" , " scope offset: " + size) + "|function parameters \n";
-        stringtoreturn += prelinespacing        + "=============================================================================\n";
+        stringtoreturn += "\n" + prelinespacing + "========================================================================\n";
+        stringtoreturn += prelinespacing + String.format("%-25s" , "| table: " + name) + String.format("%-20s" , " scope offset: " + size) + "|function parameters \n";
+        stringtoreturn += prelinespacing        + "========================================================================\n";
         for (int i = 0; i < tableList.size(); i++){
             stringtoreturn +=  prelinespacing + tableList.get(i).toString() + '\n';
         }
-        stringtoreturn += prelinespacing        + "=============================================================================";
+        stringtoreturn += prelinespacing        + "========================================================================";
         return stringtoreturn;
     }
 

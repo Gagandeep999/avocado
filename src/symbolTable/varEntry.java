@@ -19,9 +19,9 @@ public class varEntry extends symTabEntry {
 
     public String toString(){
         return 	String.format("%-12s" , "| " + kind) +
-                String.format("%-12s" , "| " + name) +
+                String.format("%-15s" , "| " + name) +
                 String.format("%-28s"  , "| " + type)+
-                String.format("%-24s"  , "| ")
+                String.format("%-20s"  , "| ")
                 + "|";
     }
 }

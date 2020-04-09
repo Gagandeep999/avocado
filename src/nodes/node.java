@@ -10,6 +10,7 @@ import visitor.visitor;
 public abstract class node {
 
     String data;
+    String type;
     int myNum;
     static int curNum;
     ArrayList<node> children;
@@ -35,6 +36,26 @@ public abstract class node {
         return parent;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public symTab getTable() {
+        return table;
+    }
+
+    public symTabEntry getEntry() {
+        return entry;
+    }
+
+    public String getMoonVarName() {
+        return moonVarName;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public ArrayList<node> getChildren() {
         return children;
     }
@@ -51,12 +72,23 @@ public abstract class node {
         this.children = new ArrayList<>();
         this.parent = null;
         node.curNum++;
+        this.moonVarName = new String();
     }
 
     public node(String data, node parent){
         this.data = data;
         this.parent = parent;
         node.curNum++;
+    }
+
+    public node(String data, String type){
+        this.data = data;
+        this.type = type;
+        this.myNum = curNum;
+        node.curNum++;
+        this.children = new ArrayList<>();
+        this.parent = null;
+        this.moonVarName = new String();
     }
 
     public void makeRightChild(node y){
@@ -104,7 +136,7 @@ public abstract class node {
 //    }
 
     public String toString(){
-        return table.toString();
+        return this.data + table.toString();
     }
 
     public void accept(visitor visitorNode){

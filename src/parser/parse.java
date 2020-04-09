@@ -100,9 +100,9 @@ public class parse {
                     break;
                 case "void" : A_CREATEADD(lookahead.getToken());
                     break;
-                case "intnum" : ast.push(new numNode(lookahead.getLexeme().toString()));
+                case "intnum" : ast.push(new numNode(lookahead.getLexeme().toString(), "integer"));
                     break;
-                case "floatnum" : ast.push(new numNode(lookahead.getLexeme().toString()));
+                case "floatnum" : ast.push(new numNode(lookahead.getLexeme().toString(), "float"));
                     break;
                 case "equal" : ast.push(new assignStatNode(lookahead.getLexeme().toString()));
                     break;

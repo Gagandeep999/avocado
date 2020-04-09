@@ -62,7 +62,7 @@ public class symTabEntry {
     }
 
     public String toString(){
-        return (this.name+" | "+this.kind+" | "+this.type);
+        return (this.kind+" | "+this.name+" | "+this.type);
     }
 
 }

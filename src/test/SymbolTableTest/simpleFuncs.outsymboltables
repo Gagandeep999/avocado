@@ -1,20 +1,27 @@
-[ GLOBAL->
-	[global | add | function | integer
-	 global | add | function | integer
-	 main | mainFunction | void] ]
 
- add->
-	[x | parameter | integer
-	 y | parameter | integer
-	 a | variable | integer
-	 a | variable | integer
-	 a | variable | integer
-	 a | variable | integer
-	 result | variable | integer] 
-
- add->
-	[arr | parameter | integer
-	 result | variable | integer] 
-
- main->
-	[x | variable | integer] 
+========================================================================
+| table: global           scope offset: 0    |function parameters 
+========================================================================
+| function  | add          | integer                   | [integer:x, integer:y]|
+| function  | add          | integer                   | [integer:arr]     |
+| function  | main         | void                      | []                |
+========================================================================
+|    ========================================================================
+|    | table: add              scope offset: 0    |function parameters 
+|    ========================================================================
+|    | variable  | a            | integer                   |                   |
+|    | variable  | a            | integer                   |                   |
+|    | variable  | a            | integer                   |                   |
+|    | variable  | a            | integer                   |                   |
+|    | variable  | result       | integer                   |                   |
+|    ========================================================================
+|    ========================================================================
+|    | table: add              scope offset: 0    |function parameters 
+|    ========================================================================
+|    | variable  | result       | integer                   |                   |
+|    ========================================================================
+|    ========================================================================
+|    | table: main             scope offset: 0    |function parameters 
+|    ========================================================================
+|    | variable  | x            | integer                   |                   |
+|    ========================================================================
