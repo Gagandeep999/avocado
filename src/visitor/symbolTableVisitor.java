@@ -179,21 +179,21 @@ public class symbolTableVisitor extends visitor {
             child.table = p_node.table;
             child.accept(this);
         }
-//        String leftChildType = getChildType(p_node, 0);
-//        String rightChildType = getChildType(p_node, 1);
-//
-//        if (leftChildType.equals(rightChildType)) {
-//            p_node.setType(leftChildType);
-//        }
-//        else{
-//            System.out.println("error type mismatch");
-//            System.exit(1);
-//        }
-//
-//        String tempvarname = this.getNewTempVarName();
-//        p_node.moonVarName = tempvarname;
-//        p_node.entry = new varEntry(tempvarname, "variable", p_node.getType());
-//        p_node.table.addEntry(p_node.entry);
+        String leftChildType = getChildType(p_node, 0);
+        String rightChildType = getChildType(p_node, 1);
+
+        if (leftChildType.equals(rightChildType)) {
+            p_node.setType(leftChildType);
+        }
+        else{
+            System.out.println("error type mismatch");
+            System.exit(1);
+        }
+
+        String tempvarname = this.getNewTempVarName();
+        p_node.moonVarName = tempvarname;
+        p_node.entry = new varEntry(tempvarname, "variable", p_node.getType());
+        p_node.table.addEntry(p_node.entry);
     }
 
     @Override
@@ -204,29 +204,29 @@ public class symbolTableVisitor extends visitor {
             child.accept(this);
         }
 
-//        String leftChildType = getChildType(p_node, 0);
-//        String rightChildType = getChildType(p_node, 1);
-//
-//        if (leftChildType.equals(rightChildType)) {
-//            p_node.setType(leftChildType);
-//        }
-//        else{
-//            System.out.println("error type mismatch");
-//            System.exit(1);
-//        }
-//
-//        String tempvarname = this.getNewTempVarName();
-//        p_node.moonVarName = tempvarname;
-//        p_node.entry = new varEntry(tempvarname, "variable", p_node.getType());
-//        p_node.table.addEntry(p_node.entry);
+        String leftChildType = getChildType(p_node, 0);
+        String rightChildType = getChildType(p_node, 1);
+
+        if (leftChildType.equals(rightChildType)) {
+            p_node.setType(leftChildType);
+        }
+        else{
+            System.out.println("error type mismatch");
+            System.exit(1);
+        }
+
+        String tempvarname = this.getNewTempVarName();
+        p_node.moonVarName = tempvarname;
+        p_node.entry = new varEntry(tempvarname, "variable", p_node.getType());
+        p_node.table.addEntry(p_node.entry);
     }
 
     @Override
     public void visit(numNode p_node) {
-//        String tempvarname = this.getNewTempVarName();
-//        p_node.moonVarName = tempvarname;
-//        p_node.entry = new varEntry(tempvarname, "variable", p_node.getType());
-//        p_node.table.addEntry(p_node.entry);
+        String tempvarname = this.getNewTempVarName();
+        p_node.moonVarName = tempvarname;
+        p_node.entry = new varEntry(tempvarname, "variable", p_node.getType());
+        p_node.table.addEntry(p_node.entry);
         for (node child :
                 p_node.getChildren()) {
             child.table = p_node.table;

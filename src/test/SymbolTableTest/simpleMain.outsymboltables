@@ -8,4 +8,9 @@
 |    | table: main             scope offset: 0    |function parameters 
 |    ========================================================================
 |    | variable  | x            | integer                   |                   |
+|    | variable  | t1           | integer                   |                   |
+|    | variable  | t2           | integer                   |                   |
+|    | variable  | t3           | integer                   |                   |
+|    | variable  | t4           | integer                   |                   |
+|    | variable  | t5           | integer                   |                   |
 |    ========================================================================
