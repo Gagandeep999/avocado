@@ -48,9 +48,9 @@ public class funcEntry extends symTabEntry {
 
     public String toString(){
         return 	String.format("%-12s" , "| " + kind) +
-                String.format("%-15s" , "| " + name) +
-                String.format("%-28s"  , "| " + type) +
-                String.format("%-20s"  , "| " + params) +
+                String.format("%-12s" , "| " + name) +
+                String.format("%-10s"  , "| " + type) +
+                String.format("%-25s"  , "| " + params) +
                 "|" ;
 //                params;
     }

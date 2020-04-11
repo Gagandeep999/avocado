@@ -10,7 +10,7 @@ import visitor.visitor;
 public abstract class node {
 
     String data;
-    String type;
+    public String type;
     int myNum;
     static int curNum;
     ArrayList<node> children;

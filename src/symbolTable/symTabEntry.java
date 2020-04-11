@@ -6,6 +6,8 @@ public class symTabEntry {
     String kind;
     String type;
     symTab link;
+    int size;
+    String tag;
 
     public String getName() {
         return name;
@@ -23,6 +25,22 @@ public class symTabEntry {
         return link;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     public void setLink(symTab link) {
         this.link = link;
     }
@@ -32,6 +50,8 @@ public class symTabEntry {
         this.kind = "";
         this.type = "";
         this.link = null;
+        this.size = 0;
+        this.tag = "";
     }
 
     public symTabEntry(String name, String kind){
@@ -39,6 +59,8 @@ public class symTabEntry {
         this.kind = kind;
         this.type = "";
         this.link = null;
+        this.size = 0;
+        this.tag = "";
     }
 
     public symTabEntry(String name, String kind, String type){
@@ -46,12 +68,16 @@ public class symTabEntry {
         this.kind = kind;
         this.type = type;
         this.link = null;
+        this.size = 0;
+        this.tag = "";
     }
 
     public symTabEntry(String kind, symTab link){
         this.kind = kind;
         this.type = "";
         this.link = link;
+        this.size = 0;
+        this.tag = "";
     }
 
     public symTabEntry(String name, String kind, String type, symTab link){
@@ -59,6 +85,8 @@ public class symTabEntry {
         this.kind = kind;
         this.type = type;
         this.link = link;
+        this.size = 0;
+        this.tag = "";
     }
 
     public String toString(){

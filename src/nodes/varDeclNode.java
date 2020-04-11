@@ -13,11 +13,6 @@ public class varDeclNode extends node {
     }
 
     @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    @Override
     public void accept(visitor visitorNode) {
         visitorNode.visit(this);
     }
