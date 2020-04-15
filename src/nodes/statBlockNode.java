@@ -2,13 +2,13 @@ package nodes;
 
 import visitor.visitor;
 
-public class statBlockNode extends node {
+public class StatBlockNode extends node {
 
-    public statBlockNode(String data){
+    public StatBlockNode(String data){
         super(data);
     }
 
-    public statBlockNode(String data, node parent){
+    public StatBlockNode(String data, node parent){
         super(data, parent);
     }
 
