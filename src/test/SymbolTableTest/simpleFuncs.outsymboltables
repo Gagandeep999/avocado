@@ -1,27 +1,35 @@
 
-========================================================================
-| table: global           scope offset: 0    |function parameters 
-========================================================================
-| function  | add          | integer                   | [integer:x, integer:y]|
-| function  | add          | integer                   | [integer:arr]     |
-| function  | main         | void                      | []                |
-========================================================================
 |    ========================================================================
-|    | table: add              scope offset: 0    |function parameters 
+|    | table: add         scope offset: 0|function parameters
 |    ========================================================================
-|    | variable  | a            | integer                   |                   |
-|    | variable  | a            | integer                   |                   |
-|    | variable  | a            | integer                   |                   |
-|    | variable  | a            | integer                   |                   |
-|    | variable  | result       | integer                   |                   |
-|    ========================================================================
-|    ========================================================================
-|    | table: add              scope offset: 0    |function parameters 
-|    ========================================================================
-|    | variable  | result       | integer                   |                   |
+|    | variable  | a         | integer | 4  | var_a     |
+|    | variable  | a         | integer | 4  | var_a     |
+|    | variable  | a         | integer | 4  | var_a     |
+|    | variable  | a         | integer | 4  | var_a     |
+|    | variable  | result    | integer | 4  | var_result|
+|    | t1        | lit_t1    | integer | 4  | lit_t1    |
+|    | t2        | lit_t2    | integer | 4  | lit_t2    |
+|    | t3        | lit_t3    | integer | 4  | lit_t3    |
+|    | t4        | lit_t4    | integer | 4  | lit_t4    |
+|    | t5        | lit_t5    | integer | 4  | lit_t5    |
+|    | t6        | lit_t6    | integer | 4  | lit_t6    |
+|    | t7        | lit_t7    | integer | 4  | lit_t7    |
+|    | t8        | lit_t8    | integer | 4  | lit_t8    |
+|    | t9        | temp_t9   |         | 0  | temp_t9   |
 |    ========================================================================
 |    ========================================================================
-|    | table: main             scope offset: 0    |function parameters 
+|    | table: add         scope offset: 0|function parameters
 |    ========================================================================
-|    | variable  | x            | integer                   |                   |
+|    | variable  | result    | integer | 4  | var_result|
+|    | t10       | lit_t10   | integer | 4  | lit_t10   |
+|    | t11       | lit_t11   | integer | 4  | lit_t11   |
+|    | t12       | lit_t12   | integer | 4  | lit_t12   |
+|    | t13       | temp_t13  |         | 0  | temp_t13  |
+|    ========================================================================
+|    ========================================================================
+|    | table: main        scope offset: 0|function parameters
+|    ========================================================================
+|    | variable  | x         | integer | 4  | var_x     |
+|    | t14       | lit_t14   | integer | 4  | lit_t14   |
+|    | t15       | lit_t15   | integer | 4  | lit_t15   |
 |    ========================================================================

@@ -1,66 +1,59 @@
 
-========================================================================
-| table: global           scope offset: 0    |function parameters 
-========================================================================
-| function  | bubbleSort   | void                      | [integer:arr, integer:size]|
-| function  | printArray   | void                      | [integer:arr, integer:size]|
-| function  | main         | void                      | []                |
-========================================================================
 |    ========================================================================
-|    | table: bubbleSort       scope offset: 0    |function parameters 
+|    | table: bubbleSort  scope offset: 0|function parameters
 |    ========================================================================
-|    | variable  | n            | integer                   |                   |
-|    | variable  | i            | integer                   |                   |
-|    | variable  | j            | integer                   |                   |
-|    | variable  | temp         | integer                   |                   |
-|    | variable  | t1           | integer                   |                   |
-|    | variable  | t2           | integer                   |                   |
-|    | variable  | t3           | integer                   |                   |
-|    | variable  | t4           | integer                   |                   |
-|    | variable  | t5           | integer                   |                   |
-|    | variable  | t6           | integer                   |                   |
-|    | variable  | t7           | integer                   |                   |
-|    | variable  | t8           | integer                   |                   |
-|    | variable  | t9           | integer                   |                   |
-|    | variable  | t10          | integer                   |                   |
-|    | variable  | t11          | integer                   |                   |
-|    | variable  | t12          | integer                   |                   |
-|    | variable  | t13          | integer                   |                   |
-|    | variable  | t14          | integer                   |                   |
-|    | variable  | t15          | integer                   |                   |
-|    | variable  | t16          | integer                   |                   |
-|    | variable  | t17          | integer                   |                   |
-|    | variable  | t18          | integer                   |                   |
+|    | variable  | n         | integer | 4  | var_n     |
+|    | variable  | i         | integer | 4  | var_i     |
+|    | variable  | j         | integer | 4  | var_j     |
+|    | variable  | temp      | integer | 4  | var_temp  |
+|    | t1        | lit_t1    | integer | 4  | lit_t1    |
+|    | t2        | lit_t2    | integer | 4  | lit_t2    |
+|    | t3        | lit_t3    | integer | 4  | lit_t3    |
+|    | t4        | lit_t4    | integer | 4  | lit_t4    |
+|    | t5        | temp_t5   | integer | 4  | temp_t5   |
+|    | t6        | temp_t6   | integer | 4  | temp_t6   |
+|    | t7        | lit_t7    | integer | 4  | lit_t7    |
+|    | t8        | temp_t8   | integer | 4  | temp_t8   |
+|    | t9        | lit_t9    | integer | 4  | lit_t9    |
+|    | t10       | temp_t10  | integer | 4  | temp_t10  |
+|    | t11       | lit_t11   | integer | 4  | lit_t11   |
+|    | t12       | temp_t12  | integer | 4  | temp_t12  |
+|    | t13       | lit_t13   | integer | 4  | lit_t13   |
+|    | t14       | temp_t14  | integer | 4  | temp_t14  |
+|    | t15       | lit_t15   | integer | 4  | lit_t15   |
+|    | t16       | temp_t16  | integer | 4  | temp_t16  |
+|    | t17       | lit_t17   | integer | 4  | lit_t17   |
+|    | t18       | temp_t18  | integer | 4  | temp_t18  |
 |    ========================================================================
 |    ========================================================================
-|    | table: printArray       scope offset: 0    |function parameters 
+|    | table: printArray  scope offset: 0|function parameters
 |    ========================================================================
-|    | variable  | n            | integer                   |                   |
-|    | variable  | i            | integer                   |                   |
-|    | variable  | t19          | integer                   |                   |
-|    | variable  | t20          | integer                   |                   |
-|    | variable  | t21          | integer                   |                   |
+|    | variable  | n         | integer | 4  | var_n     |
+|    | variable  | i         | integer | 4  | var_i     |
+|    | t19       | lit_t19   | integer | 4  | lit_t19   |
+|    | t20       | lit_t20   | integer | 4  | lit_t20   |
+|    | t21       | temp_t21  | integer | 4  | temp_t21  |
 |    ========================================================================
 |    ========================================================================
-|    | table: main             scope offset: 0    |function parameters 
+|    | table: main        scope offset: 0|function parameters
 |    ========================================================================
-|    | variable  | t22          | integer                   |                   |
-|    | variable  | arr          | integer                   |                   |
-|    | variable  | t23          | integer                   |                   |
-|    | variable  | t24          | integer                   |                   |
-|    | variable  | t25          | integer                   |                   |
-|    | variable  | t26          | integer                   |                   |
-|    | variable  | t27          | integer                   |                   |
-|    | variable  | t28          | integer                   |                   |
-|    | variable  | t29          | integer                   |                   |
-|    | variable  | t30          | integer                   |                   |
-|    | variable  | t31          | integer                   |                   |
-|    | variable  | t32          | integer                   |                   |
-|    | variable  | t33          | integer                   |                   |
-|    | variable  | t34          | integer                   |                   |
-|    | variable  | t35          | integer                   |                   |
-|    | variable  | t36          | integer                   |                   |
-|    | variable  | t37          | integer                   |                   |
-|    | variable  | t38          | integer                   |                   |
-|    | variable  | t39          | integer                   |                   |
+|    | variable  | arr       | integer | 4  | var_arr   |
+|    | t22       | lit_t22   | integer | 4  | lit_t22   |
+|    | t23       | lit_t23   | integer | 4  | lit_t23   |
+|    | t24       | lit_t24   | integer | 4  | lit_t24   |
+|    | t25       | lit_t25   | integer | 4  | lit_t25   |
+|    | t26       | lit_t26   | integer | 4  | lit_t26   |
+|    | t27       | lit_t27   | integer | 4  | lit_t27   |
+|    | t28       | lit_t28   | integer | 4  | lit_t28   |
+|    | t29       | lit_t29   | integer | 4  | lit_t29   |
+|    | t30       | lit_t30   | integer | 4  | lit_t30   |
+|    | t31       | lit_t31   | integer | 4  | lit_t31   |
+|    | t32       | lit_t32   | integer | 4  | lit_t32   |
+|    | t33       | lit_t33   | integer | 4  | lit_t33   |
+|    | t34       | lit_t34   | integer | 4  | lit_t34   |
+|    | t35       | lit_t35   | integer | 4  | lit_t35   |
+|    | t36       | lit_t36   | integer | 4  | lit_t36   |
+|    | t37       | lit_t37   | integer | 4  | lit_t37   |
+|    | t38       | lit_t38   | integer | 4  | lit_t38   |
+|    | t39       | lit_t39   | integer | 4  | lit_t39   |
 |    ========================================================================
