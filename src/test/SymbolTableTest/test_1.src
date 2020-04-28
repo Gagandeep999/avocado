@@ -1,20 +1,12 @@
-class ABC {
-    public X(integer x) : integer;
-};
-
-class ABC {
-    public X(integer x) : integer;
-};
-
-ABC::X(integer x) : integer
-  do
-    return(0);
-  end
-
 main
   local
     integer a;
     integer a;
+    integer result;
   do
-    return(0);
+    a = 5;
+    b = 5;
+    c=5;
+    result = a + b * a;
+    write(result);
   end
