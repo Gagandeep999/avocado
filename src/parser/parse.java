@@ -1383,6 +1383,9 @@ public class parse {
             case "func_def":
                 ast.push(new funcDefNode(name));
                 return true;
+            case "fparam":
+                ast.push(new fparamNode(name));
+                return true;
 
             default: ast.push(new generalNode(name));
             break;

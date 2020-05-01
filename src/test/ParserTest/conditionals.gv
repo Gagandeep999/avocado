@@ -126,7 +126,7 @@ digraph AST {
 12->14
 14[label="dim list"]
 13[label="num"]
-11[label="float"]
+11[label="integer"]
 7[label="var decl"]
 7->6
 7->8

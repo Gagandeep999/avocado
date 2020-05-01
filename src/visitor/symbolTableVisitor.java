@@ -99,7 +99,7 @@ public class symbolTableVisitor extends visitor {
             ArrayList<String> fParams = new ArrayList<>();
             for (node fparam :
                     fParamList.getChildren()) {
-                fParams.add(fparam.getChildren().get(0).getData()+":"+fparam.getChildren().get(1).getData());
+                fParams.add(fparam.getChildren().get(1).getData()+":"+fparam.getChildren().get(0).getData());
             }
             symTab localTable = new symTab(1, funcName, p_node.table);
             p_node.entry = new funcEntry(fParams, funcName, "function", funcType, localTable);
@@ -107,6 +107,20 @@ public class symbolTableVisitor extends visitor {
             p_node.table = localTable;
         }
 
+        for (node child :
+                p_node.getChildren()) {
+            child.table = p_node.table;
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(fparamNode p_node) {
+        System.out.println("inside fparam");
+        String type = p_node.getChildren().get(0).getData();
+        String name = p_node.getChildren().get(1).getData();
+        p_node.entry = new paramEntry(name, "parameter", type);
+        p_node.table.addEntry(p_node.entry);
         for (node child :
                 p_node.getChildren()) {
             child.table = p_node.table;

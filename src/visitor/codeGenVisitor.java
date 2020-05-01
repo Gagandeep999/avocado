@@ -312,4 +312,11 @@ public class codeGenVisitor extends visitor {
         }
     }
 
+    @Override
+    public void visit(fparamNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
 }

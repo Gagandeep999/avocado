@@ -54,11 +54,11 @@ public class typeCheckVisitor extends visitor {
 
     @Override
     public void visit(addOpNode p_node) {
-//        System.out.println("inside addOpNode");
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("inside addOpNode");
         String leftChildType = getChildType(p_node, 0);
         String rightChildType = getChildType(p_node, 1);
 
@@ -76,11 +76,11 @@ public class typeCheckVisitor extends visitor {
 
     @Override
     public void visit(multOpNode p_node) {
-//        System.out.println("inside multOpNode");
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("inside multOpNode");
         String leftChildType = getChildType(p_node, 0);
         String rightChildType = getChildType(p_node, 1);
 
@@ -100,11 +100,11 @@ public class typeCheckVisitor extends visitor {
 //    @TODO how to check for the case a=b+c
     @Override
     public void visit(assignStatNode p_node) {
-//        System.out.println("inside assignStatNode");
         for (node child :
         p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("inside assignStatNode");
         String leftChildType = "";
         String rightChildType = "";
 
@@ -113,6 +113,7 @@ public class typeCheckVisitor extends visitor {
                 p_node.table.getTableList()) {
             if (entry.getName().equals(leftChildName)) {
                 leftChildType = entry.getType();
+                break;
             }
         }
 
@@ -121,6 +122,7 @@ public class typeCheckVisitor extends visitor {
             p_node.setType(leftChildType);
         } else {
             p_node.setType("ERROR");
+            System.out.println("left child name is: "+leftChildName);
             this.errors += "error in assignStatNode" + p_node.toString();
         }
     }
@@ -247,6 +249,14 @@ public class typeCheckVisitor extends visitor {
 
     @Override
     public void visit(mainNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(fparamNode p_node) {
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);

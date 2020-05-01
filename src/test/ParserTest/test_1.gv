@@ -7,83 +7,51 @@ digraph AST {
 3->4
 4[label="FUNCBODY"]
 4->5
-4->16
-16[label="REPTSTATEMENT"]
-16->21
-16->31
-16->54
-54[label="write"]
-54->59
-59[label="ITEMGROUP"]
-59->55
-55[label="ITEM"]
-55->56
-55->57
-57[label="index list"]
-56[label="result"]
-31[label="="]
-31->30
-31->38
-38[label="+"]
-38->36
-38->44
-44[label="*"]
-44->43
-44->49
-49[label="ITEMGROUP"]
-49->45
-45[label="ITEM"]
-45->46
-45->47
-47[label="index list"]
-46[label="a"]
-43[label="ITEMGROUP"]
-43->39
-39[label="ITEM"]
-39->40
-39->41
-41[label="index list"]
-40[label="a"]
-36[label="ITEMGROUP"]
-36->32
-32[label="ITEM"]
-32->33
-32->34
-34[label="index list"]
-33[label="a"]
-30[label="callGROUP"]
-30->27
-27[label="call"]
-27->28
-27->29
-29[label="index list"]
-28[label="result"]
-21[label="="]
-21->20
+4->20
+20[label="REPTSTATEMENT"]
+20->29
+20->35
+35[label="write"]
+35->44
+44[label="ITEMGROUP"]
+44->36
+36[label="ITEM"]
+36->37
+36->38
+38[label="index list"]
+38->39
+39[label="1"]
+37[label="a"]
+29[label="="]
+29->28
+29->30
+30[label="5"]
+28[label="callGROUP"]
+28->21
+21[label="call"]
 21->22
-22[label="5"]
-20[label="callGROUP"]
-20->17
-17[label="call"]
-17->18
-17->19
-19[label="index list"]
-18[label="a"]
+21->23
+23[label="index list"]
+23->24
+24[label="1"]
+22[label="a"]
 5[label="VARIABLE_DECLARATIONS"]
 5->7
-5->12
-12[label="var decl"]
-12->11
-12->13
-12->14
-14[label="dim list"]
-13[label="result"]
-11[label="integer"]
+5->16
+16[label="var decl"]
+16->15
+16->17
+16->18
+18[label="dim list"]
+17[label="result"]
+15[label="integer"]
 7[label="var decl"]
 7->6
 7->8
-7->9
-9[label="dim list"]
+7->11
+11[label="arr_size"]
+11->12
+12[label="1"]
 8[label="a"]
 6[label="integer"]
 2[label="function_list"]

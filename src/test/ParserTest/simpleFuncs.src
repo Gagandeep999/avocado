@@ -1,10 +1,6 @@
 //Some free functions
 add(integer x, integer y):integer
   local
-    integer a[][2][3];
-    integer a[][2][];
-    integer a[1][][3];
-    integer a[1][2][3];
     integer result;
   do
     result = x + y;

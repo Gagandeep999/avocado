@@ -2,34 +2,25 @@
 |    ========================================================================
 |    | table: add         scope offset: 0|function parameters
 |    ========================================================================
-|    | variable  | a         | integer | 4  | var_a     |
-|    | variable  | a         | integer | 4  | var_a     |
-|    | variable  | a         | integer | 4  | var_a     |
-|    | variable  | a         | integer | 4  | var_a     |
+|    | parameter | x         | integer | 4  | param_x   |
+|    | parameter | y         | integer | 4  | param_y   |
 |    | variable  | result    | integer | 4  | var_result|
-|    | t1        | lit_t1    | integer | 4  | lit_t1    |
-|    | t2        | lit_t2    | integer | 4  | lit_t2    |
-|    | t3        | lit_t3    | integer | 4  | lit_t3    |
-|    | t4        | lit_t4    | integer | 4  | lit_t4    |
-|    | t5        | lit_t5    | integer | 4  | lit_t5    |
-|    | t6        | lit_t6    | integer | 4  | lit_t6    |
-|    | t7        | lit_t7    | integer | 4  | lit_t7    |
-|    | t8        | lit_t8    | integer | 4  | lit_t8    |
-|    | t9        | temp_t9   |         | 0  | temp_t9   |
+|    | t1        | temp_t1   | integer | 4  | temp_t1   |
 |    ========================================================================
 |    ========================================================================
 |    | table: add         scope offset: 0|function parameters
 |    ========================================================================
+|    | parameter | arr       | integer | 4  | param_arr |
 |    | variable  | result    | integer | 4  | var_result|
-|    | t10       | lit_t10   | integer | 4  | lit_t10   |
-|    | t11       | lit_t11   | integer | 4  | lit_t11   |
-|    | t12       | lit_t12   | integer | 4  | lit_t12   |
-|    | t13       | temp_t13  |         | 0  | temp_t13  |
+|    | t2        | lit_t2    | integer | 4  | lit_t2    |
+|    | t3        | lit_t3    | integer | 4  | lit_t3    |
+|    | t4        | lit_t4    | integer | 4  | lit_t4    |
+|    | t5        | temp_t5   | integer | 4  | temp_t5   |
 |    ========================================================================
 |    ========================================================================
 |    | table: main        scope offset: 0|function parameters
 |    ========================================================================
 |    | variable  | x         | integer | 4  | var_x     |
-|    | t14       | lit_t14   | integer | 4  | lit_t14   |
-|    | t15       | lit_t15   | integer | 4  | lit_t15   |
+|    | t6        | lit_t6    | integer | 4  | lit_t6    |
+|    | t7        | lit_t7    | integer | 4  | lit_t7    |
 |    ========================================================================

@@ -105,6 +105,19 @@ public class memorySizeVisitor extends visitor {
         p_node.entry.setTag("lit_"+name);
     }
 
+
+    @Override
+    public void visit(fparamNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+        System.out.println("fparamNode");
+        p_node.entry.setSize(sizeOfTypeNode(p_node));
+        String name = p_node.entry.getName();
+        p_node.entry.setTag("param_"+name);
+    }
+
     // visitor does not apply for the method below
 
     @Override

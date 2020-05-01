@@ -13,7 +13,9 @@ public class paramEntry extends symTabEntry {
     public String toString(){
         return 	String.format("%-12s" , "| " + kind) +
                 String.format("%-12s" , "| " + name) +
-                String.format("%-24s"  , "| " + type)
+                String.format("%-10s"  , "| " + type)+
+                String.format("%-5s"  , "| " + size) +
+                String.format("%-12s"  , "| " + tag)
                 + "|";
     }
 }

@@ -20,4 +20,5 @@ public abstract class visitor {
     public abstract void visit(typeNode p_node);
     public abstract void visit(varDeclNode p_node);
     public abstract void visit(mainNode p_node);
+    public abstract void visit(fparamNode p_node);
 }
