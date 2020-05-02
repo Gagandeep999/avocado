@@ -1,62 +1,67 @@
 
-========================================================================
-| table: global           scope offset: 0    |function parameters 
-========================================================================
-| class     | POLYNOMIAL| NONE                      |                   |
-| class     | LINEAR    | NONE                      |                   |
-| class     | QUADRATIC | NONE                      |                   |
-| function  | main         | void                      | []                |
-========================================================================
 |    ========================================================================
-|    | table: POLYNOMIAL       scope offset: 0    |function parameters 
+|    | table: POLYNOMIAL  scope offset: 0|function parameters
 |    ========================================================================
-|    | function  | evaluate     | float                     | [float:x]         |
+|    | function  | evaluate  | integer | [integer:x]            |
 |    ========================================================================
 |    |    ========================================================================
-|    |    | table: evaluate         scope offset: 0    |function parameters 
+|    |    | table: evaluate    scope offset: 0|function parameters
 |    |    ========================================================================
-|    |    ========================================================================
-|    ========================================================================
-|    | table: LINEAR           scope offset: 0    |function parameters 
-|    ========================================================================
-|    | variable  | a            | float                     |                   |
-|    | variable  | b            | float                     |                   |
-|    | function  | build        | LINEAR                    | [float:A, float:B]|
-|    | function  | evaluate     | float                     | [float:x]         |
-|    ========================================================================
-|    |    ========================================================================
-|    |    | table: build            scope offset: 0    |function parameters 
-|    |    ========================================================================
-|    |    | variable  | new_function | LINEAR                    |                   |
-|    |    ========================================================================
-|    |    ========================================================================
-|    |    | table: evaluate         scope offset: 0    |function parameters 
-|    |    ========================================================================
-|    |    | variable  | result       | float                     |                   |
+|    |    | parameter | x         | integer | 0  |           |
+|    |    | t1        | lit_t1    | integer | 4  | lit_t1    |
 |    |    ========================================================================
 |    ========================================================================
-|    | table: QUADRATIC        scope offset: 0    |function parameters 
+|    | table: LINEAR      scope offset: 0|function parameters
 |    ========================================================================
-|    | variable  | a            | float                     |                   |
-|    | variable  | b            | float                     |                   |
-|    | variable  | c            | float                     |                   |
-|    | function  | build        | QUADRATIC                 | [float:A, float:B, float:C]|
-|    | function  | evaluate     | float                     | [float:x]         |
+|    | variable  | a         | integer | 4  | var_a     |
+|    | variable  | b         | integer | 4  | var_b     |
+|    | function  | build     | LINEAR  | [integer:A, integer:B] |
+|    | function  | evaluate  | integer | [integer:x]            |
 |    ========================================================================
 |    |    ========================================================================
-|    |    | table: build            scope offset: 0    |function parameters 
-|    |    ========================================================================
-|    |    | variable  | new_function | QUADRATIC                 |                   |
+|    |    | table: build       scope offset: 0|function parameters
 |    |    ========================================================================
 |    |    ========================================================================
-|    |    | table: evaluate         scope offset: 0    |function parameters 
 |    |    ========================================================================
-|    |    | variable  | result       | float                     |                   |
+|    |    | table: evaluate    scope offset: 0|function parameters
+|    |    ========================================================================
+|    |    | parameter | x         | integer | 0  |           |
+|    |    | variable  | result    | integer | 4  | var_result|
+|    |    | t2        | lit_t2    | integer | 4  | lit_t2    |
+|    |    | t3        | temp_t3   | integer | 4  | temp_t3   |
+|    |    | t4        | temp_t4   | integer | 4  | temp_t4   |
 |    |    ========================================================================
 |    ========================================================================
-|    | table: main             scope offset: 0    |function parameters 
+|    | table: QUADRATIC   scope offset: 0|function parameters
 |    ========================================================================
-|    | variable  | f1           | linear                    |                   |
-|    | variable  | f2           | quadratic                 |                   |
-|    | variable  | counter      | integer                   |                   |
+|    | variable  | a         | integer | 4  | var_a     |
+|    | variable  | b         | integer | 4  | var_b     |
+|    | variable  | c         | integer | 4  | var_c     |
+|    | function  | build     | QUADRATIC| [integer:A, integer:B, integer:C]|
+|    | function  | evaluate  | integer | [integer:x]            |
+|    ========================================================================
+|    |    ========================================================================
+|    |    | table: build       scope offset: 0|function parameters
+|    |    ========================================================================
+|    |    ========================================================================
+|    |    ========================================================================
+|    |    | table: evaluate    scope offset: 0|function parameters
+|    |    ========================================================================
+|    |    | parameter | x         | integer | 0  |           |
+|    |    | variable  | result    | integer | 4  | var_result|
+|    |    | t5        | temp_t5   | integer | 4  | temp_t5   |
+|    |    | t6        | temp_t6   | integer | 4  | temp_t6   |
+|    |    | t7        | temp_t7   | integer | 4  | temp_t7   |
+|    |    | t8        | temp_t8   | integer | 4  | temp_t8   |
+|    |    ========================================================================
+|    ========================================================================
+|    | table: main        scope offset: 0|function parameters
+|    ========================================================================
+|    | variable  | f1        | integer | 4  | var_f1    |
+|    | variable  | f2        | integer | 4  | var_f2    |
+|    | variable  | counter   | integer | 4  | var_counter|
+|    | t9        | lit_t9    | integer | 4  | lit_t9    |
+|    | t10       | lit_t10   | integer | 4  | lit_t10   |
+|    | t11       | lit_t11   | integer | 4  | lit_t11   |
+|    | t12       | lit_t12   | integer | 4  | lit_t12   |
 |    ========================================================================

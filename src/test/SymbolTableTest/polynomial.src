@@ -44,7 +44,7 @@ QUADRATIC::evaluate(integer x) : integer
     result = result * x + c;
     return (result);
   end
-
+/*
 LINEAR::build(integer A, integer B) : LINEAR
   local
     LINEAR new_function;
@@ -63,23 +63,23 @@ QUADRATIC::build(integer A, integer B, integer C) : QUADRATIC
     new_function.c = C;
     return (new_function);
   end
-
+*/
 
 // ====== main ====== //
 main
   local
-    linear f1;
-    quadratic f2;
+    integer f1;
+    integer f2;
     integer counter;
   do
-    f1 = f1.build(2, 3);
-    f2 = f2.build(2, 1, 0);
+    f1 = 1;
+    f2 = 0;
     counter = 1;
 
     while(counter <= 10)
       do
         write(counter);
-        write(f1.evaluate(counter));
-        write(f2.evaluate(counter));
+        write(f1);
+        write(f2);
       end;
   end

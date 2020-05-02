@@ -33,6 +33,10 @@ public class symTab {
         this.upperTable = subTable;
     }
 
+    public symTab getUpperTable() {
+        return upperTable;
+    }
+
     public String getName() {
         return name;
     }
@@ -48,10 +52,6 @@ public class symTab {
     public void addEntry(symTabEntry entry){
         this.tableList.add(entry);
     }
-
-//    public String toString(){
-//        return (" "+ this.name + "->"+ this.tableList +" "+this.upperTable);
-//    }
 
     public String toString(){
         String stringtoreturn = new String();

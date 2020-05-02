@@ -142,9 +142,16 @@ public class typeCheckVisitor extends visitor {
     private String getChildType(node p_node, int childNum){
         String childType = "";
         if (p_node.getChildren().get(childNum).getClass().toString().contains("generalNode")){ //meaning that it is not numNode
-            String varName = p_node.getChildren().get(0).getChildren().get(0).getChildren().get(0).getData();
+            String varName = p_node.getChildren().get(childNum).getChildren().get(0).getChildren().get(0).getData();
             for (symTabEntry entry :
                     p_node.table.getTableList()) {
+                if (entry.getName().equals(varName)){
+                    childType = entry.getType();
+                    break;
+                }
+            }
+            for (symTabEntry entry :
+                    p_node.table.getUpperTable().getTableList()) {
                 if (entry.getName().equals(varName)){
                     childType = entry.getType();
                     break;

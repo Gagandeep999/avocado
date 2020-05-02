@@ -42,11 +42,11 @@ public class memorySizeVisitor extends visitor {
 
     @Override
     public void visit(addOpNode p_node) {
-//        System.out.println("in addopnode");
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("in addopnode");
 //        String type = p_node.entry.getType();
         p_node.entry.setSize(sizeOfTypeNode(p_node));
         String name = p_node.getMoonVarName();
@@ -55,11 +55,11 @@ public class memorySizeVisitor extends visitor {
 
     @Override
     public void visit(multOpNode p_node) {
-//        System.out.println("in multpopnode");
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("in multpopnode");
         p_node.entry.setSize(sizeOfTypeNode(p_node));
         String name = p_node.getMoonVarName();
         p_node.entry.setTag("temp_"+name);
@@ -67,11 +67,11 @@ public class memorySizeVisitor extends visitor {
 
     @Override
     public void visit(varDeclNode p_node) {
-//        System.out.println("in varDeclNode");
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("in varDeclNode");
         String name = p_node.entry.getName();
         p_node.entry.setTag("var_"+name);
         p_node.entry.setSize(sizeOfTypeNode(p_node));
@@ -112,10 +112,10 @@ public class memorySizeVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("fparamNode");
-        p_node.entry.setSize(sizeOfTypeNode(p_node));
-        String name = p_node.entry.getName();
-        p_node.entry.setTag("param_"+name);
+//        System.out.println("fparamNode");
+//        p_node.entry.setSize(sizeOfTypeNode(p_node));
+//        String name = p_node.entry.getName();
+//        p_node.entry.setTag("param_"+name);
     }
 
     // visitor does not apply for the method below
