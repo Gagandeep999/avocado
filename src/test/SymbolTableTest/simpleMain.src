@@ -1,6 +1,7 @@
 main
   local
     integer x;
+    integer x;
   do
     x = 1 + 2 * 3;
 	write(x);

@@ -5,10 +5,9 @@ import lexer.token;
 import nodes.node;
 import org.junit.Test;
 import parser.parse;
+import symbolTable.symTabEntry;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -35,25 +34,45 @@ public class codeGenVisitorDriver {
                 for (token t : tlist) {
                     if ((t.getToken().equals("inlinecmnt")) || (t.getToken().equals("blockcmnt"))) {
                         ;
-                    } else {
-                        newTList.add(t);
-                    }
+                    } else newTList.add(t);
                 }
-                parse p = new parse(newTList, filename);
-                if (p.parse()) {
+                parse parseTree = new parse(newTList, filename);
+                parse parseVisitor = new parse(newTList, filename);
+                if (parseTree.parse() && parseVisitor.parse()) {
                     ;
                 } else System.out.println("Error in parsing");
 
+                String graphFile = filename.replace(".src", ".outast");
                 String symTableFile = filename.replace(".src", ".outsymboltables");
                 String symTableError = filename.replace(".src", ".outsemanticerrors");
                 String moonFile = filename.replace(".src", ".m");
 
-                Stack<node> astTree = p.ast;
+                PrintWriter ast = new PrintWriter(graphFile, "UTF-8");
+                PrintWriter symTab = new PrintWriter(new File(symTableFile));
 
-                node prog = astTree.pop();
+                Stack<node> astTree = parseTree.ast;
+                Stack<node> astVisitor = parseVisitor.ast;
 
-                symbolTableVisitor symTabVisit = new symbolTableVisitor(symTableError);
+                //printing the graph
+                ast.println("digraph AST {");
+                while (!astTree.isEmpty()){
+                    node x = astTree.pop();
+                    ast.println(x.getMyNum()+"[label=\""+x.getData()+"\"]");
+                    ast.flush();
+                    for (node child :
+                            x.getChildren()) {
+                        ast.println(x.getMyNum()+"->"+child.getMyNum());
+                        ast.flush();
+                        astTree.push(child);
+                    }
+                }
+                ast.println("}");
+                ast.flush();
+
+                node prog = astVisitor.pop();
+
                 typeCheckVisitor typeCheckVisit = new typeCheckVisitor(symTableError);
+                symbolTableVisitor symTabVisit = new symbolTableVisitor(symTableError);
                 memorySizeVisitor memorySizeVisit = new memorySizeVisitor(symTableError);
                 codeGenVisitor codeGenVisit = new codeGenVisitor(moonFile);
 
@@ -61,6 +80,23 @@ public class codeGenVisitorDriver {
                 prog.accept(typeCheckVisit);
                 prog.accept(memorySizeVisit);
                 prog.accept(codeGenVisit);
+
+                //printing the symbol table
+                symTab.print(prog.table);
+                for (symTabEntry eachSymTabEntry :
+                        prog.table.getTableList()) {
+                    symTab.print(eachSymTabEntry.getLink());
+                    ArrayList<symTabEntry> eachClassFuncEntry = eachSymTabEntry.getLink().getTableList();
+                    for (symTabEntry eachEntry :
+                            eachClassFuncEntry) {
+                        if (eachEntry.getKind().equals("function")) {
+                            symTab.print(eachEntry.getLink());
+                        }
+                    }
+                }
+
+                symTab.flush();
+                symTab.close();
 
             }catch (IOException e){
                 System.out.println(e.getMessage());

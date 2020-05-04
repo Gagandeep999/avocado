@@ -1,6 +1,7 @@
 package symbolTable;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class symTab {
 
@@ -68,4 +69,17 @@ public class symTab {
         return stringtoreturn;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        symTab symTab = (symTab) o;
+        return level == symTab.level &&
+                Objects.equals(name, symTab.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, level);
+    }
 }

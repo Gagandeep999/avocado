@@ -1,5 +1,7 @@
 package symbolTable;
 
+import java.util.Objects;
+
 public class symTabEntry {
 
     String name;
@@ -93,4 +95,18 @@ public class symTabEntry {
         return (this.kind+" | "+this.name+" | "+this.type);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        symTabEntry entry = (symTabEntry) o;
+        return Objects.equals(name, entry.name) &&
+                Objects.equals(kind, entry.kind) &&
+                Objects.equals(type, entry.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, kind, type);
+    }
 }

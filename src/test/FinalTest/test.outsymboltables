@@ -2,33 +2,23 @@
 ========================================================================
 | table: global      scope offset: 0|function parameters
 ========================================================================
-| function  | add       | integer |    |           |
-| function  | add       | integer |    |           |
+| function  | addition  | integer |    |           |
 | function  | main      | void    |    |           |
 ========================================================================
 |    ========================================================================
-|    | table: add         scope offset: 0|function parameters
+|    | table: addition    scope offset: 0|function parameters
 |    ========================================================================
 |    | parameter | x         | integer | 4  | param_x   |
 |    | parameter | y         | integer | 4  | param_y   |
 |    | variable  | result    | integer | 4  | var_result|
-|    | parameter | arr       | integer | 4  | param_arr |
 |    | t1        | temp_t1   | integer | 4  | add_t1    |
-|    ========================================================================
-|    ========================================================================
-|    | table: add         scope offset: 0|function parameters
-|    ========================================================================
-|    | parameter | arr       | integer | 4  | param_arr |
-|    | variable  | result    | integer | 4  | var_result|
-|    | t2        | lit_t2    | integer | 4  | lit_t2    |
-|    | t3        | lit_t3    | integer | 4  | lit_t3    |
-|    | t4        | lit_t4    | integer | 4  | lit_t4    |
-|    | t5        | temp_t5   | integer | 4  | add_t5    |
 |    ========================================================================
 |    ========================================================================
 |    | table: main        scope offset: 0|function parameters
 |    ========================================================================
 |    | variable  | x         | integer | 4  | var_x     |
-|    | t6        | lit_t6    | integer | 4  | lit_t6    |
-|    | t7        | lit_t7    | integer | 4  | lit_t7    |
+|    | t2        | lit_t2    | integer | 4  | lit_1     |
+|    | t3        | lit_t3    | integer | 4  | lit_1     |
+|    | t4        | lit_t4    | integer | 4  | lit_1     |
+|    | t5        | lit_t5    | integer | 4  | lit_1     |
 |    ========================================================================

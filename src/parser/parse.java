@@ -74,17 +74,13 @@ public class parse {
                 case "or" :
                     ast.push(new addOpNode(lookahead.getLexeme().toString()));
                     break;
-                case "eq" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "neq" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "lessthan" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "gt" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "leq" : A_CREATEADD(lookahead.getToken());
-                    break;
-                case "geq" : A_CREATEADD(lookahead.getToken());
+                case "eq" :
+                case "neq" :
+                case "lessthan" :
+                case "gt" :
+                case "leq" :
+                case "geq" :
+                    ast.push(new compareOpNode(lookahead.getLexeme().toString()));
                     break;
                 case "mult" :
                 case "div" :
@@ -107,14 +103,6 @@ public class parse {
                     break;
                 case "equal" : ast.push(new assignStatNode(lookahead.getLexeme().toString()));
                     break;
-//                case "integer" : A_CREATEADD(lookahead);
-//                    break;
-//                case "integer" : A_CREATEADD(lookahead);
-//                    break;
-//                case "integer" : A_CREATEADD(lookahead);
-//                    break;
-//                case "integer" : A_CREATEADD(lookahead);
-//                    break;
                 default: break;
             }
             nextToken();

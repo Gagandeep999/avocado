@@ -73,32 +73,21 @@ public class symbolTableVisitor extends visitor {
     @Override
     public void visit(funcDefNode p_node){
         int noOfChild = p_node.getChildren().get(0).getChildren().size();
+
         if (noOfChild==4){ // class function
             String className = p_node.getChildren().get(0).getChildren().get(0).getData();
             String funcName = p_node.getChildren().get(0).getChildren().get(1).getData();
             ArrayList<symTabEntry> prevTables = p_node.table.getTableList();
             for (symTabEntry eachPrevTable :
                     prevTables) {
-                if (className.equals(eachPrevTable.getName())) {
+                if (className.equals(eachPrevTable.getName())){
                     symTab classTable = eachPrevTable.getLink();
                     for (symTabEntry eachPrevFuncEntry :
-                            classTable.getTableList()) {
-                        if (eachPrevFuncEntry.getName().equals(funcName)) {
+                            classTable.getTableList()){
+                        if (eachPrevFuncEntry.getName().equals(funcName)){
                             p_node.table = eachPrevFuncEntry.getLink();
-                            node paramList = p_node.getChildren().get(0).getChildren().get(2);
-                            for (node fparam :
-                                    paramList.getChildren()) {
-                                String type = fparam.getChildren().get(0).getData();
-                                String name = fparam.getChildren().get(1).getData();
-                                paramEntry entry = new paramEntry(name, "parameter", type);
-                                p_node.table.addEntry(entry);
-                            }
-                        } else {
-//                            System.out.println("Definition provided for undeclared member function");
                         }
                     }
-                }else{
-//                    System.out.println("Class not declared");
                 }
             }
         }
@@ -132,14 +121,41 @@ public class symbolTableVisitor extends visitor {
         node paramList = p_node.getChildren().get(2);
         String funcType = p_node.getChildren().get(3).getData();
         ArrayList<String> fparamList = new ArrayList<>();
-        for (node fparam :
-                paramList.getChildren()) {
-            fparamList.add(fparam.getChildren().get(0).getData()+":"+fparam.getChildren().get(1).getData());
-        }
+
         symTab localTable = new symTab(2, funcName, p_node.table);
         p_node.entry = new funcEntry(funcScope, fparamList, funcName, "function", funcType, localTable);
         p_node.table.addEntry(p_node.entry);
         p_node.table = localTable;
+
+        for (node child :
+                p_node.getChildren()) {
+            child.table = p_node.table;
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(fparamNode p_node) {
+//        System.out.println("inside fparam");
+        String type = p_node.getChildren().get(0).getData();
+        String name = p_node.getChildren().get(1).getData();
+        p_node.entry = new paramEntry(name, "parameter", type);
+        String funcName = p_node.table.getName();
+
+        if (p_node.table.getTableList().isEmpty()){
+            p_node.table.addEntry(p_node.entry);
+        } else { // it is not empty
+            for (symTabEntry funcEntry :
+                    p_node.table.getTableList()) {
+                if ((funcEntry.getName().equals(name)) && (funcEntry.getType().equals(type))
+                    && funcEntry.getKind().equals("parameter")) {
+//                    System.out.println("same parameter name declared more than once");;
+                }else {
+                    p_node.table.addEntry(p_node.entry);
+                    break;
+                }
+            }
+        }
 
         for (node child :
                 p_node.getChildren()) {
@@ -199,6 +215,15 @@ public class symbolTableVisitor extends visitor {
 
     @Override
     public void visit(multOpNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.table = p_node.table;
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(compareOpNode p_node) {
         for (node child :
                 p_node.getChildren()) {
             child.table = p_node.table;
@@ -289,20 +314,5 @@ public class symbolTableVisitor extends visitor {
         }
     }
 
-    @Override
-    public void visit(fparamNode p_node) {
-//        System.out.println("inside fparam");
-//        String type = p_node.getChildren().get(0).getData();
-//        String name = p_node.getChildren().get(1).getData();
-//
-//
-//        p_node.entry = new paramEntry(name, "parameter", type);
-//        p_node.table.addEntry(p_node.entry);
-        for (node child :
-                p_node.getChildren()) {
-            child.table = p_node.table;
-            child.accept(this);
-        }
-    }
 
 }

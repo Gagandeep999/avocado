@@ -26,18 +26,40 @@ public class symTabVisitorDriver {
                     ;
                 } else newTList.add(t);
             }
-            parse p = new parse(newTList, filename);
-            if (p.parse()) {
+            parse parseTree = new parse(newTList, filename);
+            parse parseVisitor = new parse(newTList, filename);
+            if (parseTree.parse() && parseVisitor.parse()) {
                 ;
             } else System.out.println("Error in parsing");
 
+            String graphFile = filename.replace(".src", ".outast");
             String symTableFile = filename.replace(".src", ".outsymboltables");
             String symTableError = filename.replace(".src", ".outsemanticerrors");
             String moonfile = filename.replace(".src", ".m");
 
-            Stack<node> astTree = p.ast;
+            PrintWriter ast = new PrintWriter(graphFile, "UTF-8");
+            PrintWriter symTab = new PrintWriter(new File(symTableFile));
 
-            node prog = astTree.pop();
+            Stack<node> astTree = parseTree.ast;
+            Stack<node> astVisitor = parseVisitor.ast;
+
+            //printing the graph
+            ast.println("digraph AST {");
+            while (!astTree.isEmpty()){
+                node x = astTree.pop();
+                ast.println(x.getMyNum()+"[label=\""+x.getData()+"\"]");
+                ast.flush();
+                for (node child :
+                        x.getChildren()) {
+                    ast.println(x.getMyNum()+"->"+child.getMyNum());
+                    ast.flush();
+                    astTree.push(child);
+                }
+            }
+            ast.println("}");
+            ast.flush();
+
+            node prog = astVisitor.pop();
 
             typeCheckVisitor typeCheckVisit = new typeCheckVisitor(symTableError);
             symbolTableVisitor symTabVisit = new symbolTableVisitor(symTableError);
@@ -48,21 +70,21 @@ public class symTabVisitorDriver {
             prog.accept(memorySizeVisit);
             System.out.println("symbol table created");
 
-            PrintWriter out = new PrintWriter(new File(symTableFile));
-
+            //printing the symbol table
+            symTab.print(prog.table);
             for (symTabEntry eachSymTabEntry :
                     prog.table.getTableList()) {
-                out.print(eachSymTabEntry.getLink());
+                symTab.print(eachSymTabEntry.getLink());
                 ArrayList<symTabEntry> eachClassFuncEntry = eachSymTabEntry.getLink().getTableList();
                 for (symTabEntry eachEntry :
                         eachClassFuncEntry) {
                     if (eachEntry.getKind().equals("function")) {
-                        out.print(eachEntry.getLink());
+                        symTab.print(eachEntry.getLink());
                     }
                 }
             }
-            out.flush();
-            out.close();
+            symTab.flush();
+            symTab.close();
 
         }catch (IOException e){
             System.out.println(e.getMessage());

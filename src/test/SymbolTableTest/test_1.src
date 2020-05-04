@@ -1,12 +1,7 @@
 main
   local
-    integer a;
-    integer a;
-    integer result;
+    integer b;
   do
     a = 5;
-    b = 5;
-    c=5;
-    result = a + b * a;
-    write(result);
+    write(a);
   end

@@ -1,5 +1,6 @@
 package visitor;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import nodes.*;
 import symbolTable.symTabEntry;
 import symbolTable.varEntry;
@@ -8,6 +9,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class typeCheckVisitor extends visitor {
 
@@ -58,7 +61,7 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("inside addOpNode");
+//        System.out.println("addOpNode in typeCheck");
         String leftChildType = getChildType(p_node, 0);
         String rightChildType = getChildType(p_node, 1);
 
@@ -70,7 +73,7 @@ public class typeCheckVisitor extends visitor {
             p_node.table.addEntry(p_node.entry);
         }else {
             p_node.setType("ERROR");
-            this.errors += "error in addOpNode" + p_node.toString();
+            this.errors += "error in addOpNode";
         }
     }
 
@@ -80,7 +83,7 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("inside multOpNode");
+//        System.out.println("multOpNode in typeCheck");
         String leftChildType = getChildType(p_node, 0);
         String rightChildType = getChildType(p_node, 1);
 
@@ -92,12 +95,31 @@ public class typeCheckVisitor extends visitor {
             p_node.table.addEntry(p_node.entry);
         } else {
             p_node.setType("ERROR");
-            this.errors += "error in multOpNode" + p_node.toString();
+            this.errors += "error in multOpNode";
         }
     }
 
-//    currently assignop only checks for simple cases like a=0 or a=1+1
-//    @TODO how to check for the case a=b+c
+    @Override
+    public void visit(compareOpNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+//        System.out.println("compareOpNode in type check");
+        String leftChildType = getChildType(p_node, 0);
+        String rightChildType = getChildType(p_node, 1);
+        if (leftChildType.equals(rightChildType)) {
+            p_node.setType(leftChildType);
+            String tempvarname = this.getNewTempVarName();
+            p_node.moonVarName = tempvarname;
+            p_node.entry = new varEntry(("temp_"+tempvarname), p_node.moonVarName, p_node.getType());
+            p_node.table.addEntry(p_node.entry);
+        } else {
+            p_node.setType("ERROR");
+            this.errors += "error in compareOpNode";
+        }
+    }
+
     @Override
     public void visit(assignStatNode p_node) {
         for (node child :
@@ -106,7 +128,6 @@ public class typeCheckVisitor extends visitor {
         }
         System.out.println("inside assignStatNode");
         String leftChildType = "";
-        String rightChildType = "";
 
         String leftChildName = p_node.getChildren().get(0).getChildren().get(0).getChildren().get(0).getData();
         for (symTabEntry entry :
@@ -117,13 +138,15 @@ public class typeCheckVisitor extends visitor {
             }
         }
 
-        rightChildType = getChildType(p_node,1);
+        String rightChildType = getChildType(p_node,1);
         if (leftChildType.equals(rightChildType)) {
             p_node.setType(leftChildType);
+        } else if (leftChildType.isEmpty()){
+            err.println("variable \"" + leftChildName + "\" is not declared.");
+            this.errors += "variable \"" + leftChildName + "\" is not declared.";
         } else {
             p_node.setType("ERROR");
-            System.out.println("left child name is: "+leftChildName);
-            this.errors += "error in assignStatNode" + p_node.toString();
+            this.errors += "error in assignStatNode";
         }
     }
 
@@ -171,6 +194,8 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("classlist node in type check");
+        checkDuplicates(p_node, "class");
     }
 
     @Override
@@ -187,6 +212,8 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("funcDecl in typecheck");
+        checkDuplicates(p_node, "variable");
     }
 
     @Override
@@ -195,6 +222,8 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+        checkDuplicates(p_node, "variable");
+        checkDuplicates(p_node, "function");
     }
 
     @Override
@@ -203,6 +232,8 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("funcDefListNode in typecheck");
+        checkDuplicates(p_node, "function");
     }
 
     @Override
@@ -211,6 +242,8 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+        checkDuplicates(p_node, "variable");
+        checkDuplicates(p_node, "function");
     }
 
     @Override
@@ -260,6 +293,8 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+//        System.out.println("mainNode in typeCheck");
+        checkDuplicates(p_node, "variable");
     }
 
     @Override
@@ -268,5 +303,35 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+    }
+
+    public void checkDuplicates(node p_node, String kind){
+        ArrayList<String> idList = new ArrayList<>();
+
+        for (symTabEntry entry :
+                p_node.getTable().getTableList()) {
+            if (entry.getKind().equals(kind)){
+                idList.add(entry.getName());
+            }
+        }
+        Set<String> idSet = new HashSet<>(idList);
+
+        if (idSet.size() < idList.size()){
+            if (kind.equals("function")){
+                err.println("WARNING: function overloading");
+            } else {
+                ArrayList<symTabEntry> noDuplicate = new ArrayList<>();
+                for (symTabEntry entry :
+                        p_node.getTable().getTableList()) {
+                    if (!noDuplicate.contains(entry)){
+                        noDuplicate.add(entry);
+                    } else {
+                        err.println("ERROR: duplicate " + kind + " \"" + entry.getName()  + "\" found in " + p_node.getData());
+                    }
+                }
+                p_node.getTable().setTableList(noDuplicate);
+            }
+        }
+        err.flush();
     }
 }

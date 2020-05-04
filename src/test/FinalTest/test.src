@@ -1,0 +1,17 @@
+//Some free functions
+addition(integer x, integer y):integer
+  local
+    integer result;
+  do
+    result = x + y;
+	return ( result );
+  end
+
+//It's main!
+main
+  local
+    integer x;
+  do
+    x = add(1,1);
+    add(1,1);
+  end

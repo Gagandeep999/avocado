@@ -22,6 +22,7 @@ src/test/SymbolTableTest/*.outlexerrors
 src/test/SymbolTableTest/*.outlextokens
 src/test/SymbolTableTest/*.outderivation
 src/test/SymbolTableTest/*.outsyntaxerrors
+src/test/SymbolTableTest/*.outast
 
 src/test/CodeGenTest/*.outderivation
 src/test/CodeGenTest/*.outlexerrors

@@ -1,34 +1,34 @@
 // ====== Class declarations ====== //
 class POLYNOMIAL {
-	public evaluate(float x) : float;
-	public float x;
+	public evaluate(integer x) : integer;
+	public integer x;
 };
 
 class LINEAR {
-	public evaluate(float x) : float;
-    public float x;
+	public evaluate(integer x) : integer;
+    public integer x;
 };
 
 class QUADRATIC inherits POLYNOMIAL {
-	public evaluate(float x) : float;
-    public float x;
+	public evaluate(integer x) : integer;
+    public integer x;
 };
 
 
 // ====== Function Definitions ====== //
-POLYNOMIAL::evaluate(float x) : float
+POLYNOMIAL::evaluate(integer x) : integer
   do
     return (0);
   end
 
-LINEAR::evaluate(float x) : float
+LINEAR::evaluate(integer x) : integer
   local
-    float result;
+    integer result;
   do
     return (result);
   end
 
-QUADRATIC::evaluate(float x) : float
+QUADRATIC::evaluate(integer x) : integer
   do
     return (0);
   end
@@ -36,8 +36,9 @@ QUADRATIC::evaluate(float x) : float
 
 main
   local
-    linear f1;
+    integer f1;
+    integer counter;
   do
-    f1 = f1.build(-2.0, 1.0, 0.0);
+    f1 = 0;
     counter = 1;
   end

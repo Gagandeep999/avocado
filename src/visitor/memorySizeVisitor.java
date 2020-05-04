@@ -1,5 +1,6 @@
 package visitor;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import nodes.*;
 
 import java.io.File;
@@ -46,11 +47,11 @@ public class memorySizeVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("in addopnode");
-//        String type = p_node.entry.getType();
+//        TODO: change tag name to make it more informative
+//        System.out.println("in addopnode");
         p_node.entry.setSize(sizeOfTypeNode(p_node));
         String name = p_node.getMoonVarName();
-        p_node.entry.setTag("temp_"+name);
+        p_node.entry.setTag("add_"+name);
     }
 
     @Override
@@ -59,10 +60,21 @@ public class memorySizeVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("in multpopnode");
+//        System.out.println("in multpopnode");
         p_node.entry.setSize(sizeOfTypeNode(p_node));
         String name = p_node.getMoonVarName();
-        p_node.entry.setTag("temp_"+name);
+        p_node.entry.setTag("mult_"+name);
+    }
+
+    @Override
+    public void visit(compareOpNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+        p_node.entry.setSize(sizeOfTypeNode(p_node));
+        String name = p_node.getMoonVarName();
+        p_node.entry.setTag("comp_"+name);
     }
 
     @Override
@@ -71,7 +83,7 @@ public class memorySizeVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("in varDeclNode");
+//        System.out.println("in varDeclNode");
         String name = p_node.entry.getName();
         p_node.entry.setTag("var_"+name);
         p_node.entry.setSize(sizeOfTypeNode(p_node));
@@ -102,9 +114,8 @@ public class memorySizeVisitor extends visitor {
         }
         p_node.entry.setSize(sizeOfTypeNode(p_node));
         String name = p_node.getMoonVarName();
-        p_node.entry.setTag("lit_"+name);
+        p_node.entry.setTag("lit_"+p_node.getData());
     }
-
 
     @Override
     public void visit(fparamNode p_node) {
@@ -113,9 +124,9 @@ public class memorySizeVisitor extends visitor {
             child.accept(this);
         }
 //        System.out.println("fparamNode");
-//        p_node.entry.setSize(sizeOfTypeNode(p_node));
-//        String name = p_node.entry.getName();
-//        p_node.entry.setTag("param_"+name);
+        String name = p_node.entry.getName();
+        p_node.entry.setTag("param_"+name);
+        p_node.entry.setSize(sizeOfTypeNode(p_node));
     }
 
     // visitor does not apply for the method below

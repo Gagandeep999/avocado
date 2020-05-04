@@ -47,7 +47,7 @@ public class codeGenVisitor extends visitor {
 
     @Override
     public void visit(addOpNode p_node) {
-//        System.out.println("addOpNode");
+        System.out.println("addOpNode");
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);
@@ -65,7 +65,14 @@ public class codeGenVisitor extends visitor {
         this.execCode += "% processing " +leftChildName + " + " + rightChildName + "\n";
         this.execCode += this.indent + "lw " + leftChildReg + ", " + leftChildTag + "(R0)\n";
         this.execCode += this.indent + "lw " + rightChildReg + ", " + rightChildTag + "(R0)\n";
-        this.execCode += this.indent + "add " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
+        if (p_node.getData().equals("+")){
+            this.execCode += this.indent + "add " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
+        } else if (p_node.getData().equals("-")){
+            this.execCode += this.indent + "sub " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
+        } else { // it is "or"
+            System.out.println(" or is not yet implemented");
+        }
+
 
         this.dataCode += "% space for " + p_node.entry.getName() +"\n";
         this.dataCode += String.format("%-10s", p_node.entry.getTag() + " res " + p_node.entry.getSize() + "\n");
@@ -97,7 +104,13 @@ public class codeGenVisitor extends visitor {
         this.execCode += "% processing " +leftChildName + " + " + rightChildName + "\n";
         this.execCode += this.indent + "lw " + leftChildReg + ", " + leftChildTag + "(R0)\n";
         this.execCode += this.indent + "lw " + rightChildReg + ", " + rightChildTag + "(R0)\n";
-        this.execCode += this.indent + "mul " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
+        if (p_node.getData().equals("*")){
+            this.execCode += this.indent + "mul " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
+        } else if (p_node.getData().equals("/")){
+            this.execCode += this.indent + "div " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
+        } else { // this is the case when it's and
+            System.out.println("and is not yet implemented");
+        }
 
         this.dataCode += "% space for " + p_node.entry.getName() +"\n";
         this.dataCode += String.format("%-10s", p_node.entry.getTag() + " res " + p_node.entry.getSize() + "\n");
@@ -202,7 +215,7 @@ public class codeGenVisitor extends visitor {
             this.registerPool.push(localReg);
 
         }else if (p_node.getData().equals("read")){ //routine for read
-
+            System.out.println("routine for read");
         }else { // if, while, return
             System.out.println("Not yet implemented");
         }
@@ -314,6 +327,14 @@ public class codeGenVisitor extends visitor {
 
     @Override
     public void visit(fparamNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(compareOpNode p_node) {
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);

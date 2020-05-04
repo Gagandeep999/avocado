@@ -1,4 +1,9 @@
 
+========================================================================
+| table: global      scope offset: 0|function parameters
+========================================================================
+| function  | main      | void    |    |           |
+========================================================================
 |    ========================================================================
 |    | table: main        scope offset: 0|function parameters
 |    ========================================================================
@@ -8,14 +13,16 @@
 |    | t1        | lit_t1    | integer | 4  | lit_t1    |
 |    | t2        | lit_t2    | integer | 4  | lit_t2    |
 |    | t3        | lit_t3    | integer | 4  | lit_t3    |
-|    | t4        | temp_t4   | integer | 4  | temp_t4   |
-|    | t5        | temp_t5   | integer | 4  | temp_t5   |
+|    | t4        | temp_t4   | integer | 4  | mult_t4   |
+|    | t5        | temp_t5   | integer | 4  | add_t5    |
 |    | t6        | lit_t6    | integer | 4  | lit_t6    |
-|    | t7        | temp_t7   | integer | 4  | temp_t7   |
-|    | t8        | lit_t8    | integer | 4  | lit_t8    |
-|    | t9        | temp_t9   | integer | 4  | temp_t9   |
-|    | t10       | lit_t10   | integer | 4  | lit_t10   |
-|    | t11       | temp_t11  | integer | 4  | temp_t11  |
-|    | t12       | lit_t12   | integer | 4  | lit_t12   |
+|    | t7        | temp_t7   | integer | 4  | add_t7    |
+|    | t8        | temp_t8   | integer | 4  | comp_t8   |
+|    | t9        | lit_t9    | integer | 4  | lit_t9    |
+|    | t10       | temp_t10  | integer | 4  | add_t10   |
+|    | t11       | lit_t11   | integer | 4  | lit_t11   |
+|    | t12       | temp_t12  | integer | 4  | add_t12   |
 |    | t13       | lit_t13   | integer | 4  | lit_t13   |
+|    | t14       | lit_t14   | integer | 4  | lit_t14   |
+|    | t15       | temp_t15  | integer | 4  | comp_t15  |
 |    ========================================================================
