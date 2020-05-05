@@ -2,6 +2,7 @@ package visitor;
 
 import com.sun.xml.internal.bind.v2.TODO;
 import nodes.*;
+import symbolTable.symTab;
 import symbolTable.symTabEntry;
 import symbolTable.varEntry;
 
@@ -126,7 +127,7 @@ public class typeCheckVisitor extends visitor {
         p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("inside assignStatNode");
+//        System.out.println("assignStatNode in type check");
         String leftChildType = "";
 
         String leftChildName = p_node.getChildren().get(0).getChildren().get(0).getChildren().get(0).getData();
@@ -144,10 +145,11 @@ public class typeCheckVisitor extends visitor {
         } else if (leftChildType.isEmpty()){
             err.println("variable \"" + leftChildName + "\" is not declared.");
             this.errors += "variable \"" + leftChildName + "\" is not declared.";
-        } else {
+        }else {
             p_node.setType("ERROR");
-            this.errors += "error in assignStatNode";
+            this.errors += "error in assignStatNode in typeCheck";
         }
+        err.flush();
     }
 
     @Override
@@ -194,7 +196,7 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("classlist node in type check");
+//        System.out.println("classlist node in type check");
         checkDuplicates(p_node, "class");
     }
 
@@ -232,7 +234,7 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("funcDefListNode in typecheck");
+//        System.out.println("funcDefListNode in typecheck");
         checkDuplicates(p_node, "function");
     }
 
@@ -305,6 +307,18 @@ public class typeCheckVisitor extends visitor {
         }
     }
 
+    @Override
+    public void visit(funcCallNode p_node) {
+//        System.out.println("before visitng children");
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+//        System.out.println("funcCallNode in typecheck");
+        chekckFunctionExists(p_node);
+        numOfParameter(p_node);
+    }
+
     public void checkDuplicates(node p_node, String kind){
         ArrayList<String> idList = new ArrayList<>();
 
@@ -333,5 +347,41 @@ public class typeCheckVisitor extends visitor {
             }
         }
         err.flush();
+    }
+
+    public void chekckFunctionExists(node p_node){
+        String funcName = p_node.getParent().getChildren().get(0).getData();
+        symTab upperTable = p_node.getTable().getUpperTable();
+        int count = 0;
+        for (symTabEntry entry :
+                upperTable.getTableList()) {
+            if (entry.getName().equals(funcName)){
+                count++;
+            }
+        }
+        if (count<1){
+            err.println("function \"" + funcName + "\" is not declared.");
+        }
+    }
+
+    public void numOfParameter(node p_node){
+        String funcName = p_node.getParent().getChildren().get(0).getData();
+        symTab upperTable = p_node.getTable().getUpperTable();
+        ArrayList<String> params = new ArrayList<>();
+        for (symTabEntry entry :
+                upperTable.getTableList()) {
+            if ((entry.getName().equals(funcName)) && (entry.getKind().equals("function"))){
+                symTab funcTable = entry.getLink();
+                for (symTabEntry funcEntries :
+                        funcTable.getTableList()) {
+                    if (funcEntries.getKind().equals("parameter")){
+                        params.add(funcEntries.getType());
+                    }
+                }
+            }
+        }
+        if (p_node.getChildren().size()!=params.size()){
+            err.println("number of parameter for function \"" + funcName + "\" mismatch");
+        }
     }
 }

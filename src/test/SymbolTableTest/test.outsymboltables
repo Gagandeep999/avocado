@@ -17,7 +17,7 @@
 |    |    | table: evaluate    scope offset: 0|function parameters
 |    |    ========================================================================
 |    |    | parameter | x         | integer | 4  | param_x   |
-|    |    | t1        | lit_t1    | integer | 4  | lit_t1    |
+|    |    | t1        | lit_t1    | integer | 4  | lit_0     |
 |    |    ========================================================================
 |    ========================================================================
 |    | table: LINEAR      scope offset: 0|function parameters
@@ -41,13 +41,13 @@
 |    |    | table: evaluate    scope offset: 0|function parameters
 |    |    ========================================================================
 |    |    | parameter | x         | integer | 4  | param_x   |
-|    |    | t2        | lit_t2    | integer | 4  | lit_t2    |
+|    |    | t2        | lit_t2    | integer | 4  | lit_0     |
 |    |    ========================================================================
 |    ========================================================================
 |    | table: main        scope offset: 0|function parameters
 |    ========================================================================
 |    | variable  | f1        | integer | 4  | var_f1    |
 |    | variable  | counter   | integer | 4  | var_counter|
-|    | t3        | lit_t3    | integer | 4  | lit_t3    |
-|    | t4        | lit_t4    | integer | 4  | lit_t4    |
+|    | t3        | lit_t3    | integer | 4  | lit_0     |
+|    | t4        | lit_t4    | integer | 4  | lit_1     |
 |    ========================================================================

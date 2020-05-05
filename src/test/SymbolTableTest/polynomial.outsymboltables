@@ -16,7 +16,7 @@
 |    |    | table: evaluate    scope offset: 0|function parameters
 |    |    ========================================================================
 |    |    | parameter | x         | integer | 4  | param_x   |
-|    |    | t1        | lit_t1    | integer | 4  | lit_t1    |
+|    |    | t1        | lit_t1    | integer | 4  | lit_0     |
 |    |    ========================================================================
 |    ========================================================================
 |    | table: LINEAR      scope offset: 0|function parameters
@@ -37,7 +37,7 @@
 |    |    ========================================================================
 |    |    | parameter | x         | integer | 4  | param_x   |
 |    |    | variable  | result    | integer | 4  | var_result|
-|    |    | t2        | lit_t2    | integer | 4  | lit_t2    |
+|    |    | t2        | lit_t2    | integer | 4  | lit_0     |
 |    |    | t3        | temp_t3   | integer | 4  | mult_t3   |
 |    |    | t4        | temp_t4   | integer | 4  | add_t4    |
 |    |    ========================================================================
@@ -73,9 +73,9 @@
 |    | variable  | f1        | integer | 4  | var_f1    |
 |    | variable  | f2        | integer | 4  | var_f2    |
 |    | variable  | counter   | integer | 4  | var_counter|
-|    | t9        | lit_t9    | integer | 4  | lit_t9    |
-|    | t10       | lit_t10   | integer | 4  | lit_t10   |
-|    | t11       | lit_t11   | integer | 4  | lit_t11   |
-|    | t12       | lit_t12   | integer | 4  | lit_t12   |
+|    | t9        | lit_t9    | integer | 4  | lit_1     |
+|    | t10       | lit_t10   | integer | 4  | lit_0     |
+|    | t11       | lit_t11   | integer | 4  | lit_1     |
+|    | t12       | lit_t12   | integer | 4  | lit_10    |
 |    | t13       | temp_t13  | integer | 4  | comp_t13  |
 |    ========================================================================

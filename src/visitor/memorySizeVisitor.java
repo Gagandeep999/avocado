@@ -210,4 +210,12 @@ public class memorySizeVisitor extends visitor {
             child.accept(this);
         }
     }
+
+    @Override
+    public void visit(funcCallNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
 }

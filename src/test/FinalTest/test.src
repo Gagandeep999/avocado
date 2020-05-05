@@ -1,5 +1,5 @@
 //Some free functions
-addition(integer x, integer y):integer
+add(integer x, integer y):integer
   local
     integer result;
   do
@@ -12,6 +12,5 @@ main
   local
     integer x;
   do
-    x = add(1,1);
-    add(1,1);
+    x = add(1, 1, 1);
   end

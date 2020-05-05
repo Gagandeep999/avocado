@@ -1374,6 +1374,9 @@ public class parse {
             case "fparam":
                 ast.push(new fparamNode(name));
                 return true;
+            case "FUNCTION_CALL_PARAMS":
+                ast.push(new funcCallNode("funcCallParams", ast.peek()));
+                return true;
 
             default: ast.push(new generalNode(name));
             break;

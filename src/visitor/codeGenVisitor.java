@@ -47,7 +47,7 @@ public class codeGenVisitor extends visitor {
 
     @Override
     public void visit(addOpNode p_node) {
-        System.out.println("addOpNode");
+//        System.out.println("addOpNode");
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);
@@ -335,6 +335,14 @@ public class codeGenVisitor extends visitor {
 
     @Override
     public void visit(compareOpNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(funcCallNode p_node) {
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);

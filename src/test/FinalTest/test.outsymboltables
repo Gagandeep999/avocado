@@ -2,11 +2,11 @@
 ========================================================================
 | table: global      scope offset: 0|function parameters
 ========================================================================
-| function  | addition  | integer |    |           |
+| function  | add       | integer |    |           |
 | function  | main      | void    |    |           |
 ========================================================================
 |    ========================================================================
-|    | table: addition    scope offset: 0|function parameters
+|    | table: add         scope offset: 0|function parameters
 |    ========================================================================
 |    | parameter | x         | integer | 4  | param_x   |
 |    | parameter | y         | integer | 4  | param_y   |
@@ -20,5 +20,4 @@
 |    | t2        | lit_t2    | integer | 4  | lit_1     |
 |    | t3        | lit_t3    | integer | 4  | lit_1     |
 |    | t4        | lit_t4    | integer | 4  | lit_1     |
-|    | t5        | lit_t5    | integer | 4  | lit_1     |
 |    ========================================================================

@@ -77,8 +77,11 @@ public abstract class node {
 
     public node(String data, node parent){
         this.data = data;
+        this.myNum = curNum;
+        this.children = new ArrayList<>();
         this.parent = parent;
         node.curNum++;
+        this.moonVarName = new String();
     }
 
     public node(String data, String type){

@@ -14,15 +14,12 @@
 % processing t3 stores 1
            addi R3, R0, 1
            sw lit_1(R0), R3
-% processing x = x
-           lw R3, var_x(R0)
-           sw var_x(R0), R3
 % processing t4 stores 1
            addi R3, R0, 1
            sw lit_1(R0), R3
-% processing t5 stores 1
-           addi R3, R0, 1
-           sw lit_1(R0), R3
+% processing x = x
+           lw R3, var_x(R0)
+           sw var_x(R0), R3
            hlt
 % PROGRAM END
 
@@ -32,8 +29,6 @@ var_result res 4
 add_t1 res 4
 % space for var_x
 var_x res 4 
-% space for constant 1
-lit_1 res 4 
 % space for constant 1
 lit_1 res 4 
 % space for constant 1
