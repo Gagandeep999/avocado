@@ -23,4 +23,5 @@ public abstract class visitor {
     public abstract void visit(fparamNode p_node);
     public abstract void visit(compareOpNode p_node);
     public abstract void visit(funcCallNode p_node);
+    public abstract void visit(returnNode p_node);
 }

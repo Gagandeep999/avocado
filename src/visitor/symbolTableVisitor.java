@@ -323,4 +323,14 @@ public class symbolTableVisitor extends visitor {
             child.accept(this);
         }
     }
+
+    @Override
+    public void visit(returnNode p_node) {
+//        System.out.println("returnNode in symTabGen");
+        for (node child :
+                p_node.getChildren()) {
+            child.table = p_node.table;
+            child.accept(this);
+        }
+    }
 }

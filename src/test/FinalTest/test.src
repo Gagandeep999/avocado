@@ -1,16 +1,17 @@
 //Some free functions
-add(integer x, integer y):integer
+add(float x, float y):integer
   local
-    integer result;
+    float result;
   do
     result = x + y;
+    write ( result );
 	return ( result );
   end
 
 //It's main!
 main
   local
-    integer x;
+    float x;
   do
-    x = add(1, 1, 1);
+    x = add(1, 1);
   end

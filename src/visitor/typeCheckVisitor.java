@@ -144,10 +144,11 @@ public class typeCheckVisitor extends visitor {
             p_node.setType(leftChildType);
         } else if (leftChildType.isEmpty()){
             err.println("variable \"" + leftChildName + "\" is not declared.");
-            this.errors += "variable \"" + leftChildName + "\" is not declared.";
+//            this.errors += "variable \"" + leftChildName + "\" is not declared.";
         }else {
             p_node.setType("ERROR");
-            this.errors += "error in assignStatNode in typeCheck";
+            err.println("type mismatch in assignment");
+//            this.errors += "type mismatch in for assignment";
         }
         err.flush();
     }
@@ -163,32 +164,6 @@ public class typeCheckVisitor extends visitor {
         p_node.entry = new varEntry(("lit_"+tempvarname), p_node.moonVarName, p_node.getType());
         p_node.table.addEntry(p_node.entry);
     }
-
-    private String getChildType(node p_node, int childNum){
-        String childType = "";
-        if (p_node.getChildren().get(childNum).getClass().toString().contains("generalNode")){ //meaning that it is not numNode
-            String varName = p_node.getChildren().get(childNum).getChildren().get(0).getChildren().get(0).getData();
-            for (symTabEntry entry :
-                    p_node.table.getTableList()) {
-                if (entry.getName().equals(varName)){
-                    childType = entry.getType();
-                    break;
-                }
-            }
-            for (symTabEntry entry :
-                    p_node.table.getUpperTable().getTableList()) {
-                if (entry.getName().equals(varName)){
-                    childType = entry.getType();
-                    break;
-                }
-            }
-        }else { //it is a numNode and we can get the type right away
-            childType = p_node.getChildren().get(childNum).getType();
-        }
-        return childType;
-    }
-
-    /** Visitor does not apply for the following methods **/
 
     @Override
     public void visit(classListNode p_node) {
@@ -317,6 +292,51 @@ public class typeCheckVisitor extends visitor {
 //        System.out.println("funcCallNode in typecheck");
         chekckFunctionExists(p_node);
         numOfParameter(p_node);
+    }
+
+    @Override
+    public void visit(returnNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+//         System.out.println("returnNode in typecheck");
+        String funcReturnType = getChildType(p_node, 0);
+        String funcName = p_node.table.getName();
+        for (symTabEntry entry :
+                p_node.table.getUpperTable().getTableList()) {
+            if ( (funcName.equals(entry.getName())) && (funcReturnType.equals(entry.getType())) ){
+                //this means that the return type is good
+                break;
+            }else {
+                err.println("return type mismatch for function \"" + funcName + "\"");
+                break;
+            }
+        }
+    }
+
+    private String getChildType(node p_node, int childNum){
+        String childType = "";
+        if (p_node.getChildren().get(childNum).getClass().toString().contains("generalNode")){ //meaning that it is not numNode
+            String varName = p_node.getChildren().get(childNum).getChildren().get(0).getChildren().get(0).getData();
+            for (symTabEntry entry :
+                    p_node.table.getTableList()) {
+                if (entry.getName().equals(varName)){
+                    childType = entry.getType();
+                    break;
+                }
+            }
+            for (symTabEntry entry :
+                    p_node.table.getUpperTable().getTableList()) {
+                if (entry.getName().equals(varName)){
+                    childType = entry.getType();
+                    break;
+                }
+            }
+        }else { //it is a numNode and we can get the type right away
+            childType = p_node.getChildren().get(childNum).getType();
+        }
+        return childType;
     }
 
     public void checkDuplicates(node p_node, String kind){

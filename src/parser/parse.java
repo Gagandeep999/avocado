@@ -66,8 +66,9 @@ public class parse {
                 case "if" :
                 case "while" :
                 case "read" :
-                case "write" :
-                case "return" : ast.push(new statBlockNode(token));
+                case "write" :ast.push(new statBlockNode(token));
+                    break;
+                case "return" : ast.push(new returnNode(token));
                     break;
                 case "plus" :
                 case "minus" :

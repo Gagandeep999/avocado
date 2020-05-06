@@ -348,4 +348,12 @@ public class codeGenVisitor extends visitor {
             child.accept(this);
         }
     }
+
+    @Override
+    public void visit(returnNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
 }

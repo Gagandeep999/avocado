@@ -129,8 +129,6 @@ public class memorySizeVisitor extends visitor {
         p_node.entry.setSize(sizeOfTypeNode(p_node));
     }
 
-    // visitor does not apply for the method below
-
     @Override
     public void visit(assignStatNode p_node) {
         for (node child :
@@ -213,6 +211,14 @@ public class memorySizeVisitor extends visitor {
 
     @Override
     public void visit(funcCallNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(returnNode p_node) {
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);

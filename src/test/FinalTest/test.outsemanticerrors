@@ -1,1 +1,2 @@
-number of parameter for function "add" mismatch
+return type mismatch for function "add"
+type mismatch in assignment
