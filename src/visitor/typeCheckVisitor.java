@@ -315,6 +315,38 @@ public class typeCheckVisitor extends visitor {
         }
     }
 
+    @Override
+    public void visit(ifNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(readNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(whileNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(writeNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
     private String getChildType(node p_node, int childNum){
         String childType = "";
         if (p_node.getChildren().get(childNum).getClass().toString().contains("generalNode")){ //meaning that it is not numNode

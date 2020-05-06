@@ -240,8 +240,6 @@ public class symbolTableVisitor extends visitor {
         }
     }
 
-    /** Visitor does not apply for the following methods **/
-
     @Override
     public void visit(classListNode p_node) {
         for (node child :
@@ -327,6 +325,46 @@ public class symbolTableVisitor extends visitor {
     @Override
     public void visit(returnNode p_node) {
 //        System.out.println("returnNode in symTabGen");
+        for (node child :
+                p_node.getChildren()) {
+            child.table = p_node.table;
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(ifNode p_node) {
+//        System.out.println("ifNodeß∑ in symTabGen");
+        for (node child :
+                p_node.getChildren()) {
+            child.table = p_node.table;
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(readNode p_node) {
+//        System.out.println("readNode in symTabGen");
+        for (node child :
+                p_node.getChildren()) {
+            child.table = p_node.table;
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(whileNode p_node) {
+//        System.out.println("whileNode in symTabGen");
+        for (node child :
+                p_node.getChildren()) {
+            child.table = p_node.table;
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(writeNode p_node) {
+//        System.out.println("writeNode in symTabGen");
         for (node child :
                 p_node.getChildren()) {
             child.table = p_node.table;

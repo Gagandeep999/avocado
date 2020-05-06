@@ -63,10 +63,13 @@ public class parse {
                 case "public" :
                 case "private" : ast.push(new typeNode(token));
                     break;
-                case "if" :
-                case "while" :
-                case "read" :
-                case "write" :ast.push(new statBlockNode(token));
+                case "if" : ast.push(new ifNode(token));
+                    break;
+                case "while" : ast.push(new whileNode(token));
+                    break;
+                case "read" : ast.push(new readNode(token));
+                    break;
+                case "write" :ast.push(new writeNode(token));
                     break;
                 case "return" : ast.push(new returnNode(token));
                     break;

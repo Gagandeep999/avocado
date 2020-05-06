@@ -47,11 +47,11 @@ public class codeGenVisitor extends visitor {
 
     @Override
     public void visit(addOpNode p_node) {
-//        System.out.println("addOpNode");
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("addOpNode");
 
         String rightChildTag = getChildTag(p_node, 1);
         String leftChildTag = getChildTag(p_node, 0);
@@ -62,7 +62,7 @@ public class codeGenVisitor extends visitor {
         String leftChildReg = this.registerPool.pop();
         String rightChildReg = this.registerPool.pop();
 
-        this.execCode += "% processing " +leftChildName + " + " + rightChildName + "\n";
+        this.execCode += "% processing " +leftChildName + " add/sub/or " + rightChildName + "\n";
         this.execCode += this.indent + "lw " + leftChildReg + ", " + leftChildTag + "(R0)\n";
         this.execCode += this.indent + "lw " + rightChildReg + ", " + rightChildTag + "(R0)\n";
         if (p_node.getData().equals("+")){
@@ -70,7 +70,7 @@ public class codeGenVisitor extends visitor {
         } else if (p_node.getData().equals("-")){
             this.execCode += this.indent + "sub " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
         } else { // it is "or"
-            System.out.println(" or is not yet implemented");
+            this.execCode += this.indent + "or " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
         }
 
 
@@ -101,7 +101,7 @@ public class codeGenVisitor extends visitor {
         String leftChildReg = this.registerPool.pop();
         String rightChildReg = this.registerPool.pop();
 
-        this.execCode += "% processing " +leftChildName + " + " + rightChildName + "\n";
+        this.execCode += "% processing " +leftChildName + " mul/div/and " + rightChildName + "\n";
         this.execCode += this.indent + "lw " + leftChildReg + ", " + leftChildTag + "(R0)\n";
         this.execCode += this.indent + "lw " + rightChildReg + ", " + rightChildTag + "(R0)\n";
         if (p_node.getData().equals("*")){
@@ -109,7 +109,7 @@ public class codeGenVisitor extends visitor {
         } else if (p_node.getData().equals("/")){
             this.execCode += this.indent + "div " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
         } else { // this is the case when it's and
-            System.out.println("and is not yet implemented");
+            this.execCode += this.indent + "and " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
         }
 
         this.dataCode += "% space for " + p_node.entry.getName() +"\n";
@@ -221,38 +221,6 @@ public class codeGenVisitor extends visitor {
         }
     }
 
-
-    private String getChildTag(node p_node, int childNum){
-        String childTag = "";
-        String childNodeType = p_node.getChildren().get(childNum).getClass().toString();
-        if (childNodeType.contains("generalNode")){
-            String varName = p_node.getChildren().get(0).getChildren().get(0).getChildren().get(0).getData();
-            for (symTabEntry entry :
-                    p_node.table.getTableList()) {
-                if (entry.getName().equals(varName)){
-                    childTag = entry.getTag();
-                    break;
-                }
-            }
-        }else { //it is a numNode and we can get the type right away
-            childTag = p_node.getChildren().get(childNum).getEntry().getTag();
-        }
-        return childTag;
-    }
-
-    private String getChildName(node p_node, int childNum){
-        String childName = "";
-        String childNodeType = p_node.getChildren().get(childNum).getClass().toString();
-        if (childNodeType.contains("generalNode")){
-            childName = p_node.getChildren().get(0).getChildren().get(0).getChildren().get(0).getData();
-        }else { //it is a numNode and we can get the type right away
-            childName = p_node.getChildren().get(childNum).getData();
-        }
-        return childName;
-    }
-
-    // below methods do not apply to visitor
-
     @Override
     public void visit(classListNode p_node) {
         for (node child :
@@ -339,6 +307,7 @@ public class codeGenVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+        System.out.println("compareOp in codeGen");
     }
 
     @Override
@@ -355,5 +324,89 @@ public class codeGenVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+    }
+
+    @Override
+    public void visit(ifNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(readNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(whileNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(writeNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+        String tag = "";
+        System.out.println("writeNode in codeGen");
+        if (p_node.getChildren().get(0).getClass().toString().contains("generalNode")){
+            // variable to print is the 2 levels below
+            String varName = p_node.getChildren().get(0).getChildren().get(0).getChildren().get(0).getData();
+            for (symTabEntry entry :
+                    p_node.table.getTableList()) {
+                if (entry.getName().equals(varName)) {
+                    tag = entry.getTag();
+                    break;
+                }
+            }
+        } else { //result of some computation is the next child
+            tag = p_node.getChildren().get(0).getEntry().getName();
+        }
+
+        String localReg = this.registerPool.pop();
+
+        this.execCode += "% writing to console\n";
+        this.execCode += this.indent + "lw " + localReg + ", " + tag + "(R0)" + "\n";
+        this.execCode += this.indent + "jl R15, putint\n";
+
+        this.registerPool.push(localReg);
+    }
+
+    private String getChildTag(node p_node, int childNum){
+        String childTag = "";
+        String childNodeType = p_node.getChildren().get(childNum).getClass().toString();
+        if (childNodeType.contains("generalNode")){
+            String varName = p_node.getChildren().get(0).getChildren().get(0).getChildren().get(0).getData();
+            for (symTabEntry entry :
+                    p_node.table.getTableList()) {
+                if (entry.getName().equals(varName)){
+                    childTag = entry.getTag();
+                    break;
+                }
+            }
+        }else { //it is a numNode and we can get the type right away
+            childTag = p_node.getChildren().get(childNum).getEntry().getTag();
+        }
+        return childTag;
+    }
+
+    private String getChildName(node p_node, int childNum){
+        String childName = "";
+        String childNodeType = p_node.getChildren().get(childNum).getClass().toString();
+        if (childNodeType.contains("generalNode")){
+            childName = p_node.getChildren().get(0).getChildren().get(0).getChildren().get(0).getData();
+        }else { //it is a numNode and we can get the type right away
+            childName = p_node.getChildren().get(childNum).getData();
+        }
+        return childName;
     }
 }
