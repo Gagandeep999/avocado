@@ -115,9 +115,9 @@ digraph AST {
 534->535
 534->540
 534->545
-545[label="0.0"]
-540[label="1.0"]
-535[label="2.0"]
+545[label="0"]
+540[label="1"]
+535[label="2"]
 533[label="build"]
 527[label="callGROUP"]
 527->524
@@ -143,7 +143,7 @@ digraph AST {
 507[label="FUNCTION_CALL_PARAMS"]
 507->508
 507->513
-513[label="3.5"]
+513[label="3"]
 508[label="2"]
 506[label="build"]
 500[label="callGROUP"]
@@ -298,21 +298,21 @@ digraph AST {
 402->405
 405[label="dim list"]
 404[label="C"]
-403[label="float"]
+403[label="integer"]
 397[label="fparam"]
 397->398
 397->399
 397->400
 400[label="dim list"]
 399[label="B"]
-398[label="float"]
+398[label="integer"]
 392[label="fparam"]
 392->393
 392->394
 392->395
 395[label="dim list"]
 394[label="A"]
-393[label="float"]
+393[label="integer"]
 389[label="build"]
 387[label="QUADRATIC"]
 314[label="func_def"]
@@ -404,14 +404,14 @@ digraph AST {
 326->329
 329[label="dim list"]
 328[label="B"]
-327[label="float"]
+327[label="integer"]
 321[label="fparam"]
 321->322
 321->323
 321->324
 324[label="dim list"]
 323[label="A"]
-322[label="float"]
+322[label="integer"]
 318[label="build"]
 316[label="LINEAR"]
 214[label="func_def"]
@@ -533,13 +533,13 @@ digraph AST {
 230->232
 232[label="dim list"]
 231[label="result"]
-229[label="float"]
+229[label="integer"]
 215[label="FUNCTION_SIGNATURE"]
 215->216
 215->218
 215->220
 215->226
-226[label="float"]
+226[label="integer"]
 220[label="fParam list"]
 220->221
 221[label="fparam"]
@@ -548,7 +548,7 @@ digraph AST {
 221->224
 224[label="dim list"]
 223[label="x"]
-222[label="float"]
+222[label="integer"]
 218[label="evaluate"]
 216[label="QUADRATIC"]
 145[label="func_def"]
@@ -610,7 +610,7 @@ digraph AST {
 170[label="="]
 170->169
 170->171
-171[label="0.0"]
+171[label="0"]
 169[label="callGROUP"]
 169->166
 166[label="call"]
@@ -626,13 +626,13 @@ digraph AST {
 161->163
 163[label="dim list"]
 162[label="result"]
-160[label="float"]
+160[label="integer"]
 146[label="FUNCTION_SIGNATURE"]
 146->147
 146->149
 146->151
 146->157
-157[label="float"]
+157[label="integer"]
 151[label="fParam list"]
 151->152
 152[label="fparam"]
@@ -641,7 +641,7 @@ digraph AST {
 152->155
 155[label="dim list"]
 154[label="x"]
-153[label="float"]
+153[label="integer"]
 149[label="evaluate"]
 147[label="LINEAR"]
 122[label="func_def"]
@@ -661,7 +661,7 @@ digraph AST {
 123->126
 123->128
 123->134
-134[label="float"]
+134[label="integer"]
 128[label="fParam list"]
 128->129
 129[label="fparam"]
@@ -670,7 +670,7 @@ digraph AST {
 129->132
 132[label="dim list"]
 131[label="x"]
-130[label="float"]
+130[label="integer"]
 126[label="evaluate"]
 124[label="POLYNOMIAL"]
 1[label="class_list"]
@@ -692,7 +692,7 @@ digraph AST {
 111->110
 111->112
 111->118
-118[label="float"]
+118[label="integer"]
 112[label="fParam list"]
 112->113
 113[label="fparam"]
@@ -701,7 +701,7 @@ digraph AST {
 113->116
 116[label="dim list"]
 115[label="x"]
-114[label="float"]
+114[label="integer"]
 110[label="evaluate"]
 109[label="public"]
 90[label="func decl"]
@@ -720,21 +720,21 @@ digraph AST {
 102->105
 105[label="dim list"]
 104[label="C"]
-103[label="float"]
+103[label="integer"]
 97[label="fparam"]
 97->98
 97->99
 97->100
 100[label="dim list"]
 99[label="B"]
-98[label="float"]
+98[label="integer"]
 92[label="fparam"]
 92->93
 92->94
 92->95
 95[label="dim list"]
 94[label="A"]
-93[label="float"]
+93[label="integer"]
 89[label="build"]
 88[label="public"]
 84[label="var decl"]
@@ -744,7 +744,7 @@ digraph AST {
 84->86
 86[label="dim list"]
 85[label="c"]
-83[label="float"]
+83[label="integer"]
 82[label="private"]
 78[label="var decl"]
 78->76
@@ -753,7 +753,7 @@ digraph AST {
 78->80
 80[label="dim list"]
 79[label="b"]
-77[label="float"]
+77[label="integer"]
 76[label="private"]
 72[label="var decl"]
 72->70
@@ -762,7 +762,7 @@ digraph AST {
 72->74
 74[label="dim list"]
 73[label="a"]
-71[label="float"]
+71[label="integer"]
 70[label="private"]
 66[label="inherits"]
 66->67
@@ -782,7 +782,7 @@ digraph AST {
 54->53
 54->55
 54->61
-61[label="float"]
+61[label="integer"]
 55[label="fParam list"]
 55->56
 56[label="fparam"]
@@ -791,7 +791,7 @@ digraph AST {
 56->59
 59[label="dim list"]
 58[label="x"]
-57[label="float"]
+57[label="integer"]
 53[label="evaluate"]
 52[label="public"]
 38[label="func decl"]
@@ -809,14 +809,14 @@ digraph AST {
 45->48
 48[label="dim list"]
 47[label="B"]
-46[label="float"]
+46[label="integer"]
 40[label="fparam"]
 40->41
 40->42
 40->43
 43[label="dim list"]
 42[label="A"]
-41[label="float"]
+41[label="integer"]
 37[label="build"]
 36[label="public"]
 32[label="var decl"]
@@ -826,7 +826,7 @@ digraph AST {
 32->34
 34[label="dim list"]
 33[label="b"]
-31[label="float"]
+31[label="integer"]
 30[label="private"]
 26[label="var decl"]
 26->24
@@ -835,7 +835,7 @@ digraph AST {
 26->28
 28[label="dim list"]
 27[label="a"]
-25[label="float"]
+25[label="integer"]
 24[label="private"]
 20[label="inherits"]
 20->21
@@ -852,7 +852,7 @@ digraph AST {
 8->7
 8->9
 8->15
-15[label="float"]
+15[label="integer"]
 9[label="fParam list"]
 9->10
 10[label="fparam"]
@@ -861,7 +861,7 @@ digraph AST {
 10->13
 13[label="dim list"]
 12[label="x"]
-11[label="float"]
+11[label="integer"]
 7[label="evaluate"]
 6[label="public"]
 4[label="inheritance list"]

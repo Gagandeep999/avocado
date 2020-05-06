@@ -9,6 +9,11 @@ public class generalNode extends node {
         super(data);
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
 //    public generalNode(String name, int num){
 //        super(name, num);
 //    }

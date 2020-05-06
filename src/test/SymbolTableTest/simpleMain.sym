@@ -1,5 +1,0 @@
-[ GLOBAL->
-	[main | mainFunction | void] ]
-
- main->
-	[x | variable | integer] 

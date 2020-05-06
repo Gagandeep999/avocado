@@ -38,20 +38,20 @@ public class parsedriver {
             Stack<node> astTree = p.ast;
             System.out.println("tree available");
 
-            ast.println("digraph AST {");
-            while (!astTree.isEmpty()){
-                node x = astTree.pop();
-                ast.println(x.getMyNum()+"[label=\""+x.getData()+"\"]");
-                ast.flush();
-                for (node child :
-                        x.getChildren()) {
-                    ast.println(x.getMyNum()+"->"+child.getMyNum());
-                    ast.flush();
-                    astTree.push(child);
-                }
-            }
-            ast.println("}");
-            ast.flush();
+//            ast.println("digraph AST {");
+//            while (!astTree.isEmpty()){
+//                node x = astTree.pop();
+//                ast.println(x.getMyNum()+"[label=\""+x.getData()+"\"]");
+//                ast.flush();
+//                for (node child :
+//                        x.getChildren()) {
+//                    ast.println(x.getMyNum()+"->"+child.getMyNum());
+//                    ast.flush();
+//                    astTree.push(child);
+//                }
+//            }
+//            ast.println("}");
+//            ast.flush();
 
         }catch (IOException e){
             System.out.println(e.getMessage());

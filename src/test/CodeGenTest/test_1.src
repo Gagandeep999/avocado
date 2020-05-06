@@ -1,0 +1,7 @@
+main
+  local
+    integer a;
+  do
+    a = 5;
+    write(a);
+  end

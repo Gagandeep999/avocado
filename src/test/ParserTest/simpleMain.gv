@@ -10,60 +10,36 @@ digraph AST {
 4->11
 11[label="REPTSTATEMENT"]
 11->16
-11->25
-11->35
-11->46
-46[label="="]
-46->45
-46->54
-54[label="neq"]
-54->51
-54->59
-59[label="ITEMGROUP"]
-59->55
-55[label="ITEM"]
-55->56
-55->57
-57[label="index list"]
-56[label="x"]
-51[label="ITEMGROUP"]
-51->47
-47[label="ITEM"]
-47->48
-47->49
-49[label="index list"]
-48[label="x"]
-45[label="callGROUP"]
-45->42
-42[label="call"]
-42->43
-42->44
-44[label="index list"]
-43[label="x"]
-35[label="read"]
-35->40
-40[label="callGROUP"]
-40->36
-36[label="call"]
-36->37
-36->38
-38[label="index list"]
-37[label="x"]
-25[label="write"]
-25->30
-30[label="ITEMGROUP"]
-30->26
-26[label="ITEM"]
-26->27
-26->28
-28[label="index list"]
-27[label="x"]
+11->27
+11->37
+37[label="read"]
+37->42
+42[label="callGROUP"]
+42->38
+38[label="call"]
+38->39
+38->40
+40[label="index list"]
+39[label="x"]
+27[label="write"]
+27->32
+32[label="ITEMGROUP"]
+32->28
+28[label="ITEM"]
+28->29
+28->30
+30[label="index list"]
+29[label="x"]
 16[label="="]
 16->15
 16->19
 19[label="+"]
 19->17
-19->20
+19->21
+21[label="*"]
+21->20
+21->22
+22[label="3"]
 20[label="2"]
 17[label="1"]
 15[label="callGROUP"]

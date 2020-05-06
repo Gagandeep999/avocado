@@ -1,0 +1,74 @@
+
+========================================================================
+| table: global      scope offset: 0|function parameters
+========================================================================
+| function  | bubbleSort| void    |    |           |
+| function  | printArray| void    |    |           |
+| function  | main      | void    |    |           |
+========================================================================
+|    ========================================================================
+|    | table: bubbleSort  scope offset: 0|function parameters
+|    ========================================================================
+|    | parameter | arr       | integer | 4  | param_arr |
+|    | parameter | size      | integer | 4  | param_size|
+|    | variable  | n         | integer | 4  | var_n     |
+|    | variable  | i         | integer | 4  | var_i     |
+|    | variable  | j         | integer | 4  | var_j     |
+|    | variable  | temp      | integer | 4  | var_temp  |
+|    | t1        | lit_t1    | integer | 4  | lit_t1    |
+|    | t2        | lit_t2    | integer | 4  | lit_t2    |
+|    | t3        | lit_t3    | integer | 4  | lit_t3    |
+|    | t4        | lit_t4    | integer | 4  | lit_t4    |
+|    | t5        | temp_t5   | integer | 4  | add_t5    |
+|    | t6        | temp_t6   | integer | 4  | comp_t6   |
+|    | t7        | temp_t7   | integer | 4  | add_t7    |
+|    | t8        | lit_t8    | integer | 4  | lit_t8    |
+|    | t9        | temp_t9   | integer | 4  | add_t9    |
+|    | t10       | temp_t10  | integer | 4  | comp_t10  |
+|    | t11       | lit_t11   | integer | 4  | lit_t11   |
+|    | t12       | temp_t12  | integer | 4  | add_t12   |
+|    | t13       | temp_t13  | integer | 4  | comp_t13  |
+|    | t14       | lit_t14   | integer | 4  | lit_t14   |
+|    | t15       | temp_t15  | integer | 4  | add_t15   |
+|    | t16       | lit_t16   | integer | 4  | lit_t16   |
+|    | t17       | temp_t17  | integer | 4  | add_t17   |
+|    | t18       | lit_t18   | integer | 4  | lit_t18   |
+|    | t19       | temp_t19  | integer | 4  | add_t19   |
+|    | t20       | lit_t20   | integer | 4  | lit_t20   |
+|    | t21       | temp_t21  | integer | 4  | add_t21   |
+|    ========================================================================
+|    ========================================================================
+|    | table: printArray  scope offset: 0|function parameters
+|    ========================================================================
+|    | parameter | arr       | integer | 4  | param_arr |
+|    | parameter | size      | integer | 4  | param_size|
+|    | variable  | n         | integer | 4  | var_n     |
+|    | variable  | i         | integer | 4  | var_i     |
+|    | t22       | lit_t22   | integer | 4  | lit_t22   |
+|    | t23       | temp_t23  | integer | 4  | comp_t23  |
+|    | t24       | lit_t24   | integer | 4  | lit_t24   |
+|    | t25       | temp_t25  | integer | 4  | add_t25   |
+|    ========================================================================
+|    ========================================================================
+|    | table: main        scope offset: 0|function parameters
+|    ========================================================================
+|    | variable  | arr       | integer | 4  | var_arr   |
+|    | t26       | lit_t26   | integer | 4  | lit_t26   |
+|    | t27       | lit_t27   | integer | 4  | lit_t27   |
+|    | t28       | lit_t28   | integer | 4  | lit_t28   |
+|    | t29       | lit_t29   | integer | 4  | lit_t29   |
+|    | t30       | lit_t30   | integer | 4  | lit_t30   |
+|    | t31       | lit_t31   | integer | 4  | lit_t31   |
+|    | t32       | lit_t32   | integer | 4  | lit_t32   |
+|    | t33       | lit_t33   | integer | 4  | lit_t33   |
+|    | t34       | lit_t34   | integer | 4  | lit_t34   |
+|    | t35       | lit_t35   | integer | 4  | lit_t35   |
+|    | t36       | lit_t36   | integer | 4  | lit_t36   |
+|    | t37       | lit_t37   | integer | 4  | lit_t37   |
+|    | t38       | lit_t38   | integer | 4  | lit_t38   |
+|    | t39       | lit_t39   | integer | 4  | lit_t39   |
+|    | t40       | lit_t40   | integer | 4  | lit_t40   |
+|    | t41       | lit_t41   | integer | 4  | lit_t41   |
+|    | t42       | lit_t42   | integer | 4  | lit_t42   |
+|    | t43       | lit_t43   | integer | 4  | lit_t43   |
+|    ========================================================================

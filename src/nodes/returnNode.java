@@ -2,13 +2,13 @@ package nodes;
 
 import visitor.visitor;
 
-public class VarDeclNode extends node {
+public class returnNode extends node {
 
-    public VarDeclNode(String data){
+    public returnNode(String data){
         super(data);
     }
 
-    public VarDeclNode(String data, node parent){
+    public returnNode(String data, node parent){
         super(data, parent);
     }
 

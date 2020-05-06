@@ -18,8 +18,11 @@ public class varEntry extends symTabEntry {
     }
 
     public String toString(){
-        if (this.scope.equals(""))
-            return (this.name+" | "+this.kind+" | "+this.type);
-        return (this.scope+" | "+this.name+" | "+this.kind+" | "+this.type);
+        return 	String.format("%-12s" , "| " + kind) +
+                String.format("%-12s" , "| " + name) +
+                String.format("%-10s"  , "| " + type)+
+                String.format("%-5s"  , "| " + size) +
+                String.format("%-12s"  , "| " + tag)
+                + "|";
     }
 }

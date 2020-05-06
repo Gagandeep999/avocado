@@ -1,0 +1,17 @@
+//Some free functions
+add(float x, float y):integer
+  local
+    float result;
+  do
+    result = x + y;
+    write ( result );
+	return ( result );
+  end
+
+//It's main!
+main
+  local
+    float x;
+  do
+    x = add(1, 1);
+  end

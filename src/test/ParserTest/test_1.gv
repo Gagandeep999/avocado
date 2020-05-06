@@ -1,73 +1,59 @@
 digraph AST {
 0[label="program"]
 0->1
-0->18
-0->42
-42[label="main"]
-42->43
-43[label="FUNCBODY"]
-43->44
-43->45
-45[label="REPTSTATEMENT"]
-44[label="OPTFUNCBODY0"]
-18[label="function_list"]
-18->19
-19[label="func_def"]
-19->20
-19->32
-32[label="FUNCBODY"]
-32->33
-32->34
-34[label="REPTSTATEMENT"]
-34->35
-35[label="return"]
-35->36
-36[label="intnum"]
-33[label="OPTFUNCBODY0"]
-20[label="FUNCTION_SIGNATURE"]
-20->22
-20->23
-20->25
-20->31
-31[label="integer"]
-25[label="fParam list"]
-25->26
-26[label="fparam"]
-26->27
-26->28
-26->29
-29[label="dim list"]
-28[label="x"]
-27[label="integer"]
-23[label="X"]
-22[label="NAMESPACE"]
-22->21
-21[label="ABC"]
-1[label="class_list"]
-1->2
-2[label="class"]
-2->3
-2->4
-2->5
-5[label="var+func decl list"]
-5->8
-8[label="func decl"]
-8->6
-8->7
-8->9
-8->15
+0->2
+0->3
+3[label="main"]
+3->4
+4[label="FUNCBODY"]
+4->5
+4->20
+20[label="REPTSTATEMENT"]
+20->29
+20->35
+35[label="write"]
+35->44
+44[label="ITEMGROUP"]
+44->36
+36[label="ITEM"]
+36->37
+36->38
+38[label="index list"]
+38->39
+39[label="1"]
+37[label="a"]
+29[label="="]
+29->28
+29->30
+30[label="5"]
+28[label="callGROUP"]
+28->21
+21[label="call"]
+21->22
+21->23
+23[label="index list"]
+23->24
+24[label="1"]
+22[label="a"]
+5[label="VARIABLE_DECLARATIONS"]
+5->7
+5->16
+16[label="var decl"]
+16->15
+16->17
+16->18
+18[label="dim list"]
+17[label="result"]
 15[label="integer"]
-9[label="fParam list"]
-9->10
-10[label="fparam"]
-10->11
-10->12
-10->13
-13[label="dim list"]
-12[label="x"]
-11[label="integer"]
-7[label="X"]
-6[label="public"]
-4[label="inheritance list"]
-3[label="ABC"]
+7[label="var decl"]
+7->6
+7->8
+7->11
+11[label="arr_size"]
+11->12
+12[label="1"]
+8[label="a"]
+6[label="integer"]
+2[label="function_list"]
+1[label="class_list"]
 }

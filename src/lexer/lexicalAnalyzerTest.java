@@ -64,7 +64,7 @@ public class lexicalAnalyzerTest {
         tester(":", "[colon, :, 1] ", "");
         tester("::", "[sr, ::, 1] ", "");
         tester("// inline", "[inlinecmnt, // inline, 1] ", "");
-        tester("/* block comment one line */", "[blockcmnt, /* block comment one line */, 1] ", "");
+        tester("/* block comment one /* line */ */ ", "[blockcmnt, /* block comment one /* line */ */ , 1] ", "");
         tester("// comment /* inside */ comment", "[inlinecmnt, // comment /* inside */ comment, 1] ", "");
         tester("int *a=5", "[id, int, 1] [mult, *, 1] [id, a, 1] [equal, =, 1] [intnum, 5, 1] ", "");
         tester("!abc", "", "[invalidid, !abc, 1] ");

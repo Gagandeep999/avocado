@@ -11,7 +11,7 @@ local
     integer counter;
   do 
     return(0);
-  end;
+  end
 
 ABC::X() : integer
 local
@@ -20,7 +20,7 @@ local
     integer j;
     integer temp; 
   do
-  end;
+  end
 
 ABC::X() : integer
 local
@@ -29,7 +29,7 @@ local
     integer j;
     integer temp; 
   do 
-  end;
+  end
 
 main
 local

@@ -2,13 +2,13 @@ package nodes;
 
 import visitor.visitor;
 
-public class StatBlockNode extends node {
+public class fparamNode extends node {
 
-    public StatBlockNode(String data){
+    public fparamNode(String data){
         super(data);
     }
 
-    public StatBlockNode(String data, node parent){
+    public fparamNode(String data, node parent){
         super(data, parent);
     }
 
