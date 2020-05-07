@@ -1,20 +1,12 @@
-//Some free functions
-/*add(integer x, integer y):integer
-  local
-    integer result;
-  do
-    result = x + y;
-    write ( result );
-	return ( result );
-  end*/
-
-//It's main!
 main
   local
     integer x;
   do
     x = 1;
-    write(x);
-    write(x+5);
-//    write(add(1,1));
+    if (x == 2)
+    then
+      write(x+1);
+    else
+      write(x-1);
+      ;
   end

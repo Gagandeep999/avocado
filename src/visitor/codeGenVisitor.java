@@ -72,12 +72,10 @@ public class codeGenVisitor extends visitor {
         } else { // it is "or"
             this.execCode += this.indent + "or " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
         }
-
+        this.execCode += this.indent + "sw " + p_node.entry.getTag() +"(R0), " + localReg + "\n";
 
         this.dataCode += "% space for " + p_node.entry.getName() +"\n";
         this.dataCode += String.format("%-10s", p_node.entry.getTag() + " res " + p_node.entry.getSize() + "\n");
-
-        this.execCode += this.indent + "sw " + p_node.entry.getTag() +"(R0), " + localReg + "\n";
 
         this.registerPool.push(leftChildReg);
         this.registerPool.push(rightChildReg);
@@ -308,6 +306,35 @@ public class codeGenVisitor extends visitor {
             child.accept(this);
         }
         System.out.println("compareOp in codeGen");
+
+        String rightChildTag = getChildTag(p_node, 1);
+        String leftChildTag = getChildTag(p_node, 0);
+        String rightChildName = getChildName(p_node, 1);
+        String leftChildName = getChildName(p_node, 0);
+
+        String localReg = this.registerPool.pop();
+        String leftChildReg = this.registerPool.pop();
+        String rightChildReg = this.registerPool.pop();
+
+        this.execCode += "% processing " +leftChildName + " comparison " + rightChildName + "\n";
+        this.execCode += this.indent + "lw " + leftChildReg + ", " + leftChildTag + "(R0)\n";
+        this.execCode += this.indent + "lw " + rightChildReg + ", " + rightChildTag + "(R0)\n";
+
+        if (p_node.getData().equals("==")){
+            this.execCode += this.indent + "ceq " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
+        }else if (p_node.getData().equals("<")){
+            this.execCode += this.indent + "clt " + localReg + ", " + leftChildReg + ", " + rightChildReg + "\n";
+        } else {
+            System.out.println("not yet implemented");
+        }
+        this.execCode += this.indent + "sw " + p_node.entry.getTag() +"(R0), " + localReg + "\n";
+
+        this.dataCode += "% space for " + p_node.entry.getName() +"\n";
+        this.dataCode += String.format("%-10s", p_node.entry.getTag() + " res " + p_node.entry.getSize() + "\n");
+
+        this.registerPool.push(leftChildReg);
+        this.registerPool.push(rightChildReg);
+        this.registerPool.push(localReg);
     }
 
     @Override
@@ -328,10 +355,33 @@ public class codeGenVisitor extends visitor {
 
     @Override
     public void visit(ifNode p_node) {
-        for (node child :
-                p_node.getChildren()) {
-            child.accept(this);
-        }
+//        for (node child :
+//                p_node.getChildren()) {
+//            child.accept(this);
+//        }
+        System.out.println("ifNode in codeGen");
+
+        String localReg = this.registerPool.pop();
+        String compTag = getChildTag(p_node, 0);
+        String ifTag = "if1";
+        String ifElseTag = "if1_else";
+        String ifEndTag = "if1_end";
+
+        p_node.getChildren().get(0).accept(this);
+
+        this.execCode += "% processing if condition \n";
+        this.execCode += ifTag +  this.indent + "lw " + localReg + ", " + compTag + "(R0)\n";
+        this.execCode += this.indent + "bz " + localReg + ", " + ifElseTag + " \n";
+        this.registerPool.push(localReg);
+
+        p_node.getChildren().get(1).accept(this);
+        this.execCode += this.indent + "j " + ifEndTag + " \n";
+        this.execCode += ifElseTag+ this.indent + "nop\n";
+
+        p_node.getChildren().get(2).accept(this);
+        this.execCode += ifEndTag+ this.indent + "nop\n";
+
+
     }
 
     @Override
