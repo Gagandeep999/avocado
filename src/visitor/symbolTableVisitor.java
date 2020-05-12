@@ -26,15 +26,16 @@ public class symbolTableVisitor extends visitor {
         this.tables = new HashMap<>();
     }
 
-    public symbolTableVisitor(String errorFile){
+    public symbolTableVisitor(PrintWriter errorFile){
         this.outputfile = outputfile;
-        this.errorFile = errorFile;
+//        this.errorFile = errorFile;
         this.tables = new HashMap<>();
-        try {
-            this.err = new PrintWriter(new File(this.errorFile));
-        }catch (FileNotFoundException e){
-            System.out.println(e.getMessage());
-        }
+        this.err = errorFile;
+//        try {
+//            this.err = errorFile;
+//        }catch (FileNotFoundException e){
+//            System.out.println(e.getMessage());
+//        }
         this.funcOverLoadCounter = 0;
         this.isFuncOverload = false;
         this.isClassFuncOverloaded = false;
@@ -75,6 +76,7 @@ public class symbolTableVisitor extends visitor {
         int noOfChild = p_node.getChildren().get(0).getChildren().size();
 
         if (noOfChild==4){ // class function
+            int funcCount = 0 ;
             String className = p_node.getChildren().get(0).getChildren().get(0).getData();
             String funcName = p_node.getChildren().get(0).getChildren().get(1).getData();
             ArrayList<symTabEntry> prevTables = p_node.table.getTableList();
@@ -85,10 +87,19 @@ public class symbolTableVisitor extends visitor {
                     for (symTabEntry eachPrevFuncEntry :
                             classTable.getTableList()){
                         if (eachPrevFuncEntry.getName().equals(funcName)){
+                            funcCount++;
                             p_node.table = eachPrevFuncEntry.getLink();
                         }
                     }
                 }
+            }
+            if (funcCount==0){
+                err.println("function \"" +funcName+ "\" is not defined. Creating a new table for this function.");
+                err.flush();
+                symTab localTable = new symTab(2, funcName, p_node.table);
+                p_node.entry = new funcEntry(funcName, "function", localTable);
+                p_node.table.addEntry(p_node.entry);
+                p_node.table = localTable;
             }
         }
         else { //free function

@@ -61,13 +61,13 @@ public class symTabVisitorDriver {
 
             node prog = astVisitor.pop();
 
-            typeCheckVisitor typeCheckVisit = new typeCheckVisitor(symTableError);
-            symbolTableVisitor symTabVisit = new symbolTableVisitor(symTableError);
-            memorySizeVisitor memorySizeVisit = new memorySizeVisitor(symTableError);
+//            typeCheckVisitor typeCheckVisit = new typeCheckVisitor(symTableError);
+//            symbolTableVisitor symTabVisit = new symbolTableVisitor(symTableError);
+//            memorySizeVisitor memorySizeVisit = new memorySizeVisitor(symTableError);
 
-            prog.accept(symTabVisit);
-            prog.accept(typeCheckVisit);
-            prog.accept(memorySizeVisit);
+//            prog.accept(symTabVisit);
+//            prog.accept(typeCheckVisit);
+//            prog.accept(memorySizeVisit);
             System.out.println("symbol table created");
 
             //printing the symbol table

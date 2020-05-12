@@ -30,15 +30,16 @@ public class typeCheckVisitor extends visitor {
         }
     }
 
-    public typeCheckVisitor(String outputFileName){
-        this.outputfile = outputFileName;
+    public typeCheckVisitor(PrintWriter outputFileName){
+//        this.outputfile = outputFileName;
         this.errors = new String();
         this.tempVarNum = 0;
-        try {
-            this.err = new PrintWriter(new File(this.outputfile));
-        }catch (FileNotFoundException e){
-            System.out.println(e.getMessage());
-        }
+        this.err = outputFileName;
+//        try {
+//            this.err = new PrintWriter(new File(this.outputfile));
+//        }catch (FileNotFoundException e){
+//            System.out.println(e.getMessage());
+//        }
     }
 
     public String getNewTempVarName(){
@@ -189,7 +190,7 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("funcDecl in typecheck");
+//        System.out.println("funcDecl in typecheck");
         checkDuplicates(p_node, "variable");
     }
 
@@ -300,18 +301,24 @@ public class typeCheckVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
+        int count = 0;
 //         System.out.println("returnNode in typecheck");
         String funcReturnType = getChildType(p_node, 0);
         String funcName = p_node.table.getName();
         for (symTabEntry entry :
                 p_node.table.getUpperTable().getTableList()) {
             if ( (funcName.equals(entry.getName())) && (funcReturnType.equals(entry.getType())) ){
-                //this means that the return type is good
+                count++;
                 break;
             }else {
-                err.println("return type mismatch for function \"" + funcName + "\"");
-                break;
+//                err.println("return type mismatch for function \"" + funcName + "\"");
+//                break;
             }
+        }
+        if (count!=1){
+            err.println("return type mismatch for function \"" + funcName + "\"");
+        } else {
+            //all good
         }
     }
 

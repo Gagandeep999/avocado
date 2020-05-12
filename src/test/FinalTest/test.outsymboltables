@@ -2,17 +2,129 @@
 ========================================================================
 | table: global      scope offset: 0|function parameters
 ========================================================================
+| class     | POLYNOMIAL|
+| class     | LINEAR    |
+| class     | QUADRATIC |
+| function  | evaluate1 |         |    |           |
+| function  | bubbleSort| void    |    |           |
+| function  | printArray| void    |    |           |
 | function  | main      | void    |    |           |
 ========================================================================
+|    ========================================================================
+|    | table: POLYNOMIAL  scope offset: 0|function parameters
+|    ========================================================================
+|    | function  | evaluate  | integer |    |           |
+|    ========================================================================
+|    |    ========================================================================
+|    |    | table: evaluate    scope offset: 0|function parameters
+|    |    ========================================================================
+|    |    | parameter | x         | integer | 4  | param_x   |
+|    |    ========================================================================
+|    ========================================================================
+|    | table: LINEAR      scope offset: 0|function parameters
+|    ========================================================================
+|    | variable  | a         | integer | 4  | var_a     |
+|    | variable  | b         | integer | 4  | var_b     |
+|    | function  | build     | LINEAR  |    |           |
+|    | function  | evaluate  | integer |    |           |
+|    ========================================================================
+|    |    ========================================================================
+|    |    | table: build       scope offset: 0|function parameters
+|    |    ========================================================================
+|    |    | parameter | A         | integer | 4  | param_A   |
+|    |    | parameter | B         | integer | 4  | param_B   |
+|    |    ========================================================================
+|    |    ========================================================================
+|    |    | table: evaluate    scope offset: 0|function parameters
+|    |    ========================================================================
+|    |    | parameter | x         | integer | 4  | param_x   |
+|    |    | variable  | result    | integer | 4  | var_result|
+|    |    | t2        | lit_t2    | integer | 4  | lit_t2    |
+|    |    | t3        | temp_t3   | integer | 4  | temp_t3   |
+|    |    | t4        | temp_t4   | integer | 4  | temp_t4   |
+|    |    ========================================================================
+|    ========================================================================
+|    | table: QUADRATIC   scope offset: 0|function parameters
+|    ========================================================================
+|    | variable  | a         | integer | 4  | var_a     |
+|    | variable  | b         | integer | 4  | var_b     |
+|    | variable  | c         | integer | 4  | var_c     |
+|    | function  | build     | QUADRATIC|    |           |
+|    | function  | evaluate  | integer |    |           |
+|    ========================================================================
+|    |    ========================================================================
+|    |    | table: build       scope offset: 0|function parameters
+|    |    ========================================================================
+|    |    | parameter | A         | integer | 4  | param_A   |
+|    |    | parameter | B         | integer | 4  | param_B   |
+|    |    | parameter | C         | integer | 4  | param_C   |
+|    |    ========================================================================
+|    |    ========================================================================
+|    |    | table: evaluate    scope offset: 0|function parameters
+|    |    ========================================================================
+|    |    | parameter | x         | integer | 4  | param_x   |
+|    |    | variable  | result    | integer | 4  | var_result|
+|    |    | t5        | temp_t5   | integer | 4  | temp_t5   |
+|    |    | t6        | temp_t6   | integer | 4  | temp_t6   |
+|    |    | t7        | temp_t7   | integer | 4  | temp_t7   |
+|    |    | t8        | temp_t8   | integer | 4  | temp_t8   |
+|    |    ========================================================================
+|    |    ========================================================================
+|    |    | table: evaluate1   scope offset: 0|function parameters
+|    |    ========================================================================
+|    |    | parameter | x         | integer | 4  | param_x   |
+|    |    | parameter | y         | integer | 4  | param_y   |
+|    |    | t1        | lit_t1    | integer | 4  | lit_t1    |
+|    |    ========================================================================
+|    ========================================================================
+|    | table: bubbleSort  scope offset: 0|function parameters
+|    ========================================================================
+|    | parameter | arr       | integer | 4  | param_arr |
+|    | parameter | size      | integer | 4  | param_size|
+|    | variable  | n         | integer | 4  | var_n     |
+|    | variable  | i         | integer | 4  | var_i     |
+|    | variable  | j         | integer | 4  | var_j     |
+|    | variable  | temp      | integer | 4  | var_temp  |
+|    | t9        | lit_t9    | integer | 4  | lit_t9    |
+|    | t10       | lit_t10   | integer | 4  | lit_t10   |
+|    | t11       | lit_t11   | integer | 4  | lit_t11   |
+|    | t12       | lit_t12   | integer | 4  | lit_t12   |
+|    | t13       | temp_t13  | integer | 4  | temp_t13  |
+|    | t14       | temp_t14  | integer | 4  | temp_t14  |
+|    | t15       | temp_t15  | integer | 4  | temp_t15  |
+|    | t16       | lit_t16   | integer | 4  | lit_t16   |
+|    | t17       | temp_t17  | integer | 4  | temp_t17  |
+|    | t18       | temp_t18  | integer | 4  | temp_t18  |
+|    | t19       | lit_t19   | integer | 4  | lit_t19   |
+|    | t20       | temp_t20  | integer | 4  | temp_t20  |
+|    | t21       | temp_t21  | integer | 4  | temp_t21  |
+|    | t22       | lit_t22   | integer | 4  | lit_t22   |
+|    | t23       | temp_t23  | integer | 4  | temp_t23  |
+|    | t24       | lit_t24   | integer | 4  | lit_t24   |
+|    | t25       | temp_t25  | integer | 4  | temp_t25  |
+|    | t26       | lit_t26   | integer | 4  | lit_t26   |
+|    | t27       | temp_t27  | integer | 4  | temp_t27  |
+|    | t28       | lit_t28   | integer | 4  | lit_t28   |
+|    | t29       | temp_t29  | integer | 4  | temp_t29  |
+|    ========================================================================
+|    ========================================================================
+|    | table: printArray  scope offset: 0|function parameters
+|    ========================================================================
+|    | parameter | arr       | integer | 4  | param_arr |
+|    | parameter | size      | integer | 4  | param_size|
+|    | variable  | i         | integer | 4  | var_i     |
+|    | t30       | lit_t30   | integer | 4  | lit_t30   |
+|    ========================================================================
 |    ========================================================================
 |    | table: main        scope offset: 0|function parameters
 |    ========================================================================
 |    | variable  | x         | integer | 4  | var_x     |
-|    | t1        | lit_t1    | integer | 4  | lit_t1    |
-|    | t2        | lit_t2    | integer | 4  | lit_t2    |
-|    | t3        | temp_t3   | integer | 4  | temp_t3   |
-|    | t4        | lit_t4    | integer | 4  | lit_t4    |
-|    | t5        | temp_t5   | integer | 4  | temp_t5   |
-|    | t6        | lit_t6    | integer | 4  | lit_t6    |
-|    | t7        | temp_t7   | integer | 4  | temp_t7   |
+|    | t31       | lit_t31   | integer | 4  | lit_t31   |
+|    | t32       | lit_t32   | integer | 4  | lit_t32   |
+|    | t33       | lit_t33   | integer | 4  | lit_t33   |
+|    | t34       | temp_t34  | integer | 4  | temp_t34  |
+|    | t35       | lit_t35   | integer | 4  | lit_t35   |
+|    | t36       | temp_t36  | integer | 4  | temp_t36  |
+|    | t37       | lit_t37   | integer | 4  | lit_t37   |
+|    | t38       | temp_t38  | integer | 4  | temp_t38  |
 |    ========================================================================

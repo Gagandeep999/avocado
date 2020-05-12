@@ -91,6 +91,15 @@ public class symTabEntry {
         this.tag = "";
     }
 
+    public symTabEntry(String name, String kind, symTab link){
+        this.name = name;
+        this.kind = kind;
+        this.type = "";
+        this.link = link;
+        this.size = 0;
+        this.tag = "";
+    }
+
     public String toString(){
         return (this.kind+" | "+this.name+" | "+this.type);
     }

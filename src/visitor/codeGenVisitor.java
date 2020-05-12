@@ -51,7 +51,7 @@ public class codeGenVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("addOpNode");
+//        System.out.println("addOpNode in codeGen");
 
         String rightChildTag = getChildTag(p_node, 1);
         String leftChildTag = getChildTag(p_node, 0);
@@ -305,7 +305,7 @@ public class codeGenVisitor extends visitor {
                 p_node.getChildren()) {
             child.accept(this);
         }
-        System.out.println("compareOp in codeGen");
+//        System.out.println("compareOp in codeGen");
 
         String rightChildTag = getChildTag(p_node, 1);
         String leftChildTag = getChildTag(p_node, 0);
@@ -355,11 +355,8 @@ public class codeGenVisitor extends visitor {
 
     @Override
     public void visit(ifNode p_node) {
-//        for (node child :
-//                p_node.getChildren()) {
-//            child.accept(this);
-//        }
-        System.out.println("ifNode in codeGen");
+
+//        System.out.println("ifNode in codeGen");
 
         String localReg = this.registerPool.pop();
         String compTag = getChildTag(p_node, 0);
@@ -407,7 +404,7 @@ public class codeGenVisitor extends visitor {
             child.accept(this);
         }
         String tag = "";
-        System.out.println("writeNode in codeGen");
+//        System.out.println("writeNode in codeGen");
         if (p_node.getChildren().get(0).getClass().toString().contains("generalNode")){
             // variable to print is the 2 levels below
             String varName = p_node.getChildren().get(0).getChildren().get(0).getChildren().get(0).getData();

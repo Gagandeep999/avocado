@@ -15,13 +15,14 @@ public class memorySizeVisitor extends visitor {
     public memorySizeVisitor(){
     }
 
-    public memorySizeVisitor(String errFile){
+    public memorySizeVisitor(PrintWriter errFile){
         this.error = "";
-        try {
-            this.err = new PrintWriter(new File(errFile));
-        }catch (FileNotFoundException e){
-            System.out.println(e.getMessage());
-        }
+        this.err = errFile;
+//        try {
+//            this.err = new PrintWriter(new File(errFile));
+//        }catch (FileNotFoundException e){
+//            System.out.println(e.getMessage());
+//        }
     }
 
     public int sizeOfTypeNode(node p_node) {
