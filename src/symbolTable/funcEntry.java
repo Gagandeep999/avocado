@@ -12,6 +12,10 @@ public class funcEntry extends symTabEntry {
         super();
     }
 
+    public funcEntry(String name, String type, symTab link){
+        super(name, type, link);
+    }
+
     public funcEntry(String scope, ArrayList params, String name, String kind, String type, symTab link){
         super(name, kind, type, link);
         this.scope = scope;

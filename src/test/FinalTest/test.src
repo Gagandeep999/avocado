@@ -1,17 +1,128 @@
-//Some free functions
-add(float x, float y):integer
-  local
-    float result;
+// comments /* nested comments */
+/* starting comment // nested comment */
+
+
+// ====== Class declarations ====== //
+class POLYNOMIAL {
+	public evaluate(integer x) : integer;
+};
+
+class LINEAR inherits POLYNOMIAL {
+	private integer a;
+	private integer b;
+
+	public build(integer A, integer B) : LINEAR;
+	public evaluate(integer x) : integer;
+};
+
+class QUADRATIC inherits POLYNOMIAL {
+	private integer a;
+	private integer b;
+	private integer c;
+
+	public build(integer A, integer B, integer C) : QUADRATIC;
+	public evaluate(integer x) : integer;
+};
+
+// ====== Function Definitions ====== //
+POLYNOMIAL::evaluate1(integer x, integer y) : integer
   do
-    result = x + y;
-    write ( result );
-	return ( result );
+    return (0);
+//    return(0.0);
   end
 
-//It's main!
+LINEAR::evaluate(integer x) : integer
+  local
+    integer result;
+  do
+    result = 0;
+    result = a * x + b;
+    return (result);
+  end
+
+QUADRATIC::evaluate(integer x) : integer
+  local
+    integer result;
+  do    //Using Horner's method
+    result = a;
+    result = result * x + b;
+    result = result * x + c;
+    return (result);
+  end
+
+
+/* sort the array */
+bubbleSort(integer arr[], integer size) : void
+  local
+    integer n;
+    integer i;
+    integer j;
+    integer temp;
+  do
+    n = size;
+    i = 0;
+    j = 0;
+    temp = 0;
+    while (i < n-1)
+      do
+        while (j < n-i-1)
+          do
+            if (arr[j] > arr[j+1])
+              then
+                do
+                  // swap temp and arr[i]
+                  temp = arr[j];
+                  arr[j] = arr[j+1];
+                  arr[j+1] = temp;
+                end
+              else
+	        ;
+            j = j+1;
+          end;
+        i = i+1;
+      end;
+  end
+
+
+/* Print the array
+printArray(integer arr[], integer size) : void
+  local
+    integer n;
+    integer i;
+  do
+    n = size;
+    i = 0;
+    while (i<n)
+      do
+        write(arr[i]);
+        i = i+1;
+      end;
+  end
+*/
+
+/* Print the array */
+printArray(integer arr, integer size) : void
+  local
+    integer i;
+  do
+    i = 0;
+    write(i);
+  end
+
+
+// ====== main ====== //
 main
   local
-    float x;
+    integer x;
+
   do
-    x = add(1, 1);
+    printArray(2, 3)
+    x = 1;
+//    a=5;
+    if (x == 2)
+    then
+      write(x+1);
+    else
+      write(x-1);
+      ;
   end

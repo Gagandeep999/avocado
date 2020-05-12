@@ -1,133 +1,969 @@
 digraph AST {
 0[label="program"]
 0->1
-0->2
-0->69
-69[label="main"]
-69->70
-70[label="FUNCBODY"]
-70->71
-70->77
-77[label="REPTSTATEMENT"]
-77->82
-82[label="="]
-82->81
-82->97
-97[label="ITEMGROUP"]
-97->83
-83[label="ITEM"]
-83->84
-83->85
-85[label="funcCallParams"]
-85->86
-85->91
-91[label="1"]
-86[label="1"]
-84[label="add"]
-81[label="callGROUP"]
-81->78
-78[label="call"]
+0->121
+0->655
+655[label="main"]
+655->656
+656[label="FUNCBODY"]
+656->657
+656->663
+663[label="REPTSTATEMENT"]
+663->678
+663->680
+680[label="if"]
+680->688
+680->692
+680->705
+705[label="STATEMENT_BLOCK"]
+705->706
+706[label="write"]
+706->713
+713[label="-"]
+713->711
+713->714
+714[label="1"]
+711[label="ITEMGROUP"]
+711->707
+707[label="ITEM"]
+707->708
+707->709
+709[label="index list"]
+708[label="x"]
+692[label="STATEMENT_BLOCK"]
+692->693
+693[label="write"]
+693->700
+700[label="+"]
+700->698
+700->701
+701[label="1"]
+698[label="ITEMGROUP"]
+698->694
+694[label="ITEM"]
+694->695
+694->696
+696[label="index list"]
+695[label="x"]
+688[label="=="]
+688->685
+688->689
+689[label="2"]
+685[label="ITEMGROUP"]
+685->681
+681[label="ITEM"]
+681->682
+681->683
+683[label="index list"]
+682[label="x"]
+678[label="FUNC_CALL"]
+678->677
+677[label="callGROUP"]
+677->664
+664[label="call"]
+664->665
+664->666
+666[label="funcCallParams"]
+666->667
+666->672
+672[label="3"]
+667[label="2"]
+665[label="printArray"]
+657[label="VARIABLE_DECLARATIONS"]
+657->659
+659[label="var decl"]
+659->658
+659->660
+659->661
+661[label="dim list"]
+660[label="x"]
+658[label="integer"]
+121[label="function_list"]
+121->122
+121->150
+121->219
+121->319
+121->610
+610[label="func_def"]
+610->611
+610->626
+626[label="FUNCBODY"]
+626->627
+626->633
+633[label="REPTSTATEMENT"]
+633->638
+633->644
+644[label="write"]
+644->649
+649[label="ITEMGROUP"]
+649->645
+645[label="ITEM"]
+645->646
+645->647
+647[label="index list"]
+646[label="i"]
+638[label="="]
+638->637
+638->639
+639[label="0"]
+637[label="callGROUP"]
+637->634
+634[label="call"]
+634->635
+634->636
+636[label="index list"]
+635[label="i"]
+627[label="VARIABLE_DECLARATIONS"]
+627->629
+629[label="var decl"]
+629->628
+629->630
+629->631
+631[label="dim list"]
+630[label="i"]
+628[label="integer"]
+611[label="FUNCTION_SIGNATURE"]
+611->612
+611->614
+611->625
+625[label="void"]
+614[label="fParam list"]
+614->615
+614->620
+620[label="fparam"]
+620->621
+620->622
+620->623
+623[label="dim list"]
+622[label="size"]
+621[label="integer"]
+615[label="fparam"]
+615->616
+615->617
+615->618
+618[label="dim list"]
+617[label="arr"]
+616[label="integer"]
+612[label="printArray"]
+319[label="func_def"]
+319->320
+319->338
+338[label="FUNCBODY"]
+338->339
+338->360
+360[label="REPTSTATEMENT"]
+360->365
+360->379
+360->389
+360->399
+360->405
+405[label="while"]
+405->413
+405->424
+424[label="STATEMENT_BLOCK"]
+424->426
+424->595
+595[label="="]
+595->594
+595->602
+602[label="+"]
+602->600
+602->603
+603[label="1"]
+600[label="ITEMGROUP"]
+600->596
+596[label="ITEM"]
+596->597
+596->598
+598[label="index list"]
+597[label="i"]
+594[label="callGROUP"]
+594->591
+591[label="call"]
+591->592
+591->593
+593[label="index list"]
+592[label="i"]
+426[label="while"]
+426->434
+426->452
+452[label="STATEMENT_BLOCK"]
+452->454
+452->577
+577[label="="]
+577->576
+577->584
+584[label="+"]
+584->582
+584->585
+585[label="1"]
+582[label="ITEMGROUP"]
+582->578
+578[label="ITEM"]
+578->579
+578->580
+580[label="index list"]
+579[label="j"]
+576[label="callGROUP"]
+576->573
+573[label="call"]
+573->574
+573->575
+575[label="index list"]
+574[label="j"]
+454[label="if"]
+454->470
+454->489
+454->571
+571[label="STATEMENT_BLOCK"]
+489[label="STATEMENT_BLOCK"]
+489->495
+489->525
+489->561
+561[label="="]
+561->560
+561->566
+566[label="ITEMGROUP"]
+566->562
+562[label="ITEM"]
+562->563
+562->564
+564[label="index list"]
+563[label="temp"]
+560[label="callGROUP"]
+560->546
+546[label="call"]
+546->547
+546->548
+548[label="index list"]
+548->555
+555[label="+"]
+555->553
+555->556
+556[label="1"]
+553[label="ITEMGROUP"]
+553->549
+549[label="ITEM"]
+549->550
+549->551
+551[label="index list"]
+550[label="j"]
+547[label="arr"]
+525[label="="]
+525->524
+525->541
+541[label="ITEMGROUP"]
+541->526
+526[label="ITEM"]
+526->527
+526->528
+528[label="index list"]
+528->535
+535[label="+"]
+535->533
+535->536
+536[label="1"]
+533[label="ITEMGROUP"]
+533->529
+529[label="ITEM"]
+529->530
+529->531
+531[label="index list"]
+530[label="j"]
+527[label="arr"]
+524[label="callGROUP"]
+524->513
+513[label="call"]
+513->514
+513->515
+515[label="index list"]
+515->520
+520[label="ITEMGROUP"]
+520->516
+516[label="ITEM"]
+516->517
+516->518
+518[label="index list"]
+517[label="j"]
+514[label="arr"]
+495[label="="]
+495->494
+495->508
+508[label="ITEMGROUP"]
+508->496
+496[label="ITEM"]
+496->497
+496->498
+498[label="index list"]
+498->503
+503[label="ITEMGROUP"]
+503->499
+499[label="ITEM"]
+499->500
+499->501
+501[label="index list"]
+500[label="j"]
+497[label="arr"]
+494[label="callGROUP"]
+494->491
+491[label="call"]
+491->492
+491->493
+493[label="index list"]
+492[label="temp"]
+470[label=">"]
+470->467
+470->486
+486[label="ITEMGROUP"]
+486->471
+471[label="ITEM"]
+471->472
+471->473
+473[label="index list"]
+473->480
+480[label="+"]
+480->478
+480->481
+481[label="1"]
+478[label="ITEMGROUP"]
+478->474
+474[label="ITEM"]
+474->475
+474->476
+476[label="index list"]
+475[label="j"]
+472[label="arr"]
+467[label="ITEMGROUP"]
+467->455
+455[label="ITEM"]
+455->456
+455->457
+457[label="index list"]
+457->462
+462[label="ITEMGROUP"]
+462->458
+458[label="ITEM"]
+458->459
+458->460
+460[label="index list"]
+459[label="j"]
+456[label="arr"]
+434[label="<"]
+434->431
+434->448
+448[label="-"]
+448->441
+448->449
+449[label="1"]
+441[label="-"]
+441->439
+441->446
+446[label="ITEMGROUP"]
+446->442
+442[label="ITEM"]
+442->443
+442->444
+444[label="index list"]
+443[label="i"]
+439[label="ITEMGROUP"]
+439->435
+435[label="ITEM"]
+435->436
+435->437
+437[label="index list"]
+436[label="n"]
+431[label="ITEMGROUP"]
+431->427
+427[label="ITEM"]
+427->428
+427->429
+429[label="index list"]
+428[label="j"]
+413[label="<"]
+413->410
+413->420
+420[label="-"]
+420->418
+420->421
+421[label="1"]
+418[label="ITEMGROUP"]
+418->414
+414[label="ITEM"]
+414->415
+414->416
+416[label="index list"]
+415[label="n"]
+410[label="ITEMGROUP"]
+410->406
+406[label="ITEM"]
+406->407
+406->408
+408[label="index list"]
+407[label="i"]
+399[label="="]
+399->398
+399->400
+400[label="0"]
+398[label="callGROUP"]
+398->395
+395[label="call"]
+395->396
+395->397
+397[label="index list"]
+396[label="temp"]
+389[label="="]
+389->388
+389->390
+390[label="0"]
+388[label="callGROUP"]
+388->385
+385[label="call"]
+385->386
+385->387
+387[label="index list"]
+386[label="j"]
+379[label="="]
+379->378
+379->380
+380[label="0"]
+378[label="callGROUP"]
+378->375
+375[label="call"]
+375->376
+375->377
+377[label="index list"]
+376[label="i"]
+365[label="="]
+365->364
+365->370
+370[label="ITEMGROUP"]
+370->366
+366[label="ITEM"]
+366->367
+366->368
+368[label="index list"]
+367[label="size"]
+364[label="callGROUP"]
+364->361
+361[label="call"]
+361->362
+361->363
+363[label="index list"]
+362[label="n"]
+339[label="VARIABLE_DECLARATIONS"]
+339->341
+339->346
+339->351
+339->356
+356[label="var decl"]
+356->355
+356->357
+356->358
+358[label="dim list"]
+357[label="temp"]
+355[label="integer"]
+351[label="var decl"]
+351->350
+351->352
+351->353
+353[label="dim list"]
+352[label="j"]
+350[label="integer"]
+346[label="var decl"]
+346->345
+346->347
+346->348
+348[label="dim list"]
+347[label="i"]
+345[label="integer"]
+341[label="var decl"]
+341->340
+341->342
+341->343
+343[label="dim list"]
+342[label="n"]
+340[label="integer"]
+320[label="FUNCTION_SIGNATURE"]
+320->321
+320->323
+320->337
+337[label="void"]
+323[label="fParam list"]
+323->324
+323->332
+332[label="fparam"]
+332->333
+332->334
+332->335
+335[label="dim list"]
+334[label="size"]
+333[label="integer"]
+324[label="fparam"]
+324->325
+324->326
+324->329
+329[label="arr_size"]
+326[label="arr"]
+325[label="integer"]
+321[label="bubbleSort"]
+219[label="func_def"]
+219->220
+219->232
+232[label="FUNCBODY"]
+232->233
+232->239
+239[label="REPTSTATEMENT"]
+239->244
+239->258
+239->285
+239->308
+308[label="return"]
+308->313
+313[label="ITEMGROUP"]
+313->309
+309[label="ITEM"]
+309->310
+309->311
+311[label="index list"]
+310[label="result"]
+285[label="="]
+285->284
+285->298
+298[label="+"]
+298->291
+298->303
+303[label="ITEMGROUP"]
+303->299
+299[label="ITEM"]
+299->300
+299->301
+301[label="index list"]
+300[label="c"]
+291[label="*"]
+291->290
+291->296
+296[label="ITEMGROUP"]
+296->292
+292[label="ITEM"]
+292->293
+292->294
+294[label="index list"]
+293[label="x"]
+290[label="ITEMGROUP"]
+290->286
+286[label="ITEM"]
+286->287
+286->288
+288[label="index list"]
+287[label="result"]
+284[label="callGROUP"]
+284->281
+281[label="call"]
+281->282
+281->283
+283[label="index list"]
+282[label="result"]
+258[label="="]
+258->257
+258->271
+271[label="+"]
+271->264
+271->276
+276[label="ITEMGROUP"]
+276->272
+272[label="ITEM"]
+272->273
+272->274
+274[label="index list"]
+273[label="b"]
+264[label="*"]
+264->263
+264->269
+269[label="ITEMGROUP"]
+269->265
+265[label="ITEM"]
+265->266
+265->267
+267[label="index list"]
+266[label="x"]
+263[label="ITEMGROUP"]
+263->259
+259[label="ITEM"]
+259->260
+259->261
+261[label="index list"]
+260[label="result"]
+257[label="callGROUP"]
+257->254
+254[label="call"]
+254->255
+254->256
+256[label="index list"]
+255[label="result"]
+244[label="="]
+244->243
+244->249
+249[label="ITEMGROUP"]
+249->245
+245[label="ITEM"]
+245->246
+245->247
+247[label="index list"]
+246[label="a"]
+243[label="callGROUP"]
+243->240
+240[label="call"]
+240->241
+240->242
+242[label="index list"]
+241[label="result"]
+233[label="VARIABLE_DECLARATIONS"]
+233->235
+235[label="var decl"]
+235->234
+235->236
+235->237
+237[label="dim list"]
+236[label="result"]
+234[label="integer"]
+220[label="FUNCTION_SIGNATURE"]
+220->221
+220->223
+220->225
+220->231
+231[label="integer"]
+225[label="fParam list"]
+225->226
+226[label="fparam"]
+226->227
+226->228
+226->229
+229[label="dim list"]
+228[label="x"]
+227[label="integer"]
+223[label="evaluate"]
+221[label="QUADRATIC"]
+150[label="func_def"]
+150->151
+150->163
+163[label="FUNCBODY"]
+163->164
+163->170
+170[label="REPTSTATEMENT"]
+170->175
+170->185
+170->208
+208[label="return"]
+208->213
+213[label="ITEMGROUP"]
+213->209
+209[label="ITEM"]
+209->210
+209->211
+211[label="index list"]
+210[label="result"]
+185[label="="]
+185->184
+185->198
+198[label="+"]
+198->191
+198->203
+203[label="ITEMGROUP"]
+203->199
+199[label="ITEM"]
+199->200
+199->201
+201[label="index list"]
+200[label="b"]
+191[label="*"]
+191->190
+191->196
+196[label="ITEMGROUP"]
+196->192
+192[label="ITEM"]
+192->193
+192->194
+194[label="index list"]
+193[label="x"]
+190[label="ITEMGROUP"]
+190->186
+186[label="ITEM"]
+186->187
+186->188
+188[label="index list"]
+187[label="a"]
+184[label="callGROUP"]
+184->181
+181[label="call"]
+181->182
+181->183
+183[label="index list"]
+182[label="result"]
+175[label="="]
+175->174
+175->176
+176[label="0"]
+174[label="callGROUP"]
+174->171
+171[label="call"]
+171->172
+171->173
+173[label="index list"]
+172[label="result"]
+164[label="VARIABLE_DECLARATIONS"]
+164->166
+166[label="var decl"]
+166->165
+166->167
+166->168
+168[label="dim list"]
+167[label="result"]
+165[label="integer"]
+151[label="FUNCTION_SIGNATURE"]
+151->152
+151->154
+151->156
+151->162
+162[label="integer"]
+156[label="fParam list"]
+156->157
+157[label="fparam"]
+157->158
+157->159
+157->160
+160[label="dim list"]
+159[label="x"]
+158[label="integer"]
+154[label="evaluate"]
+152[label="LINEAR"]
+122[label="func_def"]
+122->123
+122->140
+140[label="FUNCBODY"]
+140->141
+140->142
+142[label="REPTSTATEMENT"]
+142->143
+143[label="return"]
+143->144
+144[label="0"]
+141[label="OPTFUNCBODY0"]
+123[label="FUNCTION_SIGNATURE"]
+123->124
+123->126
+123->128
+123->139
+139[label="integer"]
+128[label="fParam list"]
+128->129
+128->134
+134[label="fparam"]
+134->135
+134->136
+134->137
+137[label="dim list"]
+136[label="y"]
+135[label="integer"]
+129[label="fparam"]
+129->130
+129->131
+129->132
+132[label="dim list"]
+131[label="x"]
+130[label="integer"]
+126[label="evaluate1"]
+124[label="POLYNOMIAL"]
+1[label="class_list"]
+1->2
+1->18
+1->64
+64[label="class"]
+64->65
+64->66
+64->69
+69[label="var+func decl list"]
+69->72
+69->78
+69->84
+69->90
+69->111
+111[label="func decl"]
+111->109
+111->110
+111->112
+111->118
+118[label="integer"]
+112[label="fParam list"]
+112->113
+113[label="fparam"]
+113->114
+113->115
+113->116
+116[label="dim list"]
+115[label="x"]
+114[label="integer"]
+110[label="evaluate"]
+109[label="public"]
+90[label="func decl"]
+90->88
+90->89
+90->91
+90->107
+107[label="QUADRATIC"]
+91[label="fParam list"]
+91->92
+91->97
+91->102
+102[label="fparam"]
+102->103
+102->104
+102->105
+105[label="dim list"]
+104[label="C"]
+103[label="integer"]
+97[label="fparam"]
+97->98
+97->99
+97->100
+100[label="dim list"]
+99[label="B"]
+98[label="integer"]
+92[label="fparam"]
+92->93
+92->94
+92->95
+95[label="dim list"]
+94[label="A"]
+93[label="integer"]
+89[label="build"]
+88[label="public"]
+84[label="var decl"]
+84->82
+84->83
+84->85
+84->86
+86[label="dim list"]
+85[label="c"]
+83[label="integer"]
+82[label="private"]
+78[label="var decl"]
+78->76
+78->77
 78->79
 78->80
-80[label="index list"]
-79[label="x"]
-71[label="VARIABLE_DECLARATIONS"]
-71->73
-73[label="var decl"]
-73->72
-73->74
-73->75
-75[label="dim list"]
-74[label="x"]
-72[label="float"]
-2[label="function_list"]
-2->3
-3[label="func_def"]
-3->4
-3->19
-19[label="FUNCBODY"]
-19->20
-19->26
-26[label="REPTSTATEMENT"]
-26->31
-26->48
-26->58
-58[label="return"]
-58->63
-63[label="ITEMGROUP"]
-63->59
-59[label="ITEM"]
-59->60
-59->61
-61[label="index list"]
-60[label="result"]
-48[label="write"]
-48->53
-53[label="ITEMGROUP"]
-53->49
-49[label="ITEM"]
-49->50
-49->51
-51[label="index list"]
-50[label="result"]
-31[label="="]
-31->30
-31->38
-38[label="+"]
+80[label="dim list"]
+79[label="b"]
+77[label="integer"]
+76[label="private"]
+72[label="var decl"]
+72->70
+72->71
+72->73
+72->74
+74[label="dim list"]
+73[label="a"]
+71[label="integer"]
+70[label="private"]
+66[label="inherits"]
+66->67
+67[label="POLYNOMIAL"]
+65[label="QUADRATIC"]
+18[label="class"]
+18->19
+18->20
+18->23
+23[label="var+func decl list"]
+23->26
+23->32
+23->38
+23->54
+54[label="func decl"]
+54->52
+54->53
+54->55
+54->61
+61[label="integer"]
+55[label="fParam list"]
+55->56
+56[label="fparam"]
+56->57
+56->58
+56->59
+59[label="dim list"]
+58[label="x"]
+57[label="integer"]
+53[label="evaluate"]
+52[label="public"]
+38[label="func decl"]
 38->36
-38->43
-43[label="ITEMGROUP"]
-43->39
-39[label="ITEM"]
+38->37
+38->39
+38->50
+50[label="LINEAR"]
+39[label="fParam list"]
 39->40
-39->41
-41[label="index list"]
-40[label="y"]
-36[label="ITEMGROUP"]
-36->32
-32[label="ITEM"]
+39->45
+45[label="fparam"]
+45->46
+45->47
+45->48
+48[label="dim list"]
+47[label="B"]
+46[label="integer"]
+40[label="fparam"]
+40->41
+40->42
+40->43
+43[label="dim list"]
+42[label="A"]
+41[label="integer"]
+37[label="build"]
+36[label="public"]
+32[label="var decl"]
+32->30
+32->31
 32->33
 32->34
-34[label="index list"]
-33[label="x"]
-30[label="callGROUP"]
-30->27
-27[label="call"]
-27->28
-27->29
-29[label="index list"]
-28[label="result"]
-20[label="VARIABLE_DECLARATIONS"]
-20->22
-22[label="var decl"]
-22->21
-22->23
-22->24
-24[label="dim list"]
-23[label="result"]
-21[label="float"]
-4[label="FUNCTION_SIGNATURE"]
-4->5
-4->7
-4->18
-18[label="integer"]
-7[label="fParam list"]
-7->8
-7->13
-13[label="fparam"]
-13->14
-13->15
-13->16
-16[label="dim list"]
-15[label="y"]
-14[label="float"]
-8[label="fparam"]
+34[label="dim list"]
+33[label="b"]
+31[label="integer"]
+30[label="private"]
+26[label="var decl"]
+26->24
+26->25
+26->27
+26->28
+28[label="dim list"]
+27[label="a"]
+25[label="integer"]
+24[label="private"]
+20[label="inherits"]
+20->21
+21[label="POLYNOMIAL"]
+19[label="LINEAR"]
+2[label="class"]
+2->3
+2->4
+2->5
+5[label="var+func decl list"]
+5->8
+8[label="func decl"]
+8->6
+8->7
 8->9
-8->10
-8->11
-11[label="dim list"]
-10[label="x"]
-9[label="float"]
-5[label="add"]
-1[label="class_list"]
+8->15
+15[label="integer"]
+9[label="fParam list"]
+9->10
+10[label="fparam"]
+10->11
+10->12
+10->13
+13[label="dim list"]
+12[label="x"]
+11[label="integer"]
+7[label="evaluate"]
+6[label="public"]
+4[label="inheritance list"]
+3[label="POLYNOMIAL"]
 }

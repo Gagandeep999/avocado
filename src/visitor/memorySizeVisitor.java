@@ -15,13 +15,14 @@ public class memorySizeVisitor extends visitor {
     public memorySizeVisitor(){
     }
 
-    public memorySizeVisitor(String errFile){
+    public memorySizeVisitor(PrintWriter errFile){
         this.error = "";
-        try {
-            this.err = new PrintWriter(new File(errFile));
-        }catch (FileNotFoundException e){
-            System.out.println(e.getMessage());
-        }
+        this.err = errFile;
+//        try {
+//            this.err = new PrintWriter(new File(errFile));
+//        }catch (FileNotFoundException e){
+//            System.out.println(e.getMessage());
+//        }
     }
 
     public int sizeOfTypeNode(node p_node) {
@@ -51,7 +52,7 @@ public class memorySizeVisitor extends visitor {
 //        System.out.println("in addopnode");
         p_node.entry.setSize(sizeOfTypeNode(p_node));
         String name = p_node.getMoonVarName();
-        p_node.entry.setTag("add_"+name);
+        p_node.entry.setTag("temp_"+name);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class memorySizeVisitor extends visitor {
 //        System.out.println("in multpopnode");
         p_node.entry.setSize(sizeOfTypeNode(p_node));
         String name = p_node.getMoonVarName();
-        p_node.entry.setTag("mult_"+name);
+        p_node.entry.setTag("temp_"+name);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class memorySizeVisitor extends visitor {
         }
         p_node.entry.setSize(sizeOfTypeNode(p_node));
         String name = p_node.getMoonVarName();
-        p_node.entry.setTag("comp_"+name);
+        p_node.entry.setTag("temp_"+name);
     }
 
     @Override
@@ -114,7 +115,7 @@ public class memorySizeVisitor extends visitor {
         }
         p_node.entry.setSize(sizeOfTypeNode(p_node));
         String name = p_node.getMoonVarName();
-        p_node.entry.setTag("lit_"+p_node.getData());
+        p_node.entry.setTag("lit_"+name);
     }
 
     @Override
@@ -219,6 +220,38 @@ public class memorySizeVisitor extends visitor {
 
     @Override
     public void visit(returnNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(ifNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(readNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(whileNode p_node) {
+        for (node child :
+                p_node.getChildren()) {
+            child.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(writeNode p_node) {
         for (node child :
                 p_node.getChildren()) {
             child.accept(this);

@@ -1,0 +1,13 @@
+// ====== main ====== //
+main
+  local
+    integer x;
+  do
+    x = 1 + 3 * 2;
+    if (x == 1)
+    then
+      write(x+1);
+    else
+      write(x-1);
+      ;
+  end

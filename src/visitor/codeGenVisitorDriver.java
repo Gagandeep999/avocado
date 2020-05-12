@@ -49,6 +49,7 @@ public class codeGenVisitorDriver {
 
                 PrintWriter ast = new PrintWriter(graphFile, "UTF-8");
                 PrintWriter symTab = new PrintWriter(new File(symTableFile));
+                PrintWriter err = new PrintWriter(new File(symTableError));
 
                 Stack<node> astTree = parseTree.ast;
                 Stack<node> astVisitor = parseVisitor.ast;
@@ -71,9 +72,9 @@ public class codeGenVisitorDriver {
 
                 node prog = astVisitor.pop();
 
-                typeCheckVisitor typeCheckVisit = new typeCheckVisitor(symTableError);
-                symbolTableVisitor symTabVisit = new symbolTableVisitor(symTableError);
-                memorySizeVisitor memorySizeVisit = new memorySizeVisitor(symTableError);
+                typeCheckVisitor typeCheckVisit = new typeCheckVisitor(err);
+                symbolTableVisitor symTabVisit = new symbolTableVisitor(err);
+                memorySizeVisitor memorySizeVisit = new memorySizeVisitor(err);
                 codeGenVisitor codeGenVisit = new codeGenVisitor(moonFile);
 
                 prog.accept(symTabVisit);
